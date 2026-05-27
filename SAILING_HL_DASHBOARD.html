@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Thi Công | Sailing Club Hạ Long | DA25.328</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;font-size:13px}
+.hdr{background:linear-gradient(135deg,#1e3a5f,#2d6096);color:#fff;padding:11px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.25);position:sticky;top:0;z-index:100}
+.hdr-l h1{font-size:15px;font-weight:700;letter-spacing:.2px}
+.hdr-l p{font-size:10.5px;opacity:.78;margin-top:1px}
+.hdr-r{display:flex;gap:10px;align-items:center}
+.bdg{background:rgba(255,255,255,.15);border-radius:6px;padding:5px 11px;font-size:10.5px;text-align:center;line-height:1.4}
+.bdg strong{display:block;font-size:12.5px}
+.upload-btn{background:#f39c12;color:#fff;border:none;padding:8px 16px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:700;transition:background .2s;display:flex;align-items:center;gap:6px}
+.upload-btn:hover{background:#e67e22}
+#fileInput{display:none}
+.upst{font-size:10.5px;padding:3px 9px;border-radius:5px;display:none;font-weight:600}
+.upst.ok{display:inline-block;background:#d5f5e3;color:#1e8449}
+.upst.err{display:inline-block;background:#fadbd8;color:#c0392b}
+.kpi-row{display:flex;gap:10px;padding:10px 18px;background:#fff;border-bottom:1px solid #e0e7ef;flex-wrap:wrap}
+.kpi{background:#f7f9fc;border:1px solid #e4eaf4;border-radius:9px;padding:9px 14px;flex:1;min-width:110px;text-align:center}
+.kpi .v{font-size:22px;font-weight:800;line-height:1.1}
+.kpi .l{font-size:10px;color:#777;margin-top:2px}
+.blue .v{color:#1e3a5f}.green .v{color:#27ae60}.orange .v{color:#e67e22}.red .v{color:#e74c3c}.teal .v{color:#0e6655}
+.page{padding:14px 18px}
+.sec{margin-bottom:20px}
+.stitle{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #e0e7ef}
+.zf{display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.zf label{font-size:11px;color:#777;font-weight:600}
+.zb{padding:5px 13px;border-radius:18px;border:2px solid #ddd;background:#fff;cursor:pointer;font-size:11.5px;font-weight:600;transition:all .18s;color:#555}
+.zb:hover{border-color:#1e3a5f;color:#1e3a5f}
+.zb.active{color:#fff;background:#1e3a5f;border-color:#1e3a5f}
+.zA.active{background:#e74c3c;border-color:#e74c3c}
+.zB.active{background:#3498db;border-color:#3498db}
+.zC.active{background:#27ae60;border-color:#27ae60}
+.zD.active{background:#9b59b6;border-color:#9b59b6}
+.zE.active{background:#e67e22;border-color:#e67e22}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:960px){.g2,.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr}}
+.cb{background:#fff;border:1px solid #e4eaf4;border-radius:10px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.cb h4{font-size:11px;font-weight:700;color:#1e3a5f;margin-bottom:8px;text-align:center;text-transform:uppercase;letter-spacing:.3px}
+.cb canvas{max-height:240px}
+.cb.tall canvas{max-height:310px}
+.cb.xtall canvas{max-height:450px}
+.pb{background:#eee;border-radius:3px;height:6px;flex:1}
+.pbf{height:6px;border-radius:3px}
+.pill{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700}
+.ph{background:#d5f5e3;color:#1e8449}.pm{background:#fef3c7;color:#b45309}.pl{background:#fadbd8;color:#922b21}.pz{background:#f0f0f0;color:#999}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{background:#1e3a5f;color:#fff;padding:6px 7px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,0.12)}
+.tbl td{padding:4px 6px;border-bottom:1px solid #e8edf5;border-right:1px solid #e0e8f4;text-align:center;vertical-align:middle}
+.tbl tr:hover td{background:#f5f8ff}
+.tbl tr.zA td{border-left:3px solid #e74c3c}
+.tbl tr.zB td{border-left:3px solid #3498db}
+.tbl tr.zC td{border-left:3px solid #27ae60}
+.tbl tr.zD td{border-left:3px solid #9b59b6}
+.tbl tr.zE td{border-left:3px solid #e67e22}
+.twrap{overflow-y:auto;max-height:450px;border-radius:8px;border:1px solid #e4eaf4}
+.sp{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10.5px;font-weight:700}
+.sok{background:#d5f5e3;color:#1e8449}.swarn{background:#fef9c3;color:#b7770d}.salert{background:#fadbd8;color:#c0392b}
+.scht{width:100%;border-collapse:collapse;font-size:11px}
+.scht th{background:#2d6096;color:#fff;padding:6px 9px;text-align:center;border-right:1px solid rgba(255,255,255,0.12)}
+.scht td{padding:5px 9px;border-bottom:1px solid #e8edf5;border-right:1px solid #e0e8f4;vertical-align:top}
+.scht tr:nth-child(even) td{background:#f9fbff}
+.note-bar{font-size:10.5px;color:#555;margin-bottom:8px;padding:6px 10px;background:#f0f5ff;border-radius:6px;border-left:3px solid #3498db}
+.sync-badge{font-size:10.5px;padding:4px 10px;border-radius:6px;font-weight:600;display:none}
+.sync-badge.syncing{display:inline-block;background:#fef3c7;color:#b45309}
+.sync-badge.ok{display:inline-block;background:#d5f5e3;color:#1e8449}
+.sync-badge.err{display:inline-block;background:#fadbd8;color:#c0392b}
+.sync-btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);padding:7px 14px;border-radius:7px;cursor:pointer;font-size:11.5px;font-weight:700;transition:background .2s}
+.sync-btn:hover{background:rgba(255,255,255,.3)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <h1>🏖️ SAILING CLUB SIGNATURE RESORT HẠ LONG BAY — DA25.328</h1>
+    <p>Alliance Construction &nbsp;|&nbsp; HĐ 73 &nbsp;|&nbsp; 104 Căn Villa &nbsp;|&nbsp; Hạn hoàn thành: <span id="deadlineDisplay" title="Nhấp để chỉnh ngày" style="cursor:pointer;text-decoration:underline dotted;color:#ffd700" onclick="editDeadline()">30/09/2026</span></p>
+  </div>
+  <div class="bdg" style="margin:0 auto"><span>Người lập</span><strong>Mai Văn Minh</strong></div>
+  <div class="hdr-r">
+    <span id="syncStatus" class="sync-badge"></span>
+    <button class="sync-btn" onclick="loadFromGoogleSheets()">🔄 Đồng bộ GG Sheets</button>
+    <span id="upStatus" class="upst"></span>
+    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">📂 Tải lên Excel</button>
+    <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="loadExcel(this)">
+    <div class="bdg"><span>Cập nhật</span><strong id="today"></strong></div>
+    <div class="bdg"><span>Phiên bản</span><strong>v5.0</strong></div>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi blue"><div class="v">104</div><div class="l">Tổng căn Villa</div></div>
+  <div class="kpi green"><div class="v" id="kpi_ho">—</div><div class="l">Bàn giao mặt bằng trung bình</div></div>
+  <div class="kpi orange"><div class="v" id="kpi_tc">—</div><div class="l">Tiến độ thi công trung bình</div></div>
+  <div class="kpi teal"><div class="v" id="kpi_active">—</div><div class="l">Căn đang thi công</div></div>
+  <div class="kpi red" style="cursor:pointer" title="Nhấp để chỉnh ngày deadline" onclick="editDeadline()"><div class="v" id="daysLeft">—</div><div class="l" id="daysLeftLbl">Ngày còn lại (30/09/2026)</div></div>
+</div>
+
+<div class="page">
+
+<!-- S1: COMBINED CHART -->
+<div class="sec" id="s1">
+  <div class="stitle">📊 BÀN GIAO MẶT BẰNG & TIẾN ĐỘ THI CÔNG — 104 CĂN</div>
+  <div class="note-bar">🔵 Cột xanh = % Bàn giao mặt bằng &nbsp;|&nbsp; 🟠 Cột cam = % Tiến độ thi công &nbsp;|&nbsp; Chọn phân khu để xem chi tiết</div>
+  <div class="zf">
+    <label>Phân khu:</label>
+    <button class="zb active" onclick="filterCombo('all',this)">Tất cả (104 căn)</button>
+    <button class="zb zA" onclick="filterCombo('A',this)">Khu A (16)</button>
+    <button class="zb zB" onclick="filterCombo('B',this)">Khu B (49)</button>
+    <button class="zb zC" onclick="filterCombo('C',this)">Khu C (20)</button>
+    <button class="zb zD" onclick="filterCombo('D',this)">Khu D (5)</button>
+    <button class="zb zE" onclick="filterCombo('E',this)">Khu E (14)</button>
+  </div>
+  <div class="cb xtall">
+    <h4 id="comboTitle">BÀN GIAO MẶT BẰNG & TIẾN ĐỘ THI CÔNG — TẤT CẢ 104 CĂN</h4>
+    <canvas id="c_combo" style="max-height:440px"></canvas>
+  </div>
+</div>
+
+<!-- S2: TỔNG HỢP -->
+<div class="sec" id="s2">
+  <div class="stitle">📈 TỔNG HỢP TIẾN ĐỘ</div>
+  <div class="g2">
+    <div class="cb tall"><h4>PHÂN BỐ TRẠNG THÁI BÀN GIAO MẶT BẰNG (104 CĂN)</h4><canvas id="c_donut"></canvas></div>
+    <div class="cb tall"><h4>TIẾN ĐỘ HẠNG MỤC — TOÀN DỰ ÁN</h4><canvas id="c_tradeSum"></canvas></div>
+  </div>
+</div>
+
+<!-- S3: NHÓM THI CÔNG -->
+<div class="sec" id="s3">
+  <div class="stitle" style="display:flex;align-items:center;justify-content:space-between">
+    <span>👷 TÌNH TRẠNG NHÓM THI CÔNG — <span id="reportDateSpan">25/05/2026</span></span>
+    <button onclick="toggleDatePanel()" style="font-size:10.5px;padding:3px 10px;border:1px solid #ccc;border-radius:5px;background:#f7f9fc;cursor:pointer;color:#555">✏️ Chỉnh ngày</button>
+  </div>
+  <!-- Panel cấu hình ngày -->
+  <div id="datePanel" style="display:none;background:#f0f5ff;border:1px solid #d0dff5;border-radius:8px;padding:12px 16px;margin:8px 0;font-size:11.5px">
+    <div style="font-weight:700;color:#1e3a5f;margin-bottom:10px">⚙️ Cấu hình ngày báo cáo & kế hoạch 5 tuần</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px">
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:3px">Ngày báo cáo nhóm</label>
+        <input id="cfg_reportDate" value="25/05/2026" style="width:100%;padding:4px 7px;border:1px solid #ccc;border-radius:4px;font-size:11px"></div>
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:3px">Bắt đầu kế hoạch</label>
+        <input id="cfg_planStart" value="24/05" style="width:100%;padding:4px 7px;border:1px solid #ccc;border-radius:4px;font-size:11px"></div>
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:3px">Kết thúc kế hoạch</label>
+        <input id="cfg_planEnd" value="28/06/2026" style="width:100%;padding:4px 7px;border:1px solid #ccc;border-radius:4px;font-size:11px"></div>
+    </div>
+    <div style="font-weight:600;color:#1e3a5f;margin-bottom:6px;font-size:10.5px">Tên & ngày 5 tuần (ví dụ: T21 | 24-31/05)</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px" id="weekInputs">
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:2px">Tuần 1</label>
+        <input id="cfg_w0c" value="T21" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px;margin-bottom:3px">
+        <input id="cfg_w0d" value="24-31/05" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px"></div>
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:2px">Tuần 2</label>
+        <input id="cfg_w1c" value="T22" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px;margin-bottom:3px">
+        <input id="cfg_w1d" value="01-07/06" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px"></div>
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:2px">Tuần 3</label>
+        <input id="cfg_w2c" value="T23" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px;margin-bottom:3px">
+        <input id="cfg_w2d" value="08-14/06" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px"></div>
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:2px">Tuần 4</label>
+        <input id="cfg_w3c" value="T24" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px;margin-bottom:3px">
+        <input id="cfg_w3d" value="15-21/06" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px"></div>
+      <div><label style="font-size:10px;color:#666;display:block;margin-bottom:2px">Tuần 5</label>
+        <input id="cfg_w4c" value="T25" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px;margin-bottom:3px">
+        <input id="cfg_w4d" value="22-28/06" style="width:100%;padding:4px 5px;border:1px solid #ccc;border-radius:4px;font-size:10.5px"></div>
+    </div>
+    <button onclick="applyDateConfig()" style="background:#1e3a5f;color:#fff;border:none;padding:6px 18px;border-radius:6px;cursor:pointer;font-size:11.5px;font-weight:700">✅ Áp dụng</button>
+    <button onclick="toggleDatePanel()" style="background:#eee;color:#555;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:11.5px;margin-left:8px">Đóng</button>
+  </div>
+  <div class="g2">
+    <div class="twrap">
+      <table class="tbl">
+        <thead><tr>
+          <th>Nhóm</th><th>Căn</th><th>Số căn</th>
+          <th style="border-left:1px solid #e0e8f4">Bàn giao mặt bằng</th>
+          <th style="border-left:1px solid #e0e8f4">Thi công</th>
+          <th style="border-left:1px solid #e0e8f4">Trạng thái</th>
+        </tr></thead>
+        <tbody id="groupBody"></tbody>
+      </table>
+    </div>
+    <div class="cb tall"><h4>BÀN GIAO MẶT BẰNG & TIẾN ĐỘ THI CÔNG THEO NHÓM</h4><canvas id="c_groupBar"></canvas></div>
+  </div>
+</div>
+
+<!-- S4: NHÂN LỰC + KẾ HOẠCH -->
+<div class="sec" id="s4">
+  <div class="stitle">📅 KẾ HOẠCH THI CÔNG 5 TUẦN — <span id="planRangeSpan">24/05 → 28/06/2026</span></div>
+  <div class="g2" style="margin-bottom:12px">
+    <div class="cb tall">
+      <h4>NHÂN LỰC THEO TUẦN — KẾ HOẠCH & THỰC TẾ</h4>
+      <canvas id="c_mp" style="max-height:300px"></canvas>
+    </div>
+    <div class="cb tall">
+      <h4>CƯỜNG ĐỘ HẠNG MỤC THEO TUẦN (KẾ HOẠCH)</h4>
+      <canvas id="c_radar"></canvas>
+    </div>
+  </div>
+  <div class="cb">
+    <h4 style="margin-bottom:10px">CHI TIẾT KẾ HOẠCH 5 TUẦN</h4>
+    <div style="overflow-x:auto"><table class="scht" id="schedTbl"></table></div>
+  </div>
+</div>
+
+<!-- S5: HỒ SƠ ĐỆ TRÌNH + RAMP-UP -->
+<div class="sec" id="s5">
+  <div class="stitle">🗂️ TÌNH TRẠNG HỒ SƠ ĐỆ TRÌNH & RAMP-UP NHÂN LỰC</div>
+  <div class="g2">
+    <div class="cb tall">
+      <h4>TÌNH TRẠNG HỒ SƠ ĐỆ TRÌNH (SD · RFI · SI · PMI · IPC)</h4>
+      <canvas id="c_hosoDT" style="max-height:280px"></canvas>
+    </div>
+    <div class="cb tall">
+      <h4>RAMP-UP NHÂN LỰC vs LŨY KẾ CĂN HOÀN THÀNH</h4>
+      <canvas id="c_rampup" style="max-height:280px"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- S6: BẢNG 104 CĂN -->
+<div class="sec" id="s6">
+  <div class="stitle">🏠 BẢNG CHI TIẾT 104 CĂN</div>
+  <div class="zf">
+    <label>Phân khu:</label>
+    <button class="zb active" onclick="filterVilla('all',this)">Tất cả</button>
+    <button class="zb zA" onclick="filterVilla('A',this)">Khu A</button>
+    <button class="zb zB" onclick="filterVilla('B',this)">Khu B</button>
+    <button class="zb zC" onclick="filterVilla('C',this)">Khu C</button>
+    <button class="zb zD" onclick="filterVilla('D',this)">Khu D</button>
+    <button class="zb zE" onclick="filterVilla('E',this)">Khu E</button>
+  </div>
+  <div class="twrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th rowspan="2">STT</th><th rowspan="2">Mã Căn</th><th rowspan="2">Phân Khu</th>
+          <th rowspan="2">Bàn giao<br>mặt bằng</th>
+          <th rowspan="2">Thi công</th>
+          <th rowspan="2" style="background:#e67e22">Nghiệm thu tổng</th>
+          <th colspan="2">Sắt</th><th colspan="2">Thạch Cao</th>
+          <th colspan="2">Sơn Nước</th><th colspan="2">Sơn Hiệu Ứng</th>
+          <th colspan="2">Chống Thấm/Cán Nền</th><th colspan="2">Ốp Lát Gạch</th>
+          <th colspan="2">Ốp Lát Đá</th><th colspan="2">Kính</th><th colspan="2">Mộc</th>
+          <th rowspan="2">Ghi chú</th>
+        </tr>
+        <tr>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+          <th style="background:#2980b9;font-size:9px">Thi công</th><th style="background:#d35400;font-size:9px">Nghiệm thu</th>
+        </tr>
+      </thead>
+      <tbody id="villaBody"></tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ── CẤU HÌNH NGÀY / TUẦN ─────────────────────────────
+function getCFGWeeks(){
+  return [0,1,2,3,4].map(i=>({
+    code: (document.getElementById(`cfg_w${i}c`)||{value:['T21','T22','T23','T24','T25'][i]}).value,
+    dates:(document.getElementById(`cfg_w${i}d`)||{value:['24-31/05','01-07/06','08-14/06','15-21/06','22-28/06'][i]}).value
+  }));
+}
+function toggleDatePanel(){
+  const p=document.getElementById('datePanel');
+  p.style.display=p.style.display==='none'?'block':'none';
+}
+function applyDateConfig(){
+  // Cập nhật tiêu đề các section
+  const rd=document.getElementById('cfg_reportDate').value;
+  const ps=document.getElementById('cfg_planStart').value;
+  const pe=document.getElementById('cfg_planEnd').value;
+  document.getElementById('reportDateSpan').textContent=rd;
+  document.getElementById('planRangeSpan').textContent=`${ps} → ${pe}`;
+  // Cập nhật schedule table code colors nếu tuần đổi tên
+  // Rebuild các biểu đồ dùng tên tuần
+  buildManpower();
+  buildRadar();
+  toggleDatePanel();
+}
+
+// ── GOOGLE SHEETS CONFIG ──────────────────────────────
+// Hướng dẫn: Điền Sheet ID vào biến GSHEET_ID bên dưới
+// Cách lấy ID: Mở Google Sheet → URL có dạng:
+//   https://docs.google.com/spreadsheets/d/[SHEET_ID]/edit
+// Chép [SHEET_ID] vào đây:
+const GSHEET_ID = '1St5m-RBTQpZsrlNvnbPVWwccslJdHsXvrTFmBFepYmU';  // ← ĐIỀN SHEET ID VÀO ĐÂY
+const GSHEET_REFRESH_MIN = 5; // Tự động cập nhật mỗi N phút (0 = tắt)
+
+// Tên các tab trong Google Sheet (phải giống tên sheet trong Excel)
+const GS_SHEETS = {
+  main:   '03.TIẾN ĐỘ 104 CĂN',
+  hoso:   '7.Hồ Sơ Đệ Trình',
+  rampup: '8.Ramp-up Nhân Lực',
+  nhom:   '3.Nhóm Thi Công',
+  nhanLuc:'4.Kế Hoạch Nhân Lực',
+  chiTiet:'5.Chi Tiết Kế Hoạch'
+};
+
+function gSheetUrl(sheetName){
+  return `https://docs.google.com/spreadsheets/d/${GSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+}
+
+async function fetchCSV(sheetName){
+  const url = gSheetUrl(sheetName);
+  const r = await fetch(url, {cache:'no-cache'});
+  if(!r.ok) throw new Error(`HTTP ${r.status} — ${sheetName}`);
+  const text = await r.text();
+  return new Promise((res,rej)=>{
+    Papa.parse(text,{
+      skipEmptyLines:true,
+      complete:result=>res(result.data),
+      error:err=>rej(err)
+    });
+  });
+}
+
+async function loadFromGoogleSheets(){
+  if(!GSHEET_ID){
+    alert('⚠️ Chưa cấu hình Google Sheet ID!\n\nMở file HTML, tìm dòng:\n  const GSHEET_ID = \"\";\nVà điền Sheet ID của bạn vào.');
+    return;
+  }
+  const syncEl=document.getElementById('syncStatus');
+  syncEl.className='sync-badge syncing';
+  syncEl.textContent='🔄 Đang đồng bộ...';
+  try{
+    // ── Sheet chính: 03.TIẾN ĐỘ 104 CĂN ────────────────
+    const rows=await fetchCSV(GS_SHEETS.main);
+    let n=0;
+    // Tìm header row để xác định đúng index cột (tránh lệch nếu GSheets thêm/bớt cột)
+    const _pct=(s)=>{const str=String(s||'');const v=parseFloat(str.replace('%',''))||0;return str.includes('%')?Math.round(v):Math.round(v>1?v:v*100);};
+    let colCode=1,colHO=4,colTC=6,colTRD=7,colNT=17,colNTT=18;
+    for(let ri=0;ri<Math.min(6,rows.length);ri++){
+      const hr=rows[ri];
+      const rowStr=hr.map(c=>String(c||'').replace(/[\s\n\r✏️]/g,'').toUpperCase()).join('|');
+      if(rowStr.includes('MÃCĂN')||rowStr.includes('MACAN')){
+        hr.forEach((cell,ci)=>{
+          const c=String(cell||'').replace(/[\s\n\r✏️]/g,'').toUpperCase();
+          if(c.includes('MÃCĂN')||c.includes('MACAN')) colCode=ci;
+          else if((c.includes('%BÀNGIAO')||c.includes('%BANGIAO'))&&ci<8) colHO=ci;
+          else if((c.includes('TIẾNĐỘ')||c.includes('%THICÔNG')||c.includes('THICONG'))&&!c.includes('NT')&&ci<10) colTC=ci;
+          else if((c==='SẮT'||c==='SAT')&&ci>4&&ci<12) colTRD=ci;
+          else if(c.includes('NTTỔNG')||c.includes('%NTTỔNG')||c.includes('NTTONG')) colNT=ci;
+        });
+        colNTT=colNT+1;
+        console.log('[GSheets] Cột đã dò:', {colCode,colHO,colTC,colTRD,colNT,colNTT});
+        break;
+      }
+    }
+    rows.forEach(r=>{
+      const code=String(r[colCode]||'').trim();
+      if(code&&/^[A-E]\d+$/.test(code)&&code!=='C1'){
+        HO[code]=_pct(r[colHO]);
+        TC[code]=_pct(r[colTC]);
+        TRADE_KEYS.forEach((k,i)=>{ TRD[k][code]=_pct(r[colTRD+i]||0); });
+        NT_TOT[code]=_pct(r[colNT]||0);
+        TRADE_KEYS.forEach((k,i)=>{ NT_TRD[k][code]=_pct(r[colNTT+i]||0); });
+        n++;
+      }
+    });
+    console.log('[GSheets] Đọc được',n,'căn. HO[A1]=',HO['A1'],'TC[A1]=',TC['A1'],'NT[A1]=',NT_TOT['A1']);
+
+    // ── Hồ Sơ Đệ Trình ──────────────────────────────────
+    try{
+      const rHS=await fetchCSV(GS_SHEETS.hoso);
+      // Tìm header row để đọc tên legend
+      let hsHdr=null;
+      for(let ri=0;ri<Math.min(5,rHS.length);ri++){
+        const s=String(rHS[ri][0]||'').toUpperCase().replace(/\s/g,'');
+        if(s.includes('LOẠI')||s.includes('LOAI')||s.includes('HỒSƠ')){hsHdr=rHS[ri];break;}
+      }
+      if(hsHdr){
+        const cleanLg=s=>String(s||'').split('\n')[0].trim();
+        HOSO.lgXong=cleanLg(hsHdr[1])||HOSO.lgXong;
+        HOSO.lgPend=cleanLg(hsHdr[2])||HOSO.lgPend;
+        HOSO.lgRej =cleanLg(hsHdr[3])||HOSO.lgRej;
+      }
+      // Đọc data rows động (không hardcode labels)
+      const gsLabels=[],gsXong=[],gsPend=[],gsRej=[];
+      rHS.forEach(r=>{
+        const lbl=String(r[0]||'').trim();
+        const x=parseInt(r[1])||0,p=parseInt(r[2])||0,rj=parseInt(r[3])||0;
+        if(lbl&&!lbl.toUpperCase().includes('TỔNG')&&!lbl.toUpperCase().includes('LOẠI')&&
+           !lbl.includes('🗂')&&!lbl.includes('ℹ')&&(x+p+rj)>0){
+          gsLabels.push(lbl);gsXong.push(x);gsPend.push(p);gsRej.push(rj);
+        }
+      });
+      if(gsLabels.length>0){
+        HOSO.labels=gsLabels;HOSO.xong=gsXong;HOSO.pending=gsPend;HOSO.reject=gsRej;
+      }
+    }catch(e){console.warn('Hồ Sơ sheet:',e);}
+
+    // ── Ramp-up Nhân Lực ────────────────────────────────
+    try{
+      const rRU=await fetchCSV(GS_SHEETS.rampup);
+      // Tìm dòng dữ liệu theo pattern tháng "T5/2026"… thay vì slice cứng
+      // Lọc dòng dữ liệu: có nhãn tháng + số nhân lực hợp lệ ở cột 1
+      const _isMonthRow=r=>{
+        const lbl=String(r[0]||'').trim();
+        const hasNum=(parseInt(r[1])||0)>0;
+        const notHeader=!lbl.toUpperCase().includes('KẾ HOẠCH')&&
+                        !lbl.toUpperCase().includes('THÁNG')&&lbl.length>0&&
+                        !lbl.includes('Nhân Lực')&&!lbl.includes('nhân lực');
+        // Khớp T5/2026, T10/2026, Tháng 5, 5/2026, hoặc bất kỳ nhãn tháng có số
+        return (hasNum||parseInt(r[3])||0)&&notHeader&&lbl.length>=2;
+      };
+      const ruRows=rRU.filter(_isMonthRow);
+      console.log('[Ramp-up] rows found:',ruRows.length, ruRows.map(r=>r[0]));
+      ruRows.slice(0,5).forEach((r,i)=>{
+        RAMPUP.months[i]=String(r[0]||'').trim()||RAMPUP.months[i]; // ← đọc tháng từ data
+        RAMPUP.nlKH[i]=parseInt(r[1])||0;
+        const tv=String(r[2]||'').trim();
+        RAMPUP.nlThucTe[i]=(tv===''||tv==='0')?null:(parseInt(tv)||null);
+        RAMPUP.luykeCan[i]=parseInt(r[3])||0;
+      });
+    }catch(e){console.warn('Ramp-up sheet:',e);}
+
+    // ── Nhóm Thi Công ────────────────────────────────────
+    try{
+      const rGR=await fetchCSV(GS_SHEETS.nhom);
+      let gi=0;
+      rGR.slice(4).forEach(r=>{
+        if(gi<GROUPS.length&&String(r[0]||'').trim()){
+          if(String(r[0]||'').trim()) GROUPS[gi].nhom=String(r[0]).trim();
+          if(String(r[1]||'').trim()){
+            GROUPS[gi].can=String(r[1]).trim();
+            const parsed=parseCanRange(GROUPS[gi].can);
+            if(parsed.length>0) GROUPS[gi].villas=parsed;
+          }
+          const note=String(r[6]||'').trim();
+          if(note) GROUPS[gi].note=note;
+          gi++;
+        }
+      });
+    }catch(e){console.warn('Nhóm sheet:',e);}
+
+    // ── Kế Hoạch Nhân Lực ───────────────────────────────
+    try{
+      const rMP=await fetchCSV(GS_SHEETS.nhanLuc);
+      const mpKeys=['sat','thachcao','sonnuoc','sonhieuu','chongTham','opGach','opDa','kinh','moc'];
+      // Tìm header row để đọc tên tuần (T21, T22...)
+      for(let ri=0;ri<Math.min(6,rMP.length);ri++){
+        const r0=String(rMP[ri][0]||'').toUpperCase();
+        const r1=String(rMP[ri][1]||'');
+        if(r0.includes('HẠNG MỤC')||r0.includes('HANG MUC')||/^T\d+/.test(r1)){
+          for(let ci=1;ci<=5;ci++){
+            const raw=String(rMP[ri][ci]||'').trim();
+            if(!raw) continue;
+            const parts=raw.split(/[\n\r]/);
+            const wEl=document.getElementById('cfg_w'+(ci-1)+'c');
+            const dEl=document.getElementById('cfg_w'+(ci-1)+'d');
+            if(wEl&&parts[0]&&parts[0].trim()) wEl.value=parts[0].trim();
+            if(dEl&&parts[1]&&parts[1].trim()) dEl.value=parts[1].trim();
+          }
+          console.log('[GSheets] Week labels updated');
+          break;
+        }
+      }
+      let ki=0;
+      // Bỏ qua header/tiêu đề: chỉ xử lý dòng có số liệu ở cột 1-5
+      const hasData=r=>[1,2,3,4,5].some(c=>(parseInt(r[c])||0)>0);
+      const gsNLKeys=[],gsNLLabels=[],gsNLData={};
+      rMP.forEach(r=>{
+        const rawLbl=String(r[0]||'').trim();
+        const lbl=rawLbl.toUpperCase();
+        if(!rawLbl||rawLbl.length<2) return;
+        if(lbl.includes('THỰC TẾ')||lbl.includes('THUC TE')){
+          MANPOWER.thucte=[1,2,3,4,5].map(c=>{
+            const v=String(r[c]||'').trim();
+            return(v===''||v==='0')?null:(parseInt(v)||null);
+          });
+        }else if(!lbl.includes('TỔNG KẾ')&&!lbl.includes('────')&&
+                 !lbl.includes('HẠNG MỤC')&&!lbl.includes('📅')&&
+                 !lbl.includes('ℹ')&&!lbl.includes('TUẦN')&&
+                 !lbl.includes('CẬP NHẬT')){
+          const cleanLbl=rawLbl.replace(/\s*\(kế hoạch\)/i,'').trim();
+          const key=slugKey(cleanLbl);
+          gsNLKeys.push(key); gsNLLabels.push(cleanLbl);
+          gsNLData[key]=[1,2,3,4,5].map(c=>parseInt(r[c])||0);
+        }
+      });
+      if(gsNLKeys.length>0){
+        MP_KEYS=gsNLKeys; MP_LABELS=gsNLLabels;
+        gsNLKeys.forEach(k=>{ MANPOWER[k]=gsNLData[k]; });
+        console.log('[GSheets NL] Đọc được',gsNLKeys.length,'hạng mục:', gsNLLabels);
+      }
+    }catch(e){console.warn('Nhân Lực sheet:',e);}
+
+    // ── Chi Tiết Kế Hoạch ───────────────────────────────
+    try{
+      const rSC=await fetchCSV(GS_SHEETS.chiTiet);
+      const newSC=rSC.slice(3)
+        .filter(r=>String(r[0]||'').trim()&&String(r[2]||'').trim())
+        .map(r=>({
+          w:String(r[0]||'').trim(),tg:String(r[1]||'').trim(),
+          nhom:String(r[2]||'').trim(),can:String(r[3]||'').trim(),
+          hm:String(r[4]||'').trim(),nl:String(r[5]||'').trim(),
+          note:String(r[6]||'').trim()
+        }));
+      if(newSC.length>0) SCHED=newSC;
+    }catch(e){console.warn('Chi Tiết sheet:',e);}
+
+    if(n>0){
+      recalcGroups();
+      refreshAll();
+      const now=new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+      syncEl.className='sync-badge ok';
+      syncEl.textContent=`✅ GG Sheets — ${now}`;
+      document.getElementById('today').textContent=new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+    }else{
+      syncEl.className='sync-badge err';
+      syncEl.textContent='⚠️ Không đọc được dữ liệu';
+    }
+  }catch(err){
+    syncEl.className='sync-badge err';
+    syncEl.textContent='❌ Lỗi: '+err.message.slice(0,40);
+    console.error('GSheet error:',err);
+  }
+}
+
+// ── DATE & COUNTDOWN ──────────────────────────────────
+document.getElementById('today').textContent=new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+let DEADLINE_ISO = localStorage.getItem('sailing_deadline') || '2026-09-30';
+function updateCountdown(){
+  const dl=new Date(DEADLINE_ISO), dn=new Date();
+  const days=Math.max(0,Math.ceil((dl-dn)/864e5));
+  document.getElementById('daysLeft').textContent=days;
+  const [y,m,d]=DEADLINE_ISO.split('-');
+  const label=`${d}/${m}/${y}`;
+  document.getElementById('daysLeftLbl').textContent=`Ngày còn lại (${label})`;
+  document.getElementById('deadlineDisplay').textContent=label;
+}
+updateCountdown();
+function editDeadline(){
+  const [y,m,d]=DEADLINE_ISO.split('-');
+  const cur=`${d}/${m}/${y}`;
+  const inp=prompt('Nhập ngày hoàn thành mới (DD/MM/YYYY):', cur);
+  if(!inp) return;
+  const parts=inp.trim().split(/[\/\-\.]/);
+  if(parts.length!==3) return alert('Định dạng không đúng. Vui lòng nhập DD/MM/YYYY');
+  let dd,mm,yyyy;
+  if(parts[0].length===4){[yyyy,mm,dd]=parts;}
+  else{[dd,mm,yyyy]=parts;}
+  if(!dd||!mm||!yyyy||isNaN(new Date(`${yyyy}-${mm}-${dd}`))){
+    return alert('Ngày không hợp lệ. Vui lòng thử lại.');
+  }
+  DEADLINE_ISO=`${yyyy}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
+  localStorage.setItem('sailing_deadline', DEADLINE_ISO);
+  updateCountdown();
+}
+
+// ── HANDOVER % ────────────────────────────────────────
+let HO={
+  A1:72,A2:50,A3:58,A4:58,A5:67,A6:58,A7:64,A8:76,A9:64,A10:71,A11:56,A12:66,A13:39,A14:72,A15:64,A16:64,
+  B1:82,B2:81,B3:79,B4:79,B5:79,B6:63,B7:63,B8:63,B9:63,B10:63,B11:63,B12:63,B13:71,B14:79,B15:82,
+  B16:28,B17:28,B18:28,B19:28,B20:28,B21:28,B22:28,B23:33,
+  B24:61,B25:61,B26:61,B27:61,B28:61,B29:68,B30:68,B31:68,B32:68,B33:68,B34:68,B35:68,B36:68,B37:69,
+  B38:37,B39:45,B40:48,B41:49,B42:48,B43:46,B44:47,B45:46,B46:47,B47:38,B48:39,B49:39,
+  C2:16,C3:16,C4:16,C5:16,C6:16,C7:16,C8:16,C9:16,
+  C10:50,C11:50,C12:50,C13:53,C14:54,C15:70,C16:68,C17:73,C18:64,C19:64,C20:64,C21:64,
+  D1:0,D2:0,D3:0,D4:0,D5:0,
+  E1:23,E2:51,E3:23,E4:51,E5:23,E6:51,E7:51,E8:51,E9:47,E10:47,E11:47,E12:47,E13:47,E14:47
+};
+
+// ── CONSTRUCTION % ────────────────────────────────────
+let TC={
+  A1:20,A2:20,A3:20,A4:20,A5:20,A6:20,A7:20,A8:20,A9:20,A10:20,A11:20,A12:20,A13:20,A14:20,A15:20,A16:20,
+  B1:45,B2:45,B3:45,B4:45,B5:45,B6:45,
+  B7:32,B8:32,B9:32,B10:32,B11:32,B12:32,B13:32,B14:32,B15:32,
+  B16:18,B17:18,B18:18,B19:18,B20:18,B21:18,B22:18,
+  B23:28,B24:28,B25:28,B26:28,B27:28,B28:28,B29:28,B30:28,B31:28,B32:28,B33:28,B34:28,B35:28,B36:28,B37:28,
+  B38:25,B39:25,B40:25,B41:25,B42:25,B43:25,B44:25,B45:25,B46:25,B47:25,B48:25,B49:25,
+  C2:5,C3:5,C4:5,C5:5,C6:5,C7:5,C8:5,C9:5,
+  C10:25,C11:25,C12:25,C13:25,C14:25,C15:25,C16:25,C17:25,C18:25,C19:25,C20:25,C21:25,
+  D1:10,D2:10,D3:10,D4:10,D5:10,
+  E1:10,E2:10,E3:10,E4:10,E5:10,E6:10,E7:10,E8:10,E9:10,E10:10,E11:10,E12:10,E13:10,E14:10
+};
+
+// ── 9 HẠNG MỤC THI CÔNG per villa ────────────────────
+// Khóa: tên villa, giá trị: % (0-100)
+// Sắt (dùng O30 data), Thạch Cao (O22), Chống Thấm (O25), còn lại = 0 mặc định
+let TRD={
+  sat:{A1:62,A2:54,A3:54,A4:62,A5:62,A6:62,A7:54,A8:62,A9:62,A10:59,A11:59,A12:59,A13:52,A14:52,A15:52,A16:59,B1:66,B2:66,B3:70,B4:72,B5:70,B6:54,B7:54,B8:62,B9:54,B10:62,B11:54,B12:62,B13:70,B14:54,B15:70,B16:66,B17:39,B18:35,B19:32,B20:28,B21:32,B22:28,B23:32,B24:28,B25:31,B26:31,B27:31,B28:62,B29:62,B30:62,B31:62,B32:62,B33:54,B34:62,B35:54,B36:62,B37:38,B38:38,B39:38,B40:66,B41:58,B42:66,B43:66,B44:58,B45:43,B46:51,B47:62,B48:66,B49:66,C2:0,C3:0,C4:0,C5:0,C6:0,C7:0,C8:0,C9:0,C10:0,C11:0,C12:0,C13:0,C14:0,C15:0,C16:0,C17:0,C18:0,C19:0,C20:0,C21:36,D1:0,D2:0,D3:0,D4:0,D5:0,E1:0,E2:0,E3:0,E4:0,E5:0,E6:0,E7:0,E8:0,E9:0,E10:0,E11:0,E12:0,E13:0,E14:0},
+  thachcao:{A1:0,A2:0,A3:21,A4:33,A5:13,A6:10,A7:0,A8:40,A9:0,A10:33,A11:0,A12:33,A13:0,A14:25,A15:4,A16:4,B1:42,B2:41,B3:41,B4:41,B5:41,B6:25,B7:14,B8:14,B9:14,B10:14,B11:14,B12:14,B13:18,B14:44,B15:36,B16:0,B17:0,B18:0,B19:0,B20:0,B21:0,B22:0,B23:0,B24:14,B25:14,B26:14,B27:14,B28:14,B29:14,B30:14,B31:14,B32:14,B33:27,B34:28,B35:28,B36:25,B37:18,B38:18,B39:36,B40:36,B41:18,B42:36,B43:14,B44:36,B45:18,B46:14,B47:36,B48:14,B49:14,C2:0,C3:0,C4:0,C5:0,C6:0,C7:0,C8:0,C9:0,C10:0,C11:0,C12:10,C13:36,C14:36,C15:40,C16:40,C17:40,C18:40,C19:40,C20:36,C21:0,D1:0,D2:0,D3:0,D4:0,D5:0,E1:0,E2:0,E3:0,E4:0,E5:0,E6:0,E7:0,E8:0,E9:0,E10:0,E11:0,E12:0,E13:0,E14:0},
+  sonnuoc:{},sonhieuu:{},
+  chongTham:{A1:6,A2:6,A3:6,A4:6,A5:6,A6:6,A7:6,A8:10,A9:6,A10:6,A11:6,A12:6,A13:6,A14:6,A15:6,A16:6,B1:56,B2:56,B3:52,B4:52,B5:40,B6:20,B7:20,B8:20,B9:20,B10:20,B11:20,B12:20,B13:20,B14:20,B15:20,B16:0,B17:0,B18:0,B19:0,B20:0,B21:0,B22:0,B23:10,B24:10,B25:10,B26:10,B27:10,B28:10,B29:10,B30:10,B31:10,B32:10,B33:10,B34:10,B35:10,B36:10,B37:10,B38:0,B39:0,B40:0,B41:0,B42:0,B43:0,B44:0,B45:0,B46:0,B47:0,B48:0,B49:0,C2:0,C3:0,C4:0,C5:0,C6:0,C7:0,C8:0,C9:0,C10:0,C11:0,C12:0,C13:0,C14:0,C15:0,C16:0,C17:0,C18:0,C19:0,C20:0,C21:0,D1:0,D2:0,D3:0,D4:0,D5:0,E1:2,E2:2,E3:2,E4:2,E5:2,E6:2,E7:2,E8:2,E9:2,E10:2,E11:2,E12:2,E13:2,E14:2},
+  opGach:{},opDa:{},kinh:{},moc:{}
+};
+// Khởi tạo các hạng mục chưa có data = 0
+['sonnuoc','sonhieuu','opGach','opDa','kinh','moc'].forEach(k=>{
+  const all=[...Array.from({length:16},(_,i)=>'A'+(i+1)),...Array.from({length:49},(_,i)=>'B'+(i+1)),...Array.from({length:20},(_,i)=>'C'+(i+2)),...Array.from({length:5},(_,i)=>'D'+(i+1)),...Array.from({length:14},(_,i)=>'E'+(i+1))];
+  all.forEach(v=>TRD[k][v]=0);
+});
+
+// ── NGHIỆM THU % ──────────────────────────────────────
+// NT_TOT: % nghiệm thu tổng mỗi căn
+// NT_TRD: % nghiệm thu từng hạng mục (9 hạng mục) mỗi căn
+// Cập nhật từ Excel: cột R = NT Tổng, cột S-AA = 9 hạng mục NT
+let NT_TOT={};
+let NT_TRD={sat:{},thachcao:{},sonnuoc:{},sonhieuu:{},chongTham:{},opGach:{},opDa:{},kinh:{},moc:{}};
+// Khởi tạo = 0
+(()=>{
+  const all2=[...Array.from({length:16},(_,i)=>'A'+(i+1)),...Array.from({length:49},(_,i)=>'B'+(i+1)),...Array.from({length:20},(_,i)=>'C'+(i+2)),...Array.from({length:5},(_,i)=>'D'+(i+1)),...Array.from({length:14},(_,i)=>'E'+(i+1))];
+  all2.forEach(v=>{
+    NT_TOT[v]=0;
+    Object.keys(NT_TRD).forEach(k=>NT_TRD[k][v]=0);
+  });
+})();
+
+const ZONES={
+  A:Array.from({length:16},(_,i)=>`A${i+1}`),
+  B:Array.from({length:49},(_,i)=>`B${i+1}`),
+  C:Array.from({length:20},(_,i)=>`C${i+2}`),
+  D:Array.from({length:5},(_,i)=>`D${i+1}`),
+  E:Array.from({length:14},(_,i)=>`E${i+1}`)
+};
+const ALL=[...ZONES.A,...ZONES.B,...ZONES.C,...ZONES.D,...ZONES.E];
+const ZC={A:'#e74c3c',B:'#3498db',C:'#27ae60',D:'#9b59b6',E:'#e67e22'};
+
+// ── PARSE RANGE CĂN → VILLAS ARRAY ───────────────────
+// Ví dụ: "B1–B3" → ['B1','B2','B3']
+//         "D1–D5 & E1–E14" → ['D1',...,'D5','E1',...,'E14']
+//         "A1–A16; B38–B49" → ['A1',...,'A16','B38',...,'B49']
+function parseCanRange(canStr){
+  if(!canStr) return [];
+  const villas=[];
+  // Tách theo &, ; hoặc /
+  const parts=String(canStr).split(/[&;\/]/).map(s=>s.trim()).filter(Boolean);
+  parts.forEach(part=>{
+    // Match "X1–X6" hoặc "X1-X6" (X = chữ cái A-E, số bất kỳ)
+    const m=part.match(/([A-Ea-e])(\d+)\s*[–\-]\s*([A-Ea-e]?)(\d+)/);
+    if(m){
+      const zone=m[1].toUpperCase();
+      const start=parseInt(m[2]);
+      const endZone=(m[3]||zone).toUpperCase();
+      const end=parseInt(m[4]);
+      if(zone===endZone){
+        for(let i=start;i<=end;i++){
+          const code=zone+i;
+          if(code!=='C1') villas.push(code); // C1 không tồn tại
+        }
+      }
+    } else {
+      // Trường hợp chỉ là 1 căn đơn lẻ, ví dụ "B5"
+      const s=part.trim().replace(/\s+/g,'');
+      if(/^[A-Ea-e]\d+$/.test(s)&&s.toUpperCase()!=='C1'){
+        villas.push(s.toUpperCase());
+      }
+    }
+  });
+  return villas;
+}
+
+// ── NHÓM THI CÔNG ─────────────────────────────────────
+// villas được tự động tính từ trường "can" qua parseCanRange()
+function makeGroup(nhom,can,ho,tc,st,note){
+  return {nhom,can,villas:parseCanRange(can),ho,tc,st,note};
+}
+let GROUPS=[
+  makeGroup('Nhóm 1','B1–B6',        100,45,'ok',  'Sơn nước 1, cán nền, ốp lát WC'),
+  makeGroup('Nhóm 2','B7–B15',       100,32,'warn','⚠️ Hoàn thành lắp tấm trần 02/06'),
+  makeGroup('Nhóm 3','C2–C9',        16, 5, 'alert','⚠️ Chậm — cần bám sát nhân lực'),
+  makeGroup('Nhóm 4','B16–B22',      28, 18,'warn','⚠️ Cần tăng tốc lắp xương trần'),
+  makeGroup('Nhóm 5','B23–B37',      100,28,'ok',  'Đúng tiến độ — bàn giao sàn 31/05'),
+  makeGroup('Nhóm 6','A1–A16',       100,20,'ok',  'Vách thi công & cán nền từ 24/05'),
+  makeGroup('Nhóm 7','B38–B49',      100,25,'ok',  'Ốp đá ngoài từ 20/05'),
+  makeGroup('Nhóm 8','C10–C21',      100,25,'ok',  'Tiến độ tốt — nhiều hạng mục song song'),
+  makeGroup('Nhóm 9', 'D1–D5',    0, 10,'alert','⚠️ Chưa bàn giao — cần tập trung nhân lực'),
+  makeGroup('Nhóm 10','E1–E14',   0, 10,'alert','⚠️ Chưa bàn giao — cần tập trung nhân lực'),
+];
+
+// Tự động tính lại ho/tc của từng nhóm từ dữ liệu HO[] TC[] thực tế
+function recalcGroups(){
+  GROUPS.forEach(g=>{
+    const vs=g.villas;
+    g.n=vs.length;
+    const hoArr=vs.map(v=>HO[v]||0);
+    const tcArr=vs.map(v=>TC[v]||0);
+    g.ho=avg(hoArr);
+    g.tc=avg(tcArr);
+    // Tự động cập nhật trạng thái
+    g.st=g.ho<30?'alert':g.tc<15?'alert':g.tc<30?'warn':'ok';
+  });
+}
+
+// ── NHÂN LỰC MODULE-LEVEL ─────────────────────────────
+// MP_KEYS/MP_LABELS: danh sách hạng mục động, đọc từ Excel/GSheets
+// key = chuỗi label đã chuẩn hóa (dùng làm key object)
+let MP_KEYS  =['sat','thachcao','sonnuoc','sonhieuu','chongTham','opGach','opDa','kinh','moc','pu','veSinh'];
+let MP_LABELS=['Sắt','Thạch Cao','Sơn Nước','Sơn Hiệu Ứng','Chống Thấm/Cán Nền','Ốp Lát Gạch','Ốp Lát Đá','Kính','Mộc','PU','Vệ sinh & Lao động'];
+let MANPOWER={
+  sat:[11,3,3,3,0],thachcao:[45,45,45,40,35],sonnuoc:[30,42,45,51,51],
+  sonhieuu:[0,0,0,0,0],chongTham:[18,16,13,10,0],opGach:[47,60,65,68,62],
+  opDa:[0,0,6,8,10],kinh:[0,2,2,2,4],moc:[0,0,26,77,85],
+  pu:[0,0,0,0,4],veSinh:[4,4,4,4,4],
+  thucte:[75,null,null,null,null]
+};
+// Màu cho từng key (tự mở rộng nếu thêm hạng mục mới)
+const MP_COLORS=['#3498db','#e67e22','#9b59b6','#e91e63','#27ae60','#f39c12','#e74c3c','#1abc9c','#8e44ad','#00bcd4','#795548'];
+function mpClr(i){return MP_COLORS[i%MP_COLORS.length];}
+// Tạo slug key từ label (dùng khi đọc động)
+function slugKey(lbl){return lbl.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,12);}
+
+// ── KẾ HOẠCH ──────────────────────────────────────────
+let SCHED=[
+  {w:'T21',tg:'24–31/05',nhom:'Nhóm 1',can:'B7–B12',hm:'Hoàn thành lắp tấm trần (02/06); Sơn lót B7-B12; Sơn nước 1 B1-B6',nl:'Thạch cao 35, Sơn 12',note:'🎯 Deadline 02/06'},
+  {w:'T21',tg:'24–31/05',nhom:'Nhóm 1',can:'C2–C9',hm:'Triển khai lắp xương trần C2-C9',nl:'Thạch cao 10',note:'Đủ nhân lực 8 căn mới'},
+  {w:'T21',tg:'24–31/05',nhom:'Nhóm 2',can:'B16–B22',hm:'Bắt đầu lắp xương trần B16-B22',nl:'Thạch cao 15',note:'Chuẩn bị bàn giao sàn B16-B37 ngày 31/05'},
+  {w:'T21',tg:'24–31/05',nhom:'Nhóm 3',can:'A1–A16',hm:'Vách thi công A1-A16 (24/05); Cán nền (28/05)',nl:'Cơ khí/Sắt 12, Cán nền 8',note:'🎯 Bàn giao sàn ngoài A & B38-49 ngày 20/05 ✅'},
+  {w:'T21',tg:'24–31/05',nhom:'Nhóm 4',can:'D1–E14',hm:'Hoàn thành khung sắt (27/05); Bắt đầu vách (28/05)',nl:'Thạch cao 18, Sắt 10',note:'Lắp xương trần từ 21/05'},
+  {w:'T22',tg:'01–07/06',nhom:'Nhóm 1',can:'B1–B6',hm:'Sơn nước 1 (→14/06); Cán nền (→22/07); Ốp lát gạch WC (→28/08)',nl:'Sơn nước 10, Ốp lát gạch 15',note:'Chuẩn bị Built-in B1-B15 từ 20/06'},
+  {w:'T22',tg:'01–07/06',nhom:'Nhóm 2',can:'B16–B37',hm:'Bàn giao sàn 31/05 → Ốp lát đá ngoài 05/06; Lắp tấm trần B16-B22',nl:'Ốp lát đá 20, Thạch cao 12',note:'🎯 Cột mốc: bàn giao sàn 31/05'},
+  {w:'T22',tg:'01–07/06',nhom:'Nhóm 3',can:'A1–A16; B38–B49',hm:'Hoàn thành vách A1-A16 (08/06); Lắp tấm trần B38-B49 (→16/06)',nl:'Thạch cao 15, Ốp lát gạch 12',note:'Ốp lát gạch WC B38-B49 từ 04/06'},
+  {w:'T22',tg:'01–07/06',nhom:'Nhóm 4',can:'C10–C21',hm:'Xong lắp xương (07/06); Lắp tấm (→15/06); Chống thấm (→07/06)',nl:'Thạch cao 15, Sơn nước 10',note:'Chống thấm C10-C21 xong 07/06'},
+  {w:'T23',tg:'08–14/06',nhom:'Nhóm 1',can:'B7–B15',hm:'Sơn nước 1 B7-B12 (→08/08); Cán nền B7-B15 (→22/07)',nl:'Sơn nước 20, Cán nền 10',note:'Chuẩn bị Built-in trước 20/06'},
+  {w:'T23',tg:'08–14/06',nhom:'Nhóm 2',can:'B23–B37',hm:'Sơn lót (→16/08); Chống thấm (→14/06); Ốp lát gạch (→26/08)',nl:'Sơn nước 18, Ốp lát gạch 20',note:'Kết thúc chống thấm B23-B37'},
+  {w:'T23',tg:'08–14/06',nhom:'Nhóm 3',can:'A1–A16',hm:'Cán nền (→21/07); Ốp lát gạch (→04/09); Lắp tấm trần (→21/07)',nl:'Cán nền 12, Ốp lát gạch 15',note:'Lắp tấm trần C2-C9 từ 10/06'},
+  {w:'T23',tg:'08–14/06',nhom:'Nhóm 4',can:'D1–E14',hm:'Lắp tấm trần (→21/07); Vách (→15/06); Chống thấm (→11/06)',nl:'Thạch cao 15, Cán nền 8',note:'Chống thấm D-E xong 11/06'},
+  {w:'T24',tg:'15–21/06',nhom:'TẤT CẢ',can:'104 căn',hm:'TUẦN QUAN TRỌNG — Tăng nhân lực 182→303 người. Bắt đầu lắp đặt Built-in đồng loạt 4 nhóm',nl:'~250 người',note:'⚠️ Xác nhận tiến độ giao hàng Built-in từ nhà máy'},
+  {w:'T25',tg:'22–28/06',nhom:'Nhóm 1',can:'B1–B15',hm:'Built-in B1-B15 (20/06→27/09); Sơn nước 2 B1-B6 (13/07→25/09)',nl:'Mộc 40',note:'Cần đủ nhân lực mộc 15 căn đồng thời'},
+  {w:'T25',tg:'22–28/06',nhom:'Nhóm 2',can:'B23–B37',hm:'Built-in B23-B37 (28/06→22/09); Sơn nước 1 B23-B37 (→06/08)',nl:'Mộc 35, Sơn nước 20',note:'Phối hợp lịch giao hàng nhà máy'},
+];
+
+// ── HELPERS ───────────────────────────────────────────
+const avg=a=>a.length?Math.round(a.reduce((s,v)=>s+v,0)/a.length):0;
+const clr=v=>v===0?'#ccc':v>=70?'#27ae60':v>=40?'#f39c12':v>=15?'#e67e22':'#e74c3c';
+const pC=v=>v===0?'pz':v>=70?'ph':v>=30?'pm':'pl';
+
+function updateKPIs(){
+  const allHO=ALL.map(v=>HO[v]||0);
+  const allTC=ALL.map(v=>TC[v]||0);
+  document.getElementById('kpi_ho').textContent=avg(allHO)+'%';
+  document.getElementById('kpi_tc').textContent=avg(allTC)+'%';
+  document.getElementById('kpi_active').textContent=ALL.filter(v=>(TC[v]||0)>0).length;
+}
+
+// ── EXCEL UPLOAD ──────────────────────────────────────
+// Cấu trúc Excel: Cột B=Mã căn, E=% bàn giao, G=% thi công,
+// H=Sắt, I=Thạch Cao, J=Sơn Nước, K=Sơn Hiệu Ứng,
+// L=Chống Thấm/Cán Nền, M=Ốp Lát Gạch, N=Ốp Lát Đá, O=Kính, P=Mộc
+const TRADE_KEYS=['sat','thachcao','sonnuoc','sonhieuu','chongTham','opGach','opDa','kinh','moc'];
+function loadExcel(input){
+  const file=input.files[0]; if(!file) return;
+  const st=document.getElementById('upStatus');
+  st.className='upst'; st.textContent='Đang đọc...'; st.style.display='inline-block';
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+      // Tìm sheet chứa 104 căn — ưu tiên theo thứ tự để tránh nhầm sheet khác
+      const sn=wb.SheetNames.find(n=>n.includes('03.'))
+        ||wb.SheetNames.find(n=>n.includes('104 CĂN')||n.includes('104 Can'))
+        ||wb.SheetNames.find(n=>n.includes('Bảng 104')||n.includes('Bang 104'))
+        ||wb.SheetNames.find(n=>n.toUpperCase().includes('TIẾN ĐỘ')&&n.includes('104'));
+      if(!sn) throw new Error(`Không tìm thấy sheet 03.TIẾN ĐỘ 104 CĂN. Các sheet hiện có: ${wb.SheetNames.join(', ')}`);
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:0});
+      let n=0;
+      // Tìm header row để xác định đúng index cột
+      const _xpct=(v)=>{const n=parseFloat(v)||0;return Math.round(n>1?n:n*100);};
+      let xColCode=1,xColHO=4,xColTC=6,xColTRD=7,xColNT=17,xColNTT=18;
+      for(let ri=0;ri<Math.min(5,rows.length);ri++){
+        const hr=rows[ri];
+        const rowStr=hr.map(c=>String(c||'').replace(/[\s\n\r✏️]/g,'').toUpperCase()).join('|');
+        if(rowStr.includes('MÃCĂN')||rowStr.includes('MACAN')){
+          hr.forEach((cell,ci)=>{
+            const c=String(cell||'').replace(/[\s\n\r✏️]/g,'').toUpperCase();
+            if(c.includes('MÃCĂN')||c.includes('MACAN')) xColCode=ci;
+            else if((c.includes('%BÀNGIAO')||c.includes('%BANGIAO'))&&ci<8) xColHO=ci;
+            else if((c.includes('TIẾNĐỘ')||c.includes('%THICÔNG'))&&!c.includes('NT')&&ci<10) xColTC=ci;
+            else if((c==='SẮT'||c==='SAT')&&ci>4&&ci<12) xColTRD=ci;
+            else if(c.includes('NTTỔNG')||c.includes('%NTTỔNG')||c.includes('NTTONG')) xColNT=ci;
+          });
+          xColNTT=xColNT+1;
+          break;
+        }
+      }
+      rows.forEach(r=>{
+        const code=String(r[xColCode]||'').trim();
+        if(code&&/^[A-E]\d+$/.test(code)&&code!=='C1'){
+          HO[code]=_xpct(r[xColHO]);
+          TC[code]=_xpct(r[xColTC]);
+          TRADE_KEYS.forEach((k,i)=>{ TRD[k][code]=_xpct(r[xColTRD+i]); });
+          NT_TOT[code]=_xpct(r[xColNT]);
+          TRADE_KEYS.forEach((k,i)=>{ NT_TRD[k][code]=_xpct(r[xColNTT+i]); });
+          n++;
+        }
+      });
+      // Đọc sheet Hồ Sơ Đệ Trình
+      const snHS=wb.SheetNames.find(n=>n.includes('Hồ Sơ')||n.includes('Ho So')||n.includes('HOSO'));
+      if(snHS){
+        const rHS=XLSX.utils.sheet_to_json(wb.Sheets[snHS],{header:1,defval:''});
+        // Tìm header row để đọc tên legend
+        let hsHeaderRow=null;
+        for(let ri=0;ri<Math.min(5,rHS.length);ri++){
+          const s=String(rHS[ri][0]||'').toUpperCase();
+          if(s.includes('LOẠI')||s.includes('LOAI')||s.includes('HỒ SƠ')){hsHeaderRow=rHS[ri];break;}
+        }
+        if(hsHeaderRow){
+          // Đọc tên legend từ header (bỏ dòng phụ như "(Cập nhật)")
+          const cleanLg=s=>String(s||'').split('\n')[0].trim();
+          HOSO.lgXong=cleanLg(hsHeaderRow[1])||HOSO.lgXong;
+          HOSO.lgPend=cleanLg(hsHeaderRow[2])||HOSO.lgPend;
+          HOSO.lgRej =cleanLg(hsHeaderRow[3])||HOSO.lgRej;
+        }
+        // Đọc data rows (bỏ title, note, header — lấy dòng có text ở cột 0 không phải TỔNG)
+        const newLabels=[],newXong=[],newPend=[],newRej=[];
+        rHS.forEach(r=>{
+          const lbl=String(r[0]||'').trim();
+          if(lbl&&!lbl.includes('TỔNG')&&!lbl.toUpperCase().includes('LOẠI')&&
+             !lbl.includes('🗂')&&!lbl.includes('ℹ')&&
+             (parseInt(r[1])||parseInt(r[2])||parseInt(r[3])||true)&&
+             !/^[✅🔄❌]/.test(lbl)){
+            const x=parseInt(r[1])||0,p=parseInt(r[2])||0,rj=parseInt(r[3])||0;
+            if(x+p+rj>0){newLabels.push(lbl);newXong.push(x);newPend.push(p);newRej.push(rj);}
+          }
+        });
+        if(newLabels.length>0){
+          HOSO.labels=newLabels;HOSO.xong=newXong;HOSO.pending=newPend;HOSO.reject=newRej;
+        }
+      }
+      // Đọc sheet Ramp-up
+      const snRU=wb.SheetNames.find(n=>n.includes('Ramp')||n.includes('ramp'));
+      if(snRU){
+        const rRU=XLSX.utils.sheet_to_json(wb.Sheets[snRU],{header:1,defval:''});
+        // Tìm dòng dữ liệu: có nhãn + số hợp lệ (khớp T5→T12, Tháng X, X/2026...)
+        const _isMonthRow=r=>{
+          const lbl=String(r[0]||'').trim();
+          const hasNum=(parseInt(r[1])||0)>0||(parseInt(r[3])||0)>0;
+          return hasNum&&lbl.length>=2&&
+                 !lbl.toUpperCase().includes('KẾ HOẠCH')&&
+                 !lbl.toUpperCase().includes('NHÂN LỰC KH')&&
+                 !lbl.includes('🗂')&&!lbl.includes('ℹ');
+        };
+        const ruRows=rRU.filter(_isMonthRow);
+        ruRows.slice(0,5).forEach((r,i)=>{
+          RAMPUP.months[i]=String(r[0]||'').trim()||RAMPUP.months[i]; // đọc tháng từ Excel
+          RAMPUP.nlKH[i]=parseInt(r[1])||0;
+          RAMPUP.nlThucTe[i]=r[2]===''||r[2]===0||r[2]===null?null:(parseInt(r[2])||null);
+          RAMPUP.luykeCan[i]=parseInt(r[3])||0;
+        });
+      }
+      // Đọc sheet Nhóm Thi Công → cập nhật nhóm, căn, villas (tự parse), ghi chú
+      const snGR=wb.SheetNames.find(n=>n.includes('Nhóm')||n.includes('Nhom')||n.includes('3.'));
+      if(snGR){
+        const rGR=XLSX.utils.sheet_to_json(wb.Sheets[snGR],{header:1,defval:''});
+        let gi=0;
+        rGR.slice(4).forEach(r=>{
+          if(gi<GROUPS.length&&String(r[0]||'').trim()){
+            if(String(r[0]||'').trim()) GROUPS[gi].nhom=String(r[0]).trim();
+            if(String(r[1]||'').trim()){
+              GROUPS[gi].can=String(r[1]).trim();
+              // Tự động tính lại villas từ range mới
+              const parsed=parseCanRange(GROUPS[gi].can);
+              if(parsed.length>0) GROUPS[gi].villas=parsed;
+            }
+            const note=String(r[6]||'').trim();
+            if(note) GROUPS[gi].note=note;
+            gi++;
+          }
+        });
+      }
+      // Đọc sheet Kế Hoạch Nhân Lực → cập nhật MANPOWER
+      const snMP=wb.SheetNames.find(n=>n.includes('Nhân Lực')||n.includes('Nhan Luc')||n.includes('4.'));
+      if(snMP){
+        const rMP=XLSX.utils.sheet_to_json(wb.Sheets[snMP],{header:1,defval:''});
+        const mpKeys=['sat','thachcao','sonnuoc','sonhieuu','chongTham','opGach','opDa','kinh','moc'];
+        // Tìm header row chứa tên tuần (T21, T22... hoặc 'Hạng Mục')
+        let wkRow=null;
+        for(let ri=0;ri<Math.min(6,rMP.length);ri++){
+          const r0=String(rMP[ri][0]||'').toUpperCase();
+          const r1=String(rMP[ri][1]||'');
+          // Header row: cột đầu là 'Hạng Mục'/'HẠNG MỤC', hoặc cột 1 có dạng T\d\d
+          if(r0.includes('HẠNG MỤC')||r0.includes('HANG MUC')||/^T\d+/.test(r1)){
+            wkRow=rMP[ri]; break;
+          }
+        }
+        // Đọc tên tuần + ngày từ header → cập nhật UI input
+        if(wkRow){
+          for(let ci=1;ci<=5;ci++){
+            const raw=String(wkRow[ci]||'').trim();
+            if(!raw) continue;
+            const parts=raw.split(/[\n\r]/);  // "T21\n24-31/05" → ["T21","24-31/05"]
+            const wEl=document.getElementById('cfg_w'+(ci-1)+'c');
+            const dEl=document.getElementById('cfg_w'+(ci-1)+'d');
+            if(wEl&&parts[0]&&parts[0].trim()) wEl.value=parts[0].trim();
+            if(dEl&&parts[1]&&parts[1].trim()) dEl.value=parts[1].trim();
+          }
+          console.log('[Excel] Week labels updated from header row');
+        }
+        // Đọc động: tìm tất cả hàng hạng mục — không giới hạn 9
+        const newKeys=[],newLabels=[],newData={};
+        rMP.forEach(r=>{
+          const rawLbl=String(r[0]||'').trim();
+          const lbl=rawLbl.toUpperCase();
+          if(!rawLbl||rawLbl.length<2) return;
+          if(lbl.includes('THỰC TẾ')||lbl.includes('THUC TE')){
+            MANPOWER.thucte=[1,2,3,4,5].map(c=>{
+              const v=r[c]; return(v===''||v===null)?null:(parseInt(v)||null);
+            });
+          } else if(!lbl.includes('TỔNG')&&!lbl.includes('KẾ HOẠCH THI')&&
+                    !lbl.includes('HẠNG MỤC')&&!lbl.includes('────')&&
+                    !lbl.includes('📅')&&!lbl.includes('ℹ')&&
+                    !lbl.includes('CẬP NHẬT')){
+            // Lấy tên sạch (bỏ " (kế hoạch)")
+            const cleanLbl=rawLbl.replace(/\s*\(kế hoạch\)/i,'').trim();
+            const key=slugKey(cleanLbl);
+            newKeys.push(key);
+            newLabels.push(cleanLbl);
+            newData[key]=[1,2,3,4,5].map(c=>parseInt(r[c])||0);
+          }
+        });
+        if(newKeys.length>0){
+          // Cập nhật MP_KEYS/MP_LABELS/MANPOWER với dữ liệu mới
+          MP_KEYS=newKeys; MP_LABELS=newLabels;
+          newKeys.forEach(k=>{ MANPOWER[k]=newData[k]; });
+          console.log('[Excel NL] Đọc được',newKeys.length,'hạng mục:', newLabels);
+        }
+      }
+      // Đọc sheet Chi Tiết Kế Hoạch → cập nhật SCHED
+      const snSC=wb.SheetNames.find(n=>n.includes('Chi Tiết')||n.includes('Chi Tiet')||n.includes('5.'));
+      if(snSC){
+        const rSC=XLSX.utils.sheet_to_json(wb.Sheets[snSC],{header:1,defval:''});
+        const newSC=rSC.slice(3).filter(r=>String(r[0]||'').trim()&&String(r[2]||'').trim()).map(r=>({
+          w:String(r[0]||'').trim(),tg:String(r[1]||'').trim(),nhom:String(r[2]||'').trim(),
+          can:String(r[3]||'').trim(),hm:String(r[4]||'').trim(),
+          nl:String(r[5]||'').trim(),note:String(r[6]||'').trim()
+        }));
+        if(newSC.length>0) SCHED=newSC;
+      }
+      if(n>0){
+        st.className='upst ok'; st.textContent=`✅ Cập nhật ${n} căn`;
+        document.getElementById('today').textContent=new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+        refreshAll();
+      } else {
+        st.className='upst err'; st.textContent='⚠️ Không đọc được dữ liệu';
+      }
+    }catch(err){
+      st.className='upst err'; st.textContent='❌ Lỗi: '+err.message;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ── COMBINED CHART ────────────────────────────────────
+let comboChart=null;
+function buildCombo(zone='all'){
+  const villas=zone==='all'?ALL:ZONES[zone];
+  const hoV=villas.map(v=>HO[v]||0);
+  const tcV=villas.map(v=>TC[v]||0);
+  const lbl=zone==='all'?'TẤT CẢ 104 CĂN':`PHÂN KHU ${zone} — ${villas.length} căn`;
+  document.getElementById('comboTitle').textContent=`BÀN GIAO MẶT BẰNG & TIẾN ĐỘ THI CÔNG — ${lbl}`;
+  const hoClr=Array(villas.length).fill('rgba(52,152,219,.8)');
+  if(comboChart) comboChart.destroy();
+  comboChart=new Chart(document.getElementById('c_combo'),{
+    type:'bar',
+    data:{labels:villas,datasets:[
+      {label:'% Bàn giao mặt bằng',data:hoV,backgroundColor:hoClr,borderRadius:3,order:2},
+      {label:'% Tiến độ thi công',data:tcV,backgroundColor:'rgba(230,126,34,.85)',borderRadius:3,order:1}
+    ]},
+    options:{responsive:true,
+      plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:14}},
+               tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}},
+      scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0f0f0'}},
+              x:{ticks:{font:{size:zone==='all'?7.5:10.5},maxRotation:45},grid:{display:false}}}}
+  });
+}
+function filterCombo(z,btn){
+  document.querySelectorAll('#s1 .zb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); buildCombo(z==='all'?'all':z);
+}
+
+// ── TỔNG HỢP ─────────────────────────────────────────
+let donutC=null,tradeSumC=null;
+function buildSummary(){
+  const allHO=ALL.map(v=>HO[v]||0);
+  if(donutC) donutC.destroy();
+  donutC=new Chart(document.getElementById('c_donut'),{type:'doughnut',
+    data:{labels:['≥80% Bàn giao đủ','30–79% Một phần','1–29% Rất ít','0% Chưa bàn giao'],
+      datasets:[{data:[allHO.filter(v=>v>=80).length,allHO.filter(v=>v>=30&&v<80).length,
+                       allHO.filter(v=>v>0&&v<30).length,allHO.filter(v=>v===0).length],
+        backgroundColor:['#27ae60','#f39c12','#e67e22','#e74c3c'],borderWidth:2}]},
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},
+      tooltip:{callbacks:{label:ctx=>`${ctx.raw} căn`}}}}});
+  const trades=['Sắt','Thạch Cao','Sơn Nước','Sơn Hiệu Ứng','Chống Thấm/Cán Nền','Ốp Lát Gạch','Ốp Lát Đá','Kính','Mộc'];
+  const tVals  = TRADE_KEYS.map(k=>avg(ALL.map(v=>TRD[k][v]||0)));
+  const ntVals = TRADE_KEYS.map(k=>avg(ALL.map(v=>NT_TRD[k][v]||0)));
+  const tClrs  = ['#3498db','#e67e22','#9b59b6','#e91e63','#27ae60','#f39c12','#e74c3c','#1abc9c','#8e44ad'];
+  const ntClrs = tClrs.map(c=>c+'99'); // nhạt hơn cho NT
+  if(tradeSumC) tradeSumC.destroy();
+  tradeSumC=new Chart(document.getElementById('c_tradeSum'),{type:'bar',
+    data:{labels:trades,datasets:[
+      {label:'% Thi công (Trung bình toàn dự án)', data:tVals,  backgroundColor:'rgba(52,152,219,0.85)',  borderRadius:4, barPercentage:0.45, categoryPercentage:0.8},
+      {label:'% Nghiệm thu (Trung bình toàn dự án)',data:ntVals, backgroundColor:'rgba(211,84,0,0.80)', borderRadius:4, barPercentage:0.45, categoryPercentage:0.8}
+    ]},
+    options:{indexAxis:'y',responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},
+               tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${Math.round(ctx.raw*10)/10}%`}}},
+      scales:{x:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0f0f0'}},
+              y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+}
+
+// ── NHÓM ─────────────────────────────────────────────
+let groupC=null;
+function buildGroups(){
+  recalcGroups(); // Tính lại ho/tc từ dữ liệu thực tế trước khi vẽ
+  document.getElementById('groupBody').innerHTML=GROUPS.map(g=>`<tr>
+    <td><strong>${g.nhom}</strong></td>
+    <td style="text-align:left;font-size:11px">${g.can}</td>
+    <td>${g.n}</td>
+    <td style="border-left:1px solid #e0e8f4"><div style="display:flex;align-items:center;gap:6px">
+      <div class="pb"><div class="pbf" style="width:${g.ho}%;background:${g.ho>=80?'#27ae60':g.ho>=50?'#f39c12':'#e74c3c'}"></div></div>
+      <span style="font-weight:700;min-width:32px">${g.ho}%</span></div></td>
+    <td style="border-left:1px solid #e0e8f4"><div style="display:flex;align-items:center;gap:6px">
+      <div class="pb"><div class="pbf" style="width:${g.tc}%;background:${g.tc>=40?'#27ae60':g.tc>=20?'#f39c12':'#e74c3c'}"></div></div>
+      <span style="font-weight:700;min-width:32px">${g.tc}%</span></div></td>
+    <td style="border-left:1px solid #e0e8f4"><span class="sp ${g.st==='ok'?'sok':g.st==='warn'?'swarn':'salert'}">${g.st==='ok'?'Đúng tiến độ':g.st==='warn'?'Cần theo dõi':'⚠️ Tăng tốc'}</span></td>
+  </tr>`).join('');
+  if(groupC) groupC.destroy();
+  groupC=new Chart(document.getElementById('c_groupBar'),{type:'bar',
+    data:{labels:GROUPS.map(g=>g.can),datasets:[
+      {label:'% Bàn giao mặt bằng',data:GROUPS.map(g=>g.ho),backgroundColor:'rgba(52,152,219,.75)',borderRadius:3},
+      {label:'% Tiến độ thi công',data:GROUPS.map(g=>g.tc),backgroundColor:'rgba(230,126,34,.85)',borderRadius:3}
+    ]},
+    options:{responsive:true,plugins:{legend:{position:'top',labels:{font:{size:10},boxWidth:12}}},
+      scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0f0f0'}},
+              x:{ticks:{font:{size:8.5}},grid:{display:false}}}}});
+}
+
+// ── NHÂN LỰC ─────────────────────────────────────────
+let mpChart=null;
+function buildManpower(){
+  const weeks=getCFGWeeks().map(w=>`${w.code}\n${w.dates}`);
+  const datasets=MP_KEYS.map((k,i)=>({
+    label:MP_LABELS[i]||k, data:MANPOWER[k]||[0,0,0,0,0],
+    backgroundColor:mpClr(i), borderRadius:2, stack:'kh', type:'bar'
+  }));
+  datasets.push({label:'Thực tế (tổng)',data:MANPOWER.thucte,type:'bar',
+    backgroundColor:'rgba(0,0,0,.75)',borderColor:'#000',borderWidth:2,
+    borderRadius:4,stack:'tt',order:0});
+  if(mpChart) mpChart.destroy();
+  mpChart=new Chart(document.getElementById('c_mp'),{type:'bar',data:{labels:weeks,datasets},
+    options:{responsive:true,
+      plugins:{legend:{position:'right',labels:{font:{size:9},boxWidth:10}}},
+      scales:{y:{stacked:true,ticks:{callback:v=>v+' người'},grid:{color:'#f0f0f0'},
+                 title:{display:true,text:'Số người',font:{size:10}}},
+              x:{stacked:true,grid:{display:false},ticks:{font:{size:9}}}}}});
+}
+
+// ── RADAR ─────────────────────────────────────────────
+// Dữ liệu lấy từ MANPOWER (sheet 4 Excel: Kế Hoạch Nhân Lực)
+// Mỗi key = 1 hạng mục, mảng [T21, T22, T23, T24, T25] = số người theo tuần
+let radarC=null;
+function buildRadar(){
+  const labels=MP_LABELS;
+  const keys  =MP_KEYS;
+  const clrList=['#3498db','#9b59b6','#e67e22','#e74c3c','#27ae60'];
+  const weeks=getCFGWeeks().map((w,i)=>({label:`${w.code} (${w.dates})`,color:clrList[i]||'#aaa'}));
+  if(radarC) radarC.destroy();
+  radarC=new Chart(document.getElementById('c_radar'),{type:'radar',
+    data:{labels,datasets:weeks.map((w,wi)=>({
+      label:w.label,
+      data:keys.map(k=>MANPOWER[k]?MANPOWER[k][wi]||0:0),
+      fill:true,
+      backgroundColor:w.color+'22',
+      borderColor:w.color,
+      borderWidth:1.8,
+      pointRadius:3,
+      pointBackgroundColor:w.color
+    }))},
+    options:{responsive:true,
+      plugins:{
+        legend:{position:'bottom',labels:{font:{size:9},boxWidth:10,padding:6}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw} người`}}
+      },
+      scales:{r:{
+        min:0,
+        ticks:{font:{size:8},color:'#999',backdropColor:'transparent',maxTicksLimit:5},
+        pointLabels:{font:{size:10}},
+        grid:{color:'rgba(0,0,0,.08)'}
+      }}
+    }
+  });
+}
+
+// ── SCHEDULE TABLE ────────────────────────────────────
+function buildSchedule(){
+  const wk={'T21':'#d6eaf8','T22':'#d5f5e3','T23':'#fdebd0','T24':'#fdedec','T25':'#e8daef'};
+  const wt={'T21':'#1a5276','T22':'#1e8449','T23':'#d35400','T24':'#c0392b','T25':'#7d3c98'};
+  document.getElementById('schedTbl').innerHTML=`<thead><tr>
+    <th>Tuần</th><th>Thời gian</th>
+    <th style="border-left:1px solid #e0e8f4">Nhóm</th>
+    <th>Căn</th>
+    <th style="border-left:1px solid #e0e8f4">Hạng mục thi công</th>
+    <th style="border-left:1px solid #e0e8f4">Nhân lực</th>
+    <th style="border-left:1px solid #e0e8f4">Ghi chú / Cột mốc</th>
+  </tr></thead><tbody>${SCHED.map(s=>`<tr>
+    <td><span style="padding:2px 7px;border-radius:4px;font-weight:700;font-size:10px;background:${wk[s.w]};color:${wt[s.w]}">${s.w}</span></td>
+    <td style="white-space:nowrap">${s.tg}</td>
+    <td style="border-left:1px solid #e0e8f4"><strong>${s.nhom}</strong></td>
+    <td style="white-space:nowrap">${s.can}</td>
+    <td style="text-align:left;border-left:1px solid #e0e8f4">${s.hm}</td>
+    <td style="white-space:nowrap;font-size:10.5px;border-left:1px solid #e0e8f4">${s.nl}</td>
+    <td style="text-align:left;color:#555;border-left:1px solid #e0e8f4">${s.note}</td>
+  </tr>`).join('')}</tbody>`;
+}
+
+// ── VILLA TABLE với 9 hạng mục + NT ──────────────────
+function ntPill(v){
+  // NT pill màu cam, đậm hơn khi cao
+  if(v===0) return `<span style="font-size:9.5px;color:#bbb">—</span>`;
+  const bg=v>=80?'#d35400':v>=50?'#e67e22':'#f0b27a';
+  return `<span style="display:inline-block;padding:1px 5px;border-radius:5px;font-size:9.5px;font-weight:700;background:${bg};color:#fff">${v}%</span>`;
+}
+function buildVilla(zone='all'){
+  const rows=[];let stt=1;
+  const tk=TRADE_KEYS;
+  for(const[z,list]of Object.entries(ZONES)){
+    list.forEach(v=>{
+      rows.push({stt:stt++,code:v,zone:z,
+        ho:HO[v]||0, tc:TC[v]||0, nt:NT_TOT[v]||0,
+        trd:tk.map(k=>TRD[k][v]||0),
+        ntd:tk.map(k=>NT_TRD[k][v]||0)
+      });
+    });
+  }
+  const f=zone==='all'?rows:rows.filter(r=>r.zone===zone);
+  document.getElementById('villaBody').innerHTML=f.map(r=>`<tr class="z${r.zone}">
+    <td>${r.stt}</td><td><strong>${r.code}</strong></td>
+    <td style="color:${ZC[r.zone]};font-weight:700">Khu ${r.zone}</td>
+    <td><span class="pill ${pC(r.ho)}">${r.ho}%</span></td>
+    <td><span class="pill ${pC(r.tc)}">${r.tc}%</span></td>
+    <td><span style="display:inline-block;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:700;background:${r.nt>0?'#e67e22':'#eee'};color:${r.nt>0?'#fff':'#aaa'}">${r.nt>0?r.nt+'%':'—'}</span></td>
+    ${r.trd.map((v,i)=>`<td><span class="pill ${pC(v)}">${v}%</span></td><td>${ntPill(r.ntd[i])}</td>`).join('')}
+    <td style="font-size:10px;color:#888"></td>
+  </tr>`).join('');
+}
+function filterVilla(z,btn){
+  document.querySelectorAll('#s6 .zb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); buildVilla(z==='all'?'all':z);
+}
+
+// ── HỒ SƠ ĐỆ TRÌNH ───────────────────────────────────
+// Cập nhật qua Excel: sheet "Hồ Sơ Đệ Trình"
+let HOSO = {
+  labels:  ['Shop Drawing','RFI','SI','PMI','IPC'],
+  xong:    [18, 19, 15,  0,  1],
+  pending: [21, 12, 15,  5,  0],
+  reject:  [ 9,  0,  5,  0,  0],
+  lgXong:  '✅ Xong/Duyệt',   // tên legend — đọc từ Excel/GSheets
+  lgPend:  '🔄 Pending',
+  lgRej:   '❌ Reject'
+};
+let hosoDTChart=null;
+function buildHoSo(){
+  if(hosoDTChart) hosoDTChart.destroy();
+  hosoDTChart=new Chart(document.getElementById('c_hosoDT'),{
+    type:'bar',
+    data:{
+      labels:HOSO.labels,
+      datasets:[
+        {label:HOSO.lgXong, data:HOSO.xong,   backgroundColor:'#27ae60', borderRadius:3, stack:'s'},
+        {label:HOSO.lgPend, data:HOSO.pending, backgroundColor:'#f39c12', borderRadius:3, stack:'s'},
+        {label:HOSO.lgRej,  data:HOSO.reject,  backgroundColor:'#e74c3c', borderRadius:3, stack:'s'},
+      ]
+    },
+    options:{responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:16}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw} hồ sơ`}}},
+      scales:{
+        y:{stacked:true,ticks:{stepSize:5},grid:{color:'#f0f0f0'}},
+        x:{stacked:true,grid:{display:false},ticks:{font:{size:11}}}
+      }}
+  });
+}
+
+// ── RAMP-UP NHÂN LỰC vs LŨY KẾ CĂN ──────────────────
+// Cập nhật qua Excel: sheet "Ramp-up Nhân Lực"
+let RAMPUP = {
+  months:  ['T5/2026','T6/2026','T7/2026','T8/2026','T9/2026'],
+  nlKH:    [80,  200, 320, 340, 200],
+  nlThucTe:[75,  null, null, null, null],   // cập nhật dần theo thực tế
+  luykeCan:[0,   15,   50,   84,  104]      // lũy kế căn hoàn thành
+};
+let rampupChart=null;
+function buildRampup(){
+  if(rampupChart) rampupChart.destroy();
+  rampupChart=new Chart(document.getElementById('c_rampup'),{
+    type:'bar',
+    data:{
+      labels:RAMPUP.months,
+      datasets:[
+        {label:'Nhân lực KH',    data:RAMPUP.nlKH,     backgroundColor:'rgba(189,215,238,.85)', borderRadius:4, yAxisID:'yNL', order:2},
+        {label:'Nhân lực Thực tế',data:RAMPUP.nlThucTe,backgroundColor:'rgba(52,152,219,.9)',  borderRadius:4, yAxisID:'yNL', order:1},
+        {label:'Lũy kế căn HT',  data:RAMPUP.luykeCan, type:'line',
+          borderColor:'#27ae60', backgroundColor:'rgba(39,174,96,.15)',
+          borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#27ae60',
+          fill:false, tension:0.35, yAxisID:'yCan', order:0}
+      ]
+    },
+    options:{responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:14}}},
+      scales:{
+        yNL:{position:'left', title:{display:true,text:'Số người',font:{size:10}},
+             ticks:{callback:v=>v},grid:{color:'#f0f0f0'}},
+        yCan:{position:'right', title:{display:true,text:'Lũy kế căn HT',font:{size:10}},
+              min:0, max:104, ticks:{callback:v=>v+' căn'},grid:{display:false}}
+      }}
+  });
+}
+
+// ── REFRESH ALL ───────────────────────────────────────
+function refreshAll(){
+  updateKPIs();
+  buildCombo('all');
+  buildSummary();
+  buildGroups();
+  buildManpower();
+  buildRadar();
+  buildSchedule();
+  buildHoSo();
+  buildRampup();
+  buildVilla('all');
+}
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  updateKPIs();
+  buildCombo('all');
+  buildSummary();
+  buildGroups();
+  buildManpower();
+  buildRadar();
+  buildSchedule();
+  buildHoSo();
+  buildRampup();
+  buildVilla('all');
+  // Tự động đồng bộ Google Sheets khi mở trang
+  if(GSHEET_ID) loadFromGoogleSheets();
+  // Lặp lại mỗi N phút nếu được cấu hình
+  if(GSHEET_ID && GSHEET_REFRESH_MIN>0){
+    setInterval(loadFromGoogleSheets, GSHEET_REFRESH_MIN*60*1000);
+  }
+});
+</script>
+</body>
+</html>
