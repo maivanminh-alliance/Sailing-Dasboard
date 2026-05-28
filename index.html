@@ -76,6 +76,37 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 .sync-badge.err{display:inline-block;background:#fadbd8;color:#c0392b}
 .sync-btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);padding:7px 14px;border-radius:7px;cursor:pointer;font-size:11.5px;font-weight:700;transition:background .2s}
 .sync-btn:hover{background:rgba(255,255,255,.3)}
+
+/* ── Navigation Bar ── */
+.nav-row{display:flex;gap:6px;padding:8px 18px;background:#fff;border-bottom:2px solid #e0e7ef;flex-wrap:wrap;position:sticky;top:52px;z-index:90;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.nav-a{padding:5px 13px;border-radius:18px;border:2px solid #dce5f0;background:#f7f9fc;color:#1e3a5f;font-size:11.5px;font-weight:700;text-decoration:none;transition:all .18s;white-space:nowrap}
+.nav-a:hover{background:#1e3a5f;color:#fff;border-color:#1e3a5f}
+.nav-a.nav-vtu{background:linear-gradient(135deg,#1F4E79,#2E75B6);color:#fff;border-color:#1F4E79}
+.nav-a.nav-vtu:hover{background:linear-gradient(135deg,#2E75B6,#1F4E79)}
+
+/* ── VTU Section ── */
+.vtu-kpi{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.vtu-kpi-card{flex:1;min-width:110px;background:#fff;border:1px solid #e4eaf4;border-radius:9px;padding:10px 14px;text-align:center;border-left:4px solid #2E75B6}
+.vtu-kpi-card .vk-v{font-size:22px;font-weight:800;color:#1F4E79;line-height:1.1}
+.vtu-kpi-card .vk-l{font-size:10px;color:#777;margin-top:2px}
+.vtu-kpi-card.gn{border-left-color:#27ae60}.vtu-kpi-card.gn .vk-v{color:#276221}
+.vtu-kpi-card.am{border-left-color:#f39c12}.vtu-kpi-card.am .vk-v{color:#7d5a00}
+
+.vtu-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:14px}
+.vtu-tbl th{background:#1F4E79;color:#fff;padding:8px 10px;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.3px;border-right:1px solid rgba(255,255,255,.15)}
+.vtu-tbl td{padding:7px 10px;border-bottom:1px solid #E8EDF5;border-right:1px solid #e0e8f4;text-align:center;vertical-align:middle}
+.vtu-tbl tr:hover td{background:#F5F8FF}
+.vtu-tbl .villa-hd{font-weight:700;color:#1F4E79;font-size:12px;text-align:left;padding-left:12px}
+.vtu-bar{position:relative;background:#E8EDF5;border-radius:12px;height:18px;min-width:70px;overflow:hidden;display:flex;align-items:center}
+.vtu-bar-fill{position:absolute;left:0;top:0;height:100%;border-radius:12px}
+.vtu-bar span{position:relative;z-index:1;font-size:10.5px;font-weight:700;margin-left:7px;color:#fff;text-shadow:0 0 4px rgba(0,0,0,.4)}
+.vtu-bar.dat .vtu-bar-fill{background:#2E75B6}
+.vtu-bar.xuat .vtu-bar-fill{background:#1F4E79}
+.vtu-bar.nhan .vtu-bar-fill{background:#276221}
+
+.vtu-upload-btn{background:#2E75B6;color:#fff;border:none;padding:7px 16px;border-radius:7px;cursor:pointer;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:background .2s}
+.vtu-upload-btn:hover{background:#1F4E79}
+.vtu-note{font-size:10.5px;color:#555;background:#EBF5FB;border-left:3px solid #2E75B6;padding:6px 10px;border-radius:4px;margin-bottom:10px}
 </style>
 </head>
 <body>
@@ -93,7 +124,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
     <button class="upload-btn" onclick="document.getElementById('fileInput').click()">📂 Tải lên Excel</button>
     <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="loadExcel(this)">
     <div class="bdg"><span>Cập nhật</span><strong id="today"></strong></div>
-    <div class="bdg"><span>Phiên bản</span><strong>v5.0</strong></div>
+    <div class="bdg"><span>Phiên bản</span><strong>V5.1</strong></div>
   </div>
 </div>
 
@@ -105,6 +136,16 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
   <div class="kpi red" style="cursor:pointer" title="Nhấp để chỉnh ngày deadline" onclick="editDeadline()"><div class="v" id="daysLeft">—</div><div class="l" id="daysLeftLbl">Ngày còn lại (30/09/2026)</div></div>
 </div>
 
+
+<div class="nav-row">
+  <a href="#s1" class="nav-a">📊 Tiến Độ</a>
+  <a href="#s2" class="nav-a">📈 Tổng Hợp</a>
+  <a href="#s7" class="nav-a nav-vtu">🏭 Vật Tư NM</a>
+  <a href="#s3" class="nav-a">👷 Nhóm TC</a>
+  <a href="#s4" class="nav-a">📅 Kế Hoạch</a>
+  <a href="#s5" class="nav-a">🗂️ Hồ Sơ</a>
+  <a href="#s6" class="nav-a">🏠 104 Căn</a>
+</div>
 <div class="page">
 
 <!-- S1: COMBINED CHART -->
@@ -134,6 +175,55 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
     <div class="cb tall"><h4>TIẾN ĐỘ HẠNG MỤC — TOÀN DỰ ÁN</h4><canvas id="c_tradeSum"></canvas></div>
   </div>
 </div>
+
+<!-- S7: KIỂM SOÁT VẬT TƯ NHÀ MÁY -->
+<div class="sec" id="s7">
+  <div class="stitle" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <span>🏭 VẬT TƯ NHÀ MÁY</span>
+  </div>
+
+  <!-- VTU KPI Cards -->
+  <div class="vtu-kpi" id="vtuKpi">
+    <div class="vtu-kpi-card"><div class="vk-v" id="vtu_total">1,047</div><div class="vk-l">Tổng số mã hàng</div></div>
+    <div class="vtu-kpi-card gn"><div class="vk-v" id="vtu_dat">—</div><div class="vk-l">Mã đã đặt hàng</div></div>
+    <div class="vtu-kpi-card gn"><div class="vk-v" id="vtu_xuat">—</div><div class="vk-l">Mã đã xuất kho</div></div>
+    <div class="vtu-kpi-card gn"><div class="vk-v" id="vtu_nhan">—</div><div class="vk-l">Mã đã nhận khui</div></div>
+  </div>
+  </div>
+
+  <!-- VTU Summary Table -->
+  <table class="vtu-tbl" id="vtuTbl">
+    <thead>
+      <tr>
+        <th style="text-align:left;padding-left:12px;min-width:80px">MẪU CĂN</th>
+        <th>SỐ CĂN</th>
+        <th>TỔNG SỐ MÃ</th>
+        <th>MÃ ĐÃ ĐẶT</th>
+        <th>MÃ ĐÃ XUẤT</th>
+        <th>MÃ ĐÃ NHẬN</th>
+        <th style="min-width:100px">% ĐẶT HÀNG</th>
+        <th style="min-width:100px">% XUẤT KHO</th>
+        <th style="min-width:100px">% NHẬN KHUI</th>
+      </tr>
+    </thead>
+    <tbody id="vtuBody"></tbody>
+  </table>
+
+  <!-- Charts -->
+  <div class="g2">
+    <div class="cb tall">
+      <h4>BIỂU ĐỒ TÌNH TRẠNG TRIỂN KHAI ĐƠN HÀNG</h4>
+      <canvas id="c_vtuVilla" style="max-height:280px"></canvas>
+    </div>
+    <div class="cb tall">
+      <h4>BIỂU ĐỒ TÌNH TRẠNG VẬT TƯ NHÀ MÁY VỀ CÔNG TRÌNH</h4>
+      <canvas id="c_vtuMonthly" style="max-height:280px"></canvas>
+    </div>
+  </div>
+</div>
+
+
+
 
 <!-- S3: NHÓM THI CÔNG -->
 <div class="sec" id="s3">
@@ -309,7 +399,8 @@ const GS_SHEETS = {
   rampup: '8.Ramp-up Nhân Lực',
   nhom:   '3.Nhóm Thi Công',
   nhanLuc:'4.Kế Hoạch Nhân Lực',
-  chiTiet:'5.Chi Tiết Kế Hoạch'
+  chiTiet:'5.Chi Tiết Kế Hoạch',
+  vtu:    '6. Kiểm Soát Vật Tư'
 };
 
 function gSheetUrl(sheetName){
@@ -514,6 +605,38 @@ async function loadFromGoogleSheets(){
         }));
       if(newSC.length>0) SCHED=newSC;
     }catch(e){console.warn('Chi Tiết sheet:',e);}
+
+
+    // ── Sheet Kiểm Soát Vật Tư ─────────────────────────────
+    try{
+      const rVTU=await fetchCSV(GS_SHEETS.vtu);
+      const vNames=['MẪU A','MẪU B','MẪU C','MẪU D','MẪU E'];
+      const mLabels=VTU.months;
+      let inVilla=false, inMonth=false;
+      rVTU.forEach(r=>{
+        const lbl=String(r[0]||'').trim();
+        const lblU=lbl.toUpperCase();
+        if(lblU.includes('MẪU CĂN')) { inVilla=true; inMonth=false; return; }
+        if(lblU.includes('THÁNG'))   { inMonth=true; inVilla=false; return; }
+        if(inVilla){
+          const idx=vNames.indexOf(lbl.toUpperCase());
+          if(idx>=0){
+            VTU.villas[idx].can  =parseInt(r[1])||VTU.villas[idx].can;
+            VTU.villas[idx].total=parseInt(r[2])||VTU.villas[idx].total;
+            VTU.villas[idx].dat  =parseInt(r[3])||0;
+            VTU.villas[idx].xuat =parseInt(r[4])||0;
+            VTU.villas[idx].nhan =parseInt(r[5])||0;
+          }
+          if(lblU==='TỔNG') inVilla=false;
+        }
+        if(inMonth){
+          const mi=mLabels.indexOf(lbl);
+          if(mi>=0){ VTU.kh[mi]=parseInt(r[1])||0; VTU.nhan[mi]=parseInt(r[2])||0; }
+        }
+      });
+      buildVatTu();
+      console.log('[GSheets VTU] Đọc xong sheet Kiểm Soát Vật Tư');
+    }catch(e){console.warn('VTU sheet:',e);}
 
     if(n>0){
       recalcGroups();
@@ -735,6 +858,22 @@ let SCHED=[
   {w:'T25',tg:'22–28/06',nhom:'Nhóm 1',can:'B1–B15',hm:'Built-in B1-B15 (20/06→27/09); Sơn nước 2 B1-B6 (13/07→25/09)',nl:'Mộc 40',note:'Cần đủ nhân lực mộc 15 căn đồng thời'},
   {w:'T25',tg:'22–28/06',nhom:'Nhóm 2',can:'B23–B37',hm:'Built-in B23-B37 (28/06→22/09); Sơn nước 1 B23-B37 (→06/08)',nl:'Mộc 35, Sơn nước 20',note:'Phối hợp lịch giao hàng nhà máy'},
 ];
+
+
+// ── VẬT TƯ NHÀ MÁY DATA ───────────────────────────
+let VTU = {
+  villas: [
+    {name:'MẪU A', can:16, total:185, dat:0, xuat:0, nhan:0},
+    {name:'MẪU B', can:49, total:179, dat:0, xuat:0, nhan:0},
+    {name:'MẪU C', can:20, total:248, dat:0, xuat:0, nhan:0},
+    {name:'MẪU D', can:5,  total:250, dat:0, xuat:0, nhan:0},
+    {name:'MẪU E', can:14, total:185, dat:0, xuat:0, nhan:0},
+  ],
+  months: ['12/2025','01/2026','02/2026','03/2026','04/2026','05/2026',
+           '06/2026','07/2026','08/2026','09/2026','10/2026','11/2026','12/2026'],
+  kh:   [0,0,0,0,0,0,0,0,0,0,0,0,0],
+  nhan: [0,0,0,0,0,0,0,0,0,0,0,0,0]
+};
 
 // ── HELPERS ───────────────────────────────────────────
 const avg=a=>a.length?Math.round(a.reduce((s,v)=>s+v,0)/a.length):0;
@@ -1223,6 +1362,177 @@ function buildRampup(){
   });
 }
 
+
+// ── ĐỌC VTU TỪ EXCEL ─────────────────────────────
+function loadVtuExcel(input){
+  const file=input.files[0]; if(!file) return;
+  const st=document.getElementById('vtuUpStatus');
+  st.className='upst'; st.textContent='Đang đọc...'; st.style.display='inline-block';
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+
+      // ── Thử sheet "6. Kiểm Soát Vật Tư" (SAILING_HL_EXCEL_v4) ──
+      const snV=wb.SheetNames.find(n=>n.includes('Ki')&&(n.includes('Soat')||n.includes('Soát')||n.includes('6.')));
+      if(snV){
+        const rows=XLSX.utils.sheet_to_json(wb.Sheets[snV],{header:1,defval:''});
+        let inVilla=false, inMonth=false;
+        const vNames=['MẪU A','MẪU B','MẪU C','MẪU D','MẪU E'];
+        rows.forEach(r=>{
+          const lbl=String(r[0]||'').trim().toUpperCase();
+          if(lbl.includes('BẢNG TỔNG HỢP')||lbl.includes('MẪU CĂN')) { inVilla=lbl.includes('MẪU CĂN'); return; }
+          if(lbl.includes('LỊCH GIAO HÀNG')||lbl.includes('THÁNG')) { inMonth=lbl.includes('THÁNG'); return; }
+          if(inVilla){
+            const nm=String(r[0]||'').trim().toUpperCase();
+            const idx=vNames.indexOf(nm);
+            if(idx>=0){
+              VTU.villas[idx].can   = parseInt(r[1])||VTU.villas[idx].can;
+              VTU.villas[idx].total = parseInt(r[2])||VTU.villas[idx].total;
+              VTU.villas[idx].dat   = parseInt(r[3])||0;
+              VTU.villas[idx].xuat  = parseInt(r[4])||0;
+              VTU.villas[idx].nhan  = parseInt(r[5])||0;
+            }
+            if(nm==='TỔNG') inVilla=false;
+          }
+          if(inMonth){
+            const mLbl=String(r[0]||'').trim();
+            const mi=VTU.months.indexOf(mLbl);
+            if(mi>=0){ VTU.kh[mi]=parseInt(r[1])||0; VTU.nhan[mi]=parseInt(r[2])||0; }
+          }
+        });
+        buildVatTu();
+        st.className='upst ok'; st.textContent='✅ Đọc xong SAILING_HL';
+        return;
+      }
+
+      // ── Thử sheet DASHBOARD từ MA TRẬN file ──
+      const snD=wb.SheetNames.find(n=>n.includes('DASHBOARD')||n.includes('Dashboard'));
+      const snT=wb.SheetNames.find(n=>n.includes('TIMELINE')||n.includes('Timeline'));
+      const snM=wb.SheetNames.find(n=>n.includes('MA TR')||n.includes('MA TRẬ')||n.includes('XUẤT HÀNG'));
+      if(snD){
+        const rD=XLSX.utils.sheet_to_json(wb.Sheets[snD],{header:1,defval:''});
+        // Đọc bảng MẪU CĂN từ DASHBOARD (rows 15-20, cols A-J)
+        const vNames=['MẪU A','MẪU B','MẪU C','MẪU D','MẪU E'];
+        rD.forEach(r=>{
+          const nm=String(r[0]||'').trim().toUpperCase();
+          const idx=vNames.indexOf(nm);
+          if(idx>=0){
+            VTU.villas[idx].can   = parseInt(r[1])||VTU.villas[idx].can;
+            VTU.villas[idx].total = parseInt(r[2])||VTU.villas[idx].total;
+            VTU.villas[idx].dat   = parseInt(r[3])||0;
+            VTU.villas[idx].xuat  = parseInt(r[4])||0;
+            VTU.villas[idx].nhan  = parseInt(r[5])||0;
+          }
+        });
+      }
+      if(snT){
+        const rT=XLSX.utils.sheet_to_json(wb.Sheets[snT],{header:1,defval:''});
+        const mLabels=['12/2025','01/2026','02/2026','03/2026','04/2026','05/2026',
+                       '06/2026','07/2026','08/2026','09/2026','10/2026','11/2026','12/2026'];
+        rT.forEach(r=>{
+          const lbl=String(r[0]||'').trim();
+          const mi=mLabels.indexOf(lbl);
+          if(mi>=0){ VTU.kh[mi]=parseInt(r[1])||0; VTU.nhan[mi]=parseInt(r[2])||0; }
+        });
+      }
+      buildVatTu();
+      st.className='upst ok';
+      st.textContent=`✅ Đọc xong MA TRẬN`;
+    }catch(err){
+      st.className='upst err'; st.textContent='❌ Lỗi: '+err.message.slice(0,40);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ── BUILD VẬT TƯ ─────────────────────────────────
+let vtuVillaC=null, vtuMonthlyC=null;
+function buildVatTu(){
+  const vs=VTU.villas;
+  const totMa  =vs.reduce((s,v)=>s+v.total,0);
+  const totDat  =vs.reduce((s,v)=>s+v.dat,  0);
+  const totXuat =vs.reduce((s,v)=>s+v.xuat, 0);
+  const totNhan =vs.reduce((s,v)=>s+v.nhan, 0);
+  const totKH   =VTU.kh.reduce((a,b)=>a+b,0);
+
+  // KPI
+  document.getElementById('vtu_total').textContent=totMa.toLocaleString('vi-VN');
+  document.getElementById('vtu_dat').textContent=totDat+(totMa?` (${Math.round(totDat/totMa*100)}%)`:'');
+  document.getElementById('vtu_xuat').textContent=totXuat+(totMa?` (${Math.round(totXuat/totMa*100)}%)`:'');
+  document.getElementById('vtu_nhan').textContent=totNhan+(totMa?` (${Math.round(totNhan/totMa*100)}%)`:'');
+  document.getElementById('vtu_kh_orders').textContent=totKH+' đơn';
+
+  // Table
+  document.getElementById('vtuBody').innerHTML=vs.map(v=>{
+    const tot=v.total||1;
+    const pd=Math.round(v.dat/tot*100), px=Math.round(v.xuat/tot*100), pn=Math.round(v.nhan/tot*100);
+    const bar=(cls,pct)=>`<div class="vtu-bar ${cls}"><div class="vtu-bar-fill" style="width:${pct}%"></div><span>${pct}%</span></div>`;
+    const numStyle=n=>n>0?'style="color:#276221;font-weight:700"':'style="color:#bbb"';
+    return `<tr>
+      <td class="villa-hd">${v.name}</td>
+      <td>${v.can}</td>
+      <td><strong>${v.total.toLocaleString('vi-VN')}</strong></td>
+      <td ${numStyle(v.dat)}>${v.dat.toLocaleString('vi-VN')}</td>
+      <td ${numStyle(v.xuat)}>${v.xuat.toLocaleString('vi-VN')}</td>
+      <td ${numStyle(v.nhan)}>${v.nhan.toLocaleString('vi-VN')}</td>
+      <td>${bar('dat',pd)}</td>
+      <td>${bar('xuat',px)}</td>
+      <td>${bar('nhan',pn)}</td>
+    </tr>`;
+  }).join('');
+
+  // Villa chart
+  if(vtuVillaC) vtuVillaC.destroy();
+  vtuVillaC=new Chart(document.getElementById('c_vtuVilla'),{
+    type:'bar',
+    data:{
+      labels:vs.map(v=>v.name),
+      datasets:[
+        {label:'% Đặt hàng', data:vs.map(v=>v.total?Math.round(v.dat/v.total*100):0),  backgroundColor:'#2E75B6', borderRadius:4},
+        {label:'% Xuất kho',  data:vs.map(v=>v.total?Math.round(v.xuat/v.total*100):0), backgroundColor:'#1F4E79', borderRadius:4},
+        {label:'% Nhận khui', data:vs.map(v=>v.total?Math.round(v.nhan/v.total*100):0), backgroundColor:'#276221', borderRadius:4},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}
+      },
+      scales:{
+        x:{ticks:{font:{size:11,weight:'bold'}},grid:{display:false}},
+        y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0f0f0'},
+           title:{display:true,text:'Tỉ lệ hoàn thành',font:{size:10}}}
+      }
+    }
+  });
+
+  // Monthly timeline chart
+  if(vtuMonthlyC) vtuMonthlyC.destroy();
+  vtuMonthlyC=new Chart(document.getElementById('c_vtuMonthly'),{
+    type:'bar',
+    data:{
+      labels:VTU.months,
+      datasets:[
+        {label:'Kế hoạch giao hàng',     data:VTU.kh,   backgroundColor:'#B5D4F4', borderColor:'#2E75B6', borderWidth:1, borderRadius:4},
+        {label:'Đã nhận tại công trình', data:VTU.nhan, backgroundColor:'#1F4E79', borderColor:'#0C447C', borderWidth:1, borderRadius:4},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw} đơn`}}
+      },
+      scales:{
+        x:{ticks:{font:{size:10},maxRotation:45},grid:{display:false},
+           title:{display:true,text:'Tháng KH hàng về',font:{size:10}}},
+        y:{min:0,ticks:{stepSize:1,font:{size:10}},
+           title:{display:true,text:'Số đơn hàng',font:{size:10}}}
+      }
+    }
+  });
+}
+
 // ── REFRESH ALL ───────────────────────────────────────
 function refreshAll(){
   updateKPIs();
@@ -1235,6 +1545,7 @@ function refreshAll(){
   buildHoSo();
   buildRampup();
   buildVilla('all');
+  buildVatTu();
 }
 
 // ── INIT ──────────────────────────────────────────────
