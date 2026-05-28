@@ -1457,11 +1457,12 @@ function buildVatTu(){
   const totKH   =VTU.kh.reduce((a,b)=>a+b,0);
 
   // KPI
-  document.getElementById('vtu_total').textContent=totMa.toLocaleString('vi-VN');
-  document.getElementById('vtu_dat').textContent=totDat+(totMa?` (${Math.round(totDat/totMa*100)}%)`:'');
-  document.getElementById('vtu_xuat').textContent=totXuat+(totMa?` (${Math.round(totXuat/totMa*100)}%)`:'');
-  document.getElementById('vtu_nhan').textContent=totNhan+(totMa?` (${Math.round(totNhan/totMa*100)}%)`:'');
-  document.getElementById('vtu_kh_orders').textContent=totKH+' đơn';
+  const _set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  _set('vtu_total', totMa.toLocaleString('vi-VN'));
+  _set('vtu_dat', totDat+(totMa?` (${Math.round(totDat/totMa*100)}%)`:''));
+  _set('vtu_xuat', totXuat+(totMa?` (${Math.round(totXuat/totMa*100)}%)`:''));
+  _set('vtu_nhan', totNhan+(totMa?` (${Math.round(totNhan/totMa*100)}%)`:''));
+  // vtu_kh_orders removed
 
   // Table
   document.getElementById('vtuBody').innerHTML=vs.map(v=>{
