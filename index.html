@@ -610,33 +610,42 @@ async function loadFromGoogleSheets(){
     // ── Sheet Kiểm Soát Vật Tư ─────────────────────────────
     try{
       const rVTU=await fetchCSV(GS_SHEETS.vtu);
-      // Khớp trực tiếp theo tên mẫu căn và nhãn tháng (không dùng state machine)
-      const vNames=['MẪU A','MẪU B','MẪU C','MẪU D','MẪU E'];
       const mLabels=VTU.months;
       let vFound=0, mFound=0;
-      rVTU.forEach(r=>{
-        const raw=String(r[0]||'').trim();
-        // Khớp mẫu căn: "MẪU A"…"MẪU E" — dùng ký tự cuối để tránh lỗi Unicode
-        const lastCh=raw.slice(-1).toUpperCase();
-        const vi='ABCDE'.indexOf(lastCh);
-        if(vi>=0 && raw.length>=5 && raw.length<=8){
-          VTU.villas[vi].can  =parseInt(r[1])||VTU.villas[vi].can;
-          VTU.villas[vi].total=parseInt(r[2])||VTU.villas[vi].total;
-          VTU.villas[vi].dat  =parseInt(r[3])||0;
-          VTU.villas[vi].xuat =parseInt(r[4])||0;
-          VTU.villas[vi].nhan =parseInt(r[5])||0;
-          vFound++;
-        }
-        // Khớp tháng: "12/2025", "01/2026" … "12/2026"
-        const mi=mLabels.indexOf(raw);
-        if(mi>=0){
-          VTU.kh[mi]  =parseInt(r[1])||0;
-          VTU.nhan[mi]=parseInt(r[2])||0;
+
+      // ── Đọc dữ liệu MẪU CĂN theo VỊ TRÍ DÒNG CỐ ĐỊNH ──────────────────
+      // Cấu trúc CSV (skipEmptyLines=true):
+      //  0: title  1: info  2: section header  3: col headers
+      //  4: MẪU A  5: MẪU B  6: MẪU C  7: MẪU D  8: MẪU E
+      //  9: TỔNG  10: note  11: section2 hdr  12: col headers2
+      // 13-25: tháng 12/2025 … 12/2026
+      [4,5,6,7,8].forEach(function(ri, vi){
+        if(ri >= rVTU.length) return;
+        const r = rVTU[ri];
+        const can = parseInt(r[1]);
+        if(!can || can > 200) return; // sanity check: số căn 5–49
+        VTU.villas[vi].can   = can;
+        VTU.villas[vi].total = parseInt(r[2]) || VTU.villas[vi].total;
+        VTU.villas[vi].dat   = parseInt(r[3]) || 0;
+        VTU.villas[vi].xuat  = parseInt(r[4]) || 0;
+        VTU.villas[vi].nhan  = parseInt(r[5]) || 0;
+        vFound++;
+      });
+
+      // ── Đọc lịch giao hàng theo nhãn tháng (ASCII, không lỗi Unicode) ───
+      rVTU.forEach(function(r){
+        const raw = String(r[0]||'').trim();
+        const mi  = mLabels.indexOf(raw);
+        if(mi >= 0){
+          VTU.kh[mi]   = parseInt(r[1]) || 0;
+          VTU.nhan[mi] = parseInt(r[2]) || 0;
           mFound++;
         }
       });
+
       buildVatTu();
-      console.log(`[GSheets VTU] ✅ villa=\${vFound} mẫu, month=\${mFound} tháng`);
+      console.log('[GSheets VTU] villa=' + vFound + ' mẫu, month=' + mFound + ' tháng');
+      console.log('[GSheets VTU] row4:', rVTU[4] ? rVTU[4].slice(0,6) : 'N/A');
     }catch(e){console.warn('VTU sheet error:',e);}
 
     if(n>0){
