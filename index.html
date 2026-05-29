@@ -610,33 +610,34 @@ async function loadFromGoogleSheets(){
     // ── Sheet Kiểm Soát Vật Tư ─────────────────────────────
     try{
       const rVTU=await fetchCSV(GS_SHEETS.vtu);
+      // Khớp trực tiếp theo tên mẫu căn và nhãn tháng (không dùng state machine)
       const vNames=['MẪU A','MẪU B','MẪU C','MẪU D','MẪU E'];
       const mLabels=VTU.months;
-      let inVilla=false, inMonth=false;
+      let vFound=0, mFound=0;
       rVTU.forEach(r=>{
-        const lbl=String(r[0]||'').trim();
-        const lblU=lbl.toUpperCase();
-        if(lblU.includes('MẪU CĂN')) { inVilla=true; inMonth=false; return; }
-        if(lblU.includes('THÁNG'))   { inMonth=true; inVilla=false; return; }
-        if(inVilla){
-          const idx=vNames.indexOf(lbl.toUpperCase());
-          if(idx>=0){
-            VTU.villas[idx].can  =parseInt(r[1])||VTU.villas[idx].can;
-            VTU.villas[idx].total=parseInt(r[2])||VTU.villas[idx].total;
-            VTU.villas[idx].dat  =parseInt(r[3])||0;
-            VTU.villas[idx].xuat =parseInt(r[4])||0;
-            VTU.villas[idx].nhan =parseInt(r[5])||0;
-          }
-          if(lblU==='TỔNG') inVilla=false;
+        const raw=String(r[0]||'').trim();
+        const lbl=raw.toUpperCase().replace(/\s+/g,' ');
+        // Khớp mẫu căn: "MẪU A" → "MẪU E"
+        const vi=vNames.findIndex(n=>lbl===n);
+        if(vi>=0){
+          VTU.villas[vi].can  =parseInt(r[1])||VTU.villas[vi].can;
+          VTU.villas[vi].total=parseInt(r[2])||VTU.villas[vi].total;
+          VTU.villas[vi].dat  =parseInt(r[3])||0;
+          VTU.villas[vi].xuat =parseInt(r[4])||0;
+          VTU.villas[vi].nhan =parseInt(r[5])||0;
+          vFound++;
         }
-        if(inMonth){
-          const mi=mLabels.indexOf(lbl);
-          if(mi>=0){ VTU.kh[mi]=parseInt(r[1])||0; VTU.nhan[mi]=parseInt(r[2])||0; }
+        // Khớp tháng: "12/2025", "01/2026" … "12/2026"
+        const mi=mLabels.indexOf(raw);
+        if(mi>=0){
+          VTU.kh[mi]  =parseInt(r[1])||0;
+          VTU.nhan[mi]=parseInt(r[2])||0;
+          mFound++;
         }
       });
       buildVatTu();
-      console.log('[GSheets VTU] Đọc xong sheet Kiểm Soát Vật Tư');
-    }catch(e){console.warn('VTU sheet:',e);}
+      console.log(`[GSheets VTU] ✅ villa=\${vFound} mẫu, month=\${mFound} tháng`);
+    }catch(e){console.warn('VTU sheet error:',e);}
 
     if(n>0){
       recalcGroups();
