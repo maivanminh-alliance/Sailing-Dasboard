@@ -971,11 +971,11 @@ function lkHasSched(d){ const B=d.b||[]; return B.some(x=>x&&(x[0]||x[1]||x[2]))
 function lkInitFilters(){
   const mau=[...new Set(VTU_DETAIL.map(d=>d.mau).filter(Boolean))].sort();
   const hm=[...new Set(VTU_DETAIL.map(d=>d.hangmuc).filter(Boolean))].sort();
-  const tt=['CHƯA ĐẶT HÀNG','CHƯA ĐẶT','CHƯA XUẤT','ĐỦ','THIẾU','THỪA'];
+  const tt=[['CHƯA ĐẶT HÀNG','CHƯA ĐẶT HÀNG'],['CÒN LẠI','CÒN LẠI'],['CHƯA ĐẶT','CHƯA ĐẶT'],['ĐÃ ĐẶT CHƯA XUẤT HÀNG','CHƯA XUẤT'],['ĐỦ','ĐỦ'],['THIẾU','THIẾU'],['THỪA','THỪA']];
   const sm=document.getElementById('lkMau'), sh=document.getElementById('lkHM'), ss=document.getElementById('lkStatus');
   sm.innerHTML='<option value="">Tất cả</option>'; mau.forEach(m=>sm.add(new Option(m,m)));
   sh.innerHTML='<option value="">Tất cả</option>'; hm.forEach(h=>sh.add(new Option(h,h)));
-  if(ss){ ss.innerHTML='<option value="">Tất cả</option>'; tt.forEach(t=>ss.add(new Option(t,t))); }
+  if(ss){ ss.innerHTML='<option value="">Tất cả</option>'; tt.forEach(t=>ss.add(new Option(t[0],t[1]))); }
 }
 function lkRender(){
   const m=document.getElementById('lkMau').value, h=document.getElementById('lkHM').value;
