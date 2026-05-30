@@ -1042,38 +1042,10 @@ async function lkSyncFromGS(){
       const b=starts.map(s=>[clean(c[s+3]),clean(c[s+4]),clean(c[s+6])]);
       out.push({ma:clean(c[2]),ten:ten,hangmuc:clean(c[4]),mau:mau,socan:clean(c[7]),dvt:clean(c[5]),slkh:clean(c[8]),tongdat:clean(c[63]),tt:clean(c[69]),b:b});
     }
-    if(out.length){ VTU_DETAIL=out; lkInitFilters(); lkRender(); lkUpdateVTU(out);
+    if(out.length){ VTU_DETAIL=out; lkInitFilters(); lkRender();
       console.log('[GSheets MA TRẬN] đọc',out.length,'dòng'); return true; }
   }catch(e){ console.warn('Sheet 9.MA TRẬN XUẤT HÀNG lỗi:',e.message); }
   return false;
-}
-// Tính lại KPI & bảng tổng hợp Vật tư từ ma trận (động theo số dòng)
-function lkUpdateVTU(rows){
-  const has=a=>a.some(x=>x&&x);
-  const datOf=d=>d.b.some(x=>false); // placeholder
-  const per={}; let tot=0,dat=0,xuat=0,nhan=0;
-  const months=VTU.months; const khM={},nhM={};
-  rows.forEach(d=>{
-    const mau=d.mau; if(!per[mau]) per[mau]={total:0,dat:0,xuat:0,nhan:0,can:0};
-    per[mau].total++; tot++;
-    const hasXuat=d.b.some(x=>x[1]); const hasNhan=d.b.some(x=>x[2]);
-    const hasKH=d.b.some(x=>x[0]);
-    // "đã đặt" suy ra từ có bất kỳ mốc nào (KH về/xuất/nhận) hoặc trạng thái khác CHƯA
-    const hasDat=hasKH||hasXuat||hasNhan||/ĐỦ|THIẾU|XUẤT/i.test(d.tt);
-    if(hasDat){per[mau].dat++; dat++;}
-    if(hasXuat){per[mau].xuat++; xuat++;}
-    if(hasNhan){per[mau].nhan++; nhan++;}
-    d.b.forEach(x=>{ const km=(x[0]||'').slice(3); if(x[0]){khM[x[0].slice(3)]=(khM[x[0].slice(3)]||0)+1;} if(x[2]){nhM[x[2].slice(3)]=(nhM[x[2].slice(3)]||0)+1;} });
-  });
-  // cập nhật mảng villa theo tên mẫu sẵn có
-  VTU.villas.forEach(v=>{ const p=per[v.name]; if(p){ v.total=p.total; v.dat=p.dat; v.xuat=p.xuat; v.nhan=p.nhan; } });
-  months.forEach((m,i)=>{ if(khM[m]!=null) VTU.kh[i]=khM[m]; if(nhM[m]!=null) VTU.nhan[i]=nhM[m]; });
-  const el=id=>document.getElementById(id);
-  if(el('vtu_total')) el('vtu_total').textContent=tot.toLocaleString('vi-VN');
-  if(el('vtu_dat')) el('vtu_dat').textContent=dat.toLocaleString('vi-VN');
-  if(el('vtu_xuat')) el('vtu_xuat').textContent=xuat.toLocaleString('vi-VN');
-  if(el('vtu_nhan')) el('vtu_nhan').textContent=nhan.toLocaleString('vi-VN');
-  if(typeof buildVatTu==='function') buildVatTu();
 }
 
 
