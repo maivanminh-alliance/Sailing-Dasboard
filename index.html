@@ -271,7 +271,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
           <th style="position:sticky;top:0;background:#1F4E79">Hạng mục</th><th style="position:sticky;top:0;background:#1F4E79">Mẫu căn</th><th style="position:sticky;top:0;background:#1F4E79">SL căn</th>
           <th style="position:sticky;top:0;background:#1F4E79">SỐ LƯỢNG (BOQ)</th><th style="position:sticky;top:0;background:#1F4E79">ĐVT</th><th style="position:sticky;top:0;background:#1F4E79">Tổng đặt</th><th style="position:sticky;top:0;background:#1F4E79">Sản xuất</th>
           <th style="position:sticky;top:0;background:#1F4E79">KH hàng về</th><th style="position:sticky;top:0;background:#1F4E79">Ngày xuất kho</th>
-          <th style="position:sticky;top:0;background:#1F4E79">🚚 Ra công trường</th><th style="position:sticky;top:0;background:#1F4E79">Trạng thái</th>
+          <th style="position:sticky;top:0;background:#1F4E79">Ra công trường</th><th style="position:sticky;top:0;background:#1F4E79">Trạng thái</th>
         </tr></thead>
         <tbody id="lkBody"></tbody>
       </table>
@@ -971,7 +971,7 @@ function lkHasSched(d){ const B=d.b||[]; return B.some(x=>x&&(x[0]||x[1]||x[2]))
 function lkInitFilters(){
   const mau=[...new Set(VTU_DETAIL.map(d=>d.mau).filter(Boolean))].sort();
   const hm=[...new Set(VTU_DETAIL.map(d=>d.hangmuc).filter(Boolean))].sort();
-  const tt=['CHƯA ĐẶT HÀNG','CÒN LẠI','CHƯA ĐẶT','CHƯA XUẤT','ĐỦ','THIẾU','THỪA'];
+  const tt=['CHƯA ĐẶT HÀNG','CHƯA ĐẶT','CHƯA XUẤT','ĐỦ','THIẾU','THỪA'];
   const sm=document.getElementById('lkMau'), sh=document.getElementById('lkHM'), ss=document.getElementById('lkStatus');
   sm.innerHTML='<option value="">Tất cả</option>'; mau.forEach(m=>sm.add(new Option(m,m)));
   sh.innerHTML='<option value="">Tất cả</option>'; hm.forEach(h=>sh.add(new Option(h,h)));
@@ -1054,7 +1054,7 @@ async function lkSyncFromGS(){
       const mau=clean(c[6]); const ten=clean(c[3]);
       if(!ten || mau.toUpperCase().indexOf('MẪU')<0 && mau.toUpperCase().indexOf('MAU')<0) continue;
       const b=starts.map(s=>[clean(c[s+3]),clean(c[s+4]),clean(c[s+6])]);
-      out.push({ma:clean(c[2]),ten:ten,hangmuc:clean(c[4]),mau:mau,socan:clean(c[7]),dvt:clean(c[5]),slkh:clean(c[8]),tongdat:clean(c[63]),sanxuat:clean(c[64]),tt:clean(c[69]),b:b});
+      out.push({ma:clean(c[2]),ten:ten,hangmuc:clean(c[4]),mau:mau,socan:clean(c[7]),dvt:clean(c[5]),slkh:clean(c[8]),tongdat:clean(c[63]),sanxuat:clean(c[64]),tt:clean(c[70]),b:b});
     }
     if(out.length){ VTU_DETAIL=out; lkInitFilters(); lkRender();
       console.log('[GSheets MA TRẬN] đọc',out.length,'dòng'); return true; }
