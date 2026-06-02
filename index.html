@@ -118,6 +118,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
   .kpi-row .kpi{flex:1 1 45%;min-width:140px}
   .nav-row{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:6px}
   .nav-a{flex:0 0 auto}
+  .srch-sticky{position:sticky;top:92px;z-index:60;background:#fff;padding:8px 6px;margin:0 -2px 8px;border-bottom:1px solid #e0e8f4;box-shadow:0 3px 6px rgba(0,0,0,.05)}
   .page{padding:8px}
   .sec{padding:10px}
   .g2,.g3{grid-template-columns:1fr}
@@ -149,7 +150,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
     <button class="sync-btn" onclick="loadFromGoogleSheets()">🔄 Đồng bộ GG Sheets</button>
     <span id="upStatus" class="upst"></span>
     <div class="bdg"><span>Cập nhật</span><strong id="today"></strong></div>
-    <div class="bdg"><span>Phiên bản</span><strong>V5.1</strong></div>
+    <div class="bdg"><span>Phiên bản</span><strong>V5.2</strong></div>
   </div>
 </div>
 
@@ -162,20 +163,21 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 
 
 <div class="nav-row">
-  <a href="#s1" class="nav-a">📊 Tiến Độ</a>
-  <a href="#s2" class="nav-a">📈 Tổng Hợp</a>
-  <a href="#s7" class="nav-a">🏭 Vật Tư NM</a>
+  <a href="#s1" class="nav-a">📊 1. Tiến Độ</a>
+  <a href="#s2" class="nav-a">📈 2. Tổng Hợp</a>
+  <a href="#s7" class="nav-a">🏭 3. Vật tư Nhà máy</a>
+  <a href="#s9" class="nav-a">📦 4. Vật tư Fit out</a>
   <a href="#vtuLookup" class="nav-a" onclick="setTimeout(gotoLookup,50)">🏭 Tra cứu lịch nhà máy</a>
-  <a href="#s3" class="nav-a">👷 Nhóm thi công</a>
-  <a href="#s4" class="nav-a">📅 Kế Hoạch</a>
-  <a href="#s5" class="nav-a">🗂️ Hồ Sơ</a>
-  <a href="#s6" class="nav-a">🏠 104 Căn</a>
+  <a href="#s3" class="nav-a">👷 5. Nhóm thi công</a>
+  <a href="#s4" class="nav-a">📅 6. Kế Hoạch</a>
+  <a href="#s5" class="nav-a">🗂️ 7. Hồ Sơ</a>
+  <a href="#s6" class="nav-a">🏠 8. Tình trạng 104 căn</a>
 </div>
 <div class="page">
 
 <!-- S1: COMBINED CHART -->
 <div class="sec" id="s1">
-  <div class="stitle">📊 BÀN GIAO MẶT BẰNG & TIẾN ĐỘ THI CÔNG — 104 CĂN</div>
+  <div class="stitle">📊 1. BÀN GIAO MẶT BẰNG & TIẾN ĐỘ THI CÔNG — 104 CĂN</div>
   <div class="note-bar">🔵 Cột xanh = % Bàn giao mặt bằng &nbsp;|&nbsp; 🟠 Cột cam = % Tiến độ thi công &nbsp;|&nbsp; Chọn phân khu để xem chi tiết</div>
   <div class="zf">
     <label>Phân khu:</label>
@@ -194,7 +196,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 
 <!-- S2: TỔNG HỢP -->
 <div class="sec" id="s2">
-  <div class="stitle">📈 TỔNG HỢP TIẾN ĐỘ</div>
+  <div class="stitle">📈 2. TỔNG HỢP TIẾN ĐỘ</div>
   <div class="g2">
     <div class="cb tall"><h4>PHÂN BỐ TRẠNG THÁI BÀN GIAO MẶT BẰNG (104 CĂN)</h4><canvas id="c_donut"></canvas></div>
     <div class="cb tall"><h4>TIẾN ĐỘ HẠNG MỤC — TOÀN DỰ ÁN</h4><canvas id="c_tradeSum"></canvas></div>
@@ -204,7 +206,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 <!-- S7: KIỂM SOÁT VẬT TƯ NHÀ MÁY -->
 <div class="sec" id="s7">
   <div class="stitle" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-    <span>🏭 VẬT TƯ NHÀ MÁY</span>
+    <span>🏭 3. VẬT TƯ FIT OUT</span>
   </div>
 
   <!-- VTU KPI Cards -->
@@ -250,13 +252,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
   <div class="vtu-lookup" id="vtuLookup" style="margin-top:18px;border-top:1px solid #e0e8f4;padding-top:14px">
     <h4 style="margin:0 0 4px;color:#1e3a5f;font-size:14px">🚚 TRA CỨU LỊCH RA CÔNG TRƯỜNG THEO SẢN PHẨM</h4>
     <div style="font-size:11.5px;color:#6b7280;margin-bottom:10px">Chọn mẫu căn + hạng mục, hoặc gõ tên sản phẩm để xem ngày dự kiến ra công trường của từng hạng mục theo từng mẫu căn.</div>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:10px">
+    <div class="srch-sticky" style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:10px">
       <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:#666;text-transform:uppercase">Mẫu căn</label>
         <select id="lkMau" style="padding:6px 9px;border:1px solid #ccc;border-radius:6px;font-size:12.5px;min-width:120px"><option value="">Tất cả</option></select></div>
       <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:#666;text-transform:uppercase">Hạng mục</label>
         <select id="lkHM" style="padding:6px 9px;border:1px solid #ccc;border-radius:6px;font-size:12.5px;min-width:150px"><option value="">Tất cả</option></select></div>
-      <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:#666;text-transform:uppercase">Trạng thái lịch</label>
-        <select id="lkTT" style="padding:6px 9px;border:1px solid #ccc;border-radius:6px;font-size:12.5px;min-width:130px"><option value="">Tất cả</option><option value="co">Đã có lịch</option><option value="chua">Chưa có lịch</option></select></div>
       <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:#666;text-transform:uppercase">Trạng thái</label>
         <select id="lkStatus" style="padding:6px 9px;border:1px solid #ccc;border-radius:6px;font-size:12.5px;min-width:140px"><option value="">Tất cả</option></select></div>
       <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:220px"><label style="font-size:10px;color:#666;text-transform:uppercase">Tìm tên sản phẩm</label>
@@ -266,12 +266,16 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
     <div style="max-height:420px;overflow:auto;border:1px solid #e0e8f4;border-radius:8px">
       <table class="vtu-tbl" style="font-size:12px">
         <thead><tr style="position:sticky;top:0;z-index:5">
-          <th style="text-align:left;padding-left:10px;position:sticky;top:0;background:#1F4E79">Mã</th>
-          <th style="text-align:left;position:sticky;top:0;background:#1F4E79">Tên sản phẩm</th>
-          <th style="position:sticky;top:0;background:#1F4E79">Hạng mục</th><th style="position:sticky;top:0;background:#1F4E79">Mẫu căn</th><th style="position:sticky;top:0;background:#1F4E79">SL căn</th>
-          <th style="position:sticky;top:0;background:#1F4E79">SỐ LƯỢNG (BOQ)</th><th style="position:sticky;top:0;background:#1F4E79">ĐVT</th><th style="position:sticky;top:0;background:#1F4E79">Tổng đặt</th><th style="position:sticky;top:0;background:#1F4E79">Sản xuất</th>
-          <th style="position:sticky;top:0;background:#1F4E79">KH hàng về</th><th style="position:sticky;top:0;background:#1F4E79">Ngày xuất kho</th>
-          <th style="position:sticky;top:0;background:#1F4E79">Ra công trường</th><th style="position:sticky;top:0;background:#1F4E79">Trạng thái</th>
+          <th style="text-align:left;padding-left:10px;position:sticky;top:0;z-index:6;background:#1F4E79">Mã</th>
+          <th style="text-align:left;position:sticky;top:0;z-index:6;background:#1F4E79">Mô tả</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Kí hiệu</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Mẫu căn</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Nhóm</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">ĐVT</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Tổng KL</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">KH hàng về</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Ra công trường</th>
+          <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Trạng thái</th>
         </tr></thead>
         <tbody id="lkBody"></tbody>
       </table>
@@ -283,10 +287,54 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 
 
 
+<!-- S9: DASHBOARD VẬT TƯ THEO NHÓM (Phân bổ hàng về) -->
+<div class="sec" id="s9">
+  <div class="stitle">📦 4. VẬT TƯ FIT OUT — TIẾN ĐỘ HÀNG VỀ THEO NHÓM</div>
+  <div class="vtu-kpi" id="pbKpi"></div>
+  <div class="cb tall" style="margin-top:6px"><h4>BẢNG THEO DÕI VẬT TƯ FIT-OUT</h4><canvas id="c_pbGroup" style="max-height:300px"></canvas></div>
+  <div style="max-height:440px;overflow:auto;border:1px solid #e0e8f4;border-radius:8px;margin-top:12px">
+    <table class="vtu-tbl" style="font-size:12px">
+      <thead><tr>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79;text-align:left;padding-left:10px">Nhóm vật tư</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Số đầu mục</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Tổng KL</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Kế hoạch về</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Đã về</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Còn lại</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79;min-width:150px">Tỉ lệ</th>
+      </tr></thead>
+      <tbody id="pbBody"></tbody>
+    </table>
+  </div>
+  <div style="margin-top:18px;border-top:1px solid #e0e8f4;padding-top:12px">
+    <div class="stitle" style="font-size:12.5px;border:none;margin-bottom:8px">🔎 TRA CỨU VẬT TƯ</div>
+    <div class="srch-sticky" style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:8px">
+      <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10px;color:#666;text-transform:uppercase">Nhóm vật tư</label>
+        <select id="pbqNhom" style="padding:6px 9px;border:1px solid #ccc;border-radius:6px;font-size:12.5px;min-width:160px"><option value="">Tất cả</option></select></div>
+      <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:240px"><label style="font-size:10px;color:#666;text-transform:uppercase">Tìm kí hiệu / mô tả</label>
+        <input id="pbqText" placeholder="vd: V-FIN-001, lát sàn, vách kính..." style="padding:6px 9px;border:1px solid #ccc;border-radius:6px;font-size:12.5px"></div>
+    </div>
+    <div id="pbqStats" style="font-size:11.5px;color:#6b7280;margin-bottom:8px"></div>
+    <div style="max-height:440px;overflow:auto;border:1px solid #e0e8f4;border-radius:8px">
+      <table class="vtu-tbl" style="font-size:12px"><thead><tr>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Nhóm</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Kí hiệu</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79;text-align:left;padding-left:10px">Mô tả</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">ĐVT</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Tổng KL</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Kế hoạch về</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Đã về</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79">Còn lại</th>
+        <th style="position:sticky;top:0;z-index:6;background:#1F4E79;min-width:120px">Tỉ lệ</th>
+      </tr></thead><tbody id="pbqBody"></tbody></table>
+    </div>
+  </div>
+</div>
+
 <!-- S3: NHÓM THI CÔNG -->
 <div class="sec" id="s3">
   <div class="stitle" style="display:flex;align-items:center;justify-content:space-between">
-    <span>👷 TÌNH TRẠNG NHÓM THI CÔNG — <span id="reportDateSpan">25/05/2026</span></span>
+    <span>👷 5. TÌNH TRẠNG NHÓM THI CÔNG — <span id="reportDateSpan">25/05/2026</span></span>
     <button onclick="toggleDatePanel()" style="font-size:10.5px;padding:3px 10px;border:1px solid #ccc;border-radius:5px;background:#f7f9fc;cursor:pointer;color:#555">✏️ Chỉnh ngày</button>
   </div>
   <!-- Panel cấu hình ngày -->
@@ -339,7 +387,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 
 <!-- S4: NHÂN LỰC + KẾ HOẠCH -->
 <div class="sec" id="s4">
-  <div class="stitle">📅 KẾ HOẠCH THI CÔNG 5 TUẦN — <span id="planRangeSpan">24/05 → 28/06/2026</span></div>
+  <div class="stitle">📅 6. KẾ HOẠCH THI CÔNG 5 TUẦN — <span id="planRangeSpan">24/05 → 28/06/2026</span></div>
   <div class="g2" style="margin-bottom:12px">
     <div class="cb tall">
       <h4>NHÂN LỰC THEO TUẦN — KẾ HOẠCH & THỰC TẾ</h4>
@@ -358,7 +406,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 
 <!-- S5: HỒ SƠ ĐỆ TRÌNH + RAMP-UP -->
 <div class="sec" id="s5">
-  <div class="stitle">🗂️ TÌNH TRẠNG HỒ SƠ ĐỆ TRÌNH & RAMP-UP NHÂN LỰC</div>
+  <div class="stitle">🗂️ 7. TÌNH TRẠNG HỒ SƠ ĐỆ TRÌNH & RAMP-UP NHÂN LỰC</div>
   <div class="g2">
     <div class="cb tall">
       <h4>TÌNH TRẠNG HỒ SƠ ĐỆ TRÌNH (SD · RFI · SI · PMI · IPC)</h4>
@@ -373,7 +421,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 
 <!-- S6: BẢNG 104 CĂN -->
 <div class="sec" id="s6">
-  <div class="stitle">🏠 BẢNG CHI TIẾT 104 CĂN</div>
+  <div class="stitle">🏠 8. TÌNH TRẠNG 104 CĂN</div>
   <div class="zf">
     <label>Phân khu:</label>
     <button class="zb active" onclick="filterVilla('all',this)">Tất cả</button>
@@ -413,6 +461,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
     </table>
   </div>
 </div>
+
+
 
 </div>
 
@@ -971,61 +1021,68 @@ function lkHasSched(d){ const B=d.b||[]; return B.some(x=>x&&(x[0]||x[1]||x[2]))
 function lkInitFilters(){
   const mau=[...new Set(VTU_DETAIL.map(d=>d.mau).filter(Boolean))].sort();
   const hm=[...new Set(VTU_DETAIL.map(d=>d.hangmuc).filter(Boolean))].sort();
-  const tt=[['CHƯA ĐẶT HÀNG','CHƯA ĐẶT HÀNG'],['CÒN LẠI','CÒN LẠI'],['CHƯA ĐẶT','CHƯA ĐẶT'],['ĐÃ ĐẶT CHƯA XUẤT HÀNG','CHƯA XUẤT'],['ĐỦ','ĐỦ'],['THIẾU','THIẾU'],['THỪA','THỪA']];
+  const tt=[['CÒN LẠI','CÒN LẠI'],['CHƯA ĐẶT','CHƯA ĐẶT'],['ĐÃ ĐẶT CHƯA XUẤT HÀNG','ĐÃ ĐẶT CHƯA XUẤT HÀNG'],['ĐỦ','ĐỦ'],['THIẾU','THIẾU'],['THỪA','THỪA']];
   const sm=document.getElementById('lkMau'), sh=document.getElementById('lkHM'), ss=document.getElementById('lkStatus');
   sm.innerHTML='<option value="">Tất cả</option>'; mau.forEach(m=>sm.add(new Option(m,m)));
   sh.innerHTML='<option value="">Tất cả</option>'; hm.forEach(h=>sh.add(new Option(h,h)));
   if(ss){ ss.innerHTML='<option value="">Tất cả</option>'; tt.forEach(t=>ss.add(new Option(t[0],t[1]))); }
 }
+function lkKyHieu(ten){ const m=String(ten||'').match(/(V-FIN-\d+\w*|V-FAB-\d+|V-FUR-\d+|V-ACC-\d+|VAC-\d+\w*|V-[A-Z]+-\d+\w*|V-[A-Z]-\d+\w*|SK-\d+)/i); return m?m[1].toUpperCase():''; }
+function lkGroupOf(ma){ const s=String(ma||'').toUpperCase();
+  if(/-TL$/.test(s))return 'GẠCH'; if(/-ST$/.test(s))return 'ĐÁ'; if(/-GL$/.test(s))return 'KÍNH';
+  if(/-DM$/.test(s))return 'KIM LOẠI TT'; if(/-FA$/.test(s))return 'VẢI'; if(/-FT$/.test(s))return 'GỖ / FT';
+  const m=s.match(/-([A-Z]{2})$/); return m?m[1]:''; }
+function lkNumF(v){ if(v==null||v==='')return 0; const n=parseFloat(String(v).replace(/\./g,'').replace(',','.')); return isNaN(n)?0:n; }
+function lkLatest(d){ const B=d.b||[]; for(let i=B.length-1;i>=0;i--){ if(B[i]&&(B[i][0]||B[i][1]||B[i][2])) return {kh:B[i][0]||'',xuat:B[i][1]||'',nhan:B[i][2]||''}; } return {kh:'',xuat:'',nhan:''}; }
+function lkHasXuat(d){ const B=d.b||[]; return B.some(x=>x&&x[1]); }
+function lkStatusOf(d){ const boq=lkNumF(d.slkh), dat=lkNumF(d.tongdat);
+  if(dat<=0) return 'CHƯA ĐẶT'; if(Math.abs(dat-boq)<0.05) return 'ĐỦ'; if(dat<boq) return 'THIẾU'; return 'THỪA'; }
+function lkStatusMatch(d,st){ if(!st)return true; const s=lkStatusOf(d);
+  if(st==='CÒN LẠI') return s==='CHƯA ĐẶT'||s==='THIẾU';
+  if(st==='ĐÃ ĐẶT CHƯA XUẤT HÀNG') return lkNumF(d.tongdat)>0 && !lkHasXuat(d);
+  return s===st; }
 function lkRender(){
   const m=document.getElementById('lkMau').value, h=document.getElementById('lkHM').value;
-  const tt=document.getElementById('lkTT').value, q=(document.getElementById('lkQ').value||'').trim().toLowerCase();
   const st=document.getElementById('lkStatus')?document.getElementById('lkStatus').value:'';
+  const q=(document.getElementById('lkQ').value||'').trim().toLowerCase();
   let rows=VTU_DETAIL.filter(d=>{
     if(m&&d.mau!==m) return false;
     if(h&&d.hangmuc!==h) return false;
-    if(st&&lkNorm(d.tt).indexOf(lkNorm(st))<0) return false;
-    if(q&&!((String(d.ten||'')+' '+String(d.ma||'')).toLowerCase().includes(q))) return false;
-    const sched=lkHasSched(d);
-    if(tt==='co'&&!sched) return false;
-    if(tt==='chua'&&sched) return false;
+    if(!lkStatusMatch(d,st)) return false;
+    if(q&&!((String(d.ten||'')+' '+String(d.ma||'')+' '+lkKyHieu(d.ten)).toLowerCase().includes(q))) return false;
     return true;
   });
   const tb=document.getElementById('lkBody'); tb.innerHTML='';
-  if(!rows.length){ tb.innerHTML='<tr><td colspan="13" style="text-align:center;padding:24px;color:#9aa0bd">Không có dòng nào khớp.</td></tr>'; }
+  if(!rows.length){ tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:24px;color:#9aa0bd">Không có dòng nào khớp.</td></tr>'; }
+  const stCol={'CHƯA ĐẶT':'#b91c1c','THIẾU':'#c2700b','ĐỦ':'#1f9d6b','THỪA':'#6b4bbd'};
   rows.slice(0,500).forEach(d=>{
-    const x=lkDates(d); const date=x.nhan||x.xuat||x.kh;
-    const nx=x.next?' title="Lấy theo đợt kế tiếp do còn thiếu"':'';
+    const L=lkLatest(d); const ra=L.nhan||L.xuat||L.kh||''; const s=lkStatusOf(d);
     const tr=document.createElement('tr');
-    const cell=(v)=>`<td style="text-align:center;font-weight:${v?700:400};color:${v?'#1f9d6b':'#b9bfce'}"${nx}>${v||'—'}</td>`;
     tr.innerHTML=`<td style="padding-left:10px;color:#555">${d.ma||''}</td>
       <td style="text-align:left;font-weight:600;max-width:280px">${d.ten||''}</td>
-      <td style="text-align:center"><span style="background:#eef2fb;padding:2px 7px;border-radius:10px;font-size:10.5px">${d.hangmuc||''}</span></td>
+      <td style="text-align:center;color:#555">${lkKyHieu(d.ten)||'—'}</td>
       <td style="text-align:center"><span style="background:#efe9fb;color:#6b4bbd;padding:2px 7px;border-radius:10px;font-size:10.5px">${d.mau||''}</span></td>
-      <td style="text-align:center">${d.socan||''}</td>
-      <td style="text-align:center;color:#555">${lkNum(d.slkh)}</td>
+      <td style="text-align:center"><span style="background:#eef2fb;padding:2px 7px;border-radius:10px;font-size:10.5px">${lkGroupOf(d.ma)}</span></td>
       <td style="text-align:center;color:#555">${d.dvt||''}</td>
-      <td style="text-align:center;font-weight:600;color:#1F4E79">${lkNum(d.tongdat)}</td>
-      <td style="text-align:center;color:#555">${lkPct(d.sanxuat)}</td>
-      ${cell(x.kh)}${cell(x.xuat)}
-      <td style="text-align:center;font-weight:${date?700:400};color:${date?'#1e3a5f':'#b9bfce'}"${nx}>${date||(lkIsShort(d)?'đợt sau chưa có lịch':'chưa có lịch')}</td>
-      <td style="text-align:center;font-size:10.5px">${d.tt||''}</td>`;
+      <td style="text-align:center;font-weight:600;color:#1F4E79">${lkNum(d.slkh)}</td>
+      <td style="text-align:center;font-weight:${L.kh?700:400};color:${L.kh?'#1e3a5f':'#b9bfce'}">${L.kh||'—'}</td>
+      <td style="text-align:center;font-weight:${ra?700:400};color:${ra?'#1f9d6b':'#b9bfce'}">${ra||'chưa có lịch'}</td>
+      <td style="text-align:center;font-size:10.5px;font-weight:700;color:${stCol[s]||'#555'}">${s}</td>`;
     tb.appendChild(tr);
   });
   const withS=rows.filter(lkHasSched).length;
   document.getElementById('lkStats').textContent=`${rows.length} sản phẩm khớp • ${withS} đã có lịch • ${rows.length-withS} chưa có lịch`+(rows.length>500?' (hiển thị 500 dòng đầu)':'');
 }
 function lkBindOnce(){
-  ['lkMau','lkHM','lkTT','lkStatus'].forEach(id=>{const e=document.getElementById(id); if(e) e.addEventListener('change',lkRender);});
+  ['lkMau','lkHM','lkStatus'].forEach(id=>{const e=document.getElementById(id); if(e) e.addEventListener('change',lkRender);});
   document.getElementById('lkQ').addEventListener('input',lkRender);
 }
 function downloadExcel(){
   try{
-    const rows=VTU_DETAIL.map(d=>{ const x=lkDates(d); const ra=x.nhan||x.xuat||x.kh||'';
-      return {'Mã':d.ma||'','Tên sản phẩm':d.ten||'','Hạng mục':d.hangmuc||'','Mẫu căn':d.mau||'',
-        'SL căn':d.socan||'','SỐ LƯỢNG (BOQ)':lkNum(d.slkh),'ĐVT':d.dvt||'','Tổng đặt':lkNum(d.tongdat),
-        'Sản xuất':lkNum(d.sanxuat),'KH hàng về':x.kh||'','Ngày xuất kho':x.xuat||'',
-        'Ra công trường':ra,'Trạng thái':d.tt||''}; });
+    const rows=VTU_DETAIL.map(d=>{ const L=lkLatest(d); const ra=L.nhan||L.xuat||L.kh||'';
+      return {'Mã':d.ma||'','Mô tả':d.ten||'','Kí hiệu':lkKyHieu(d.ten),'Mẫu căn':d.mau||'',
+        'Nhóm':lkGroupOf(d.ma),'ĐVT':d.dvt||'','Tổng KL':lkNum(d.slkh),
+        'KH hàng về':L.kh||'','Ra công trường':ra,'Trạng thái':lkStatusOf(d)}; });
     const ws=XLSX.utils.json_to_sheet(rows);
     const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'Tra cứu xuất hàng');
     const today=new Date().toLocaleDateString('vi-VN').replace(/\//g,'-');
@@ -1679,9 +1736,8 @@ function buildVatTu(){
     data:{
       labels:vs.map(v=>v.name),
       datasets:[
-        {label:'% Đặt hàng', data:vs.map(v=>v.total?Math.round(v.dat/v.total*100):0),  backgroundColor:'#2E75B6', borderRadius:4},
-        {label:'% Xuất kho',  data:vs.map(v=>v.total?Math.round(v.xuat/v.total*100):0), backgroundColor:'#1F4E79', borderRadius:4},
-        {label:'% Nhận khui', data:vs.map(v=>v.total?Math.round(v.nhan/v.total*100):0), backgroundColor:'#276221', borderRadius:4},
+        {label:'% Đã đặt hàng',   data:vs.map(v=>v.total?Math.round(v.dat/v.total*100):0),  backgroundColor:'#2E75B6', borderRadius:4},
+        {label:'% Về công trình', data:vs.map(v=>v.total?Math.round(v.nhan/v.total*100):0), backgroundColor:'#276221', borderRadius:4},
       ]
     },
     options:{responsive:true,maintainAspectRatio:false,
@@ -1759,5 +1815,212 @@ window.addEventListener('DOMContentLoaded',()=>{
   }
 });
 </script>
+
+<script>
+const MAT_DATA=[{"c":"KÍNH","no":"DA25328-0011-GL","m":"V-D-07b: Cửa một cánh mở ","k":"V-FIN-254","u":"SET","q":16,"b":540},{"c":"KÍNH","no":"DA25328-0012-GL","m":"V-D-07e: Cửa một cánh mở cho nhà vệ sinh","k":"V-FIN-254","u":"SET","q":48,"b":540},{"c":"KÍNH","no":"DA25328-0013-GL","m":"V-D-07f: Cửa một cánh mở cho nhà vệ sinh","k":"V-FIN-254","u":"SET","q":32,"b":540},{"c":"KÍNH","no":"DA25328-0037-GL","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"V-FIN-254","u":"M2","q":70.66,"b":375.21},{"c":"ĐÁ","no":"DA25328-0038-ST","m":"Ốp đá  V-FIN-055","k":"V-FIN-055","u":"M2","q":11.92,"b":94.3},{"c":"GẠCH","no":"DA25328-0042-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a","k":"V-FIN-005a","u":"M2","q":342.57,"b":""},{"c":"GẠCH","no":"DA25328-0043-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a'","k":"V-FIN-005a","u":"M2","q":648.32,"b":""},{"c":"GẠCH","no":"DA25328-0044-TL","m":"Ốp tường gạch phòng vệ sinh V-FIN-005b","k":"V-FIN-005b","u":"M2","q":70.32,"b":3250.66},{"c":"GẠCH","no":"DA25328-0046-TL","m":"Ốp gạch kính VAC-025","k":"","u":"M2","q":7.1,"b":""},{"c":"GẠCH","no":"DA25328-0056-TL","m":"Lát sàn Gạch V-FIN-001","k":"V-FIN-001","u":"M2","q":1685.22,"b":10440.32},{"c":"ĐÁ","no":"DA25328-0057-ST","m":"Lát Đá sàn ngoài nhà (sàn deck bể bơi, sảnh)","k":"","u":"M2","q":434.3,"b":2869.67},{"c":"GẠCH","no":"DA25328-0058-TL","m":"Lát sàn Gạch V-FIN-004a","k":"V-FIN-004a","u":"M2","q":262.88,"b":1741.96},{"c":"GẠCH","no":"DA25328-0059-TL","m":"Lát sàn Gạch V-FIN-004b","k":"V-FIN-004b","u":"M2","q":162.4,"b":1052.81},{"c":"GẠCH","no":"DA25328-0060-TL","m":"Lát sàn Gạch V-FIN-006","k":"V-FIN-006","u":"M2","q":203.84,"b":""},{"c":"GẠCH","no":"DA25328-0061-TL","m":"Lát sàn Gạch V-FIN-009","k":"V-FIN-009","u":"M2","q":1063.04,"b":""},{"c":"GẠCH","no":"DA25328-0064-TL","m":"Len chân tường Gạch SK-01","k":"","u":"M","q":505.17,"b":6329.32},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0069-DM","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":243.45,"b":""},{"c":"KÍNH","no":"DA25328-0069-GL","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":243.45,"b":""},{"c":"ĐÁ","no":"DA25328-0071-ST","m":"\nV-A-FF01: Quầy","k":"","u":"SYSTEM","q":16,"b":99},{"c":"ĐÁ","no":"DA25328-0074-ST","m":"V-A-FF02b: Tủ quầy","k":"","u":"SYSTEM","q":16,"b":16},{"c":"ĐÁ","no":"DA25328-0076-ST","m":"V-A-FF03: kệ bếp","k":"","u":"SYSTEM","q":16,"b":16},{"c":"ĐÁ","no":"DA25328-0077-ST","m":"V-A-FF04: kệ bếp","k":"","u":"SYSTEM","q":16,"b":16},{"c":"ĐÁ","no":"DA25328-0079-ST","m":"V-A-FF06: Tủ quần áo kết hợp tủ quầy \n@ Phòng ngủ Master ","k":"","u":"SYSTEM","q":16,"b":""},{"c":"ĐÁ","no":"DA25328-0086-ST","m":"VAC-01: Bàn Vanity cho phòng tắm  vệ sinh ","k":"V-FIN-055","u":"SYSTEM","q":48,"b":116},{"c":"ĐÁ","no":"DA25328-0088-ST","m":"VAC-02: Bàn Vanity ","k":"V-FIN-055","u":"SYSTEM","q":16,"b":16},{"c":"GẠCH","no":"DA25328-0090-TL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":16,"b":""},{"c":"ĐÁ","no":"DA25328-0090-ST","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":16,"b":""},{"c":"KÍNH","no":"DA25328-0090-GL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":16,"b":""},{"c":"ĐÁ","no":"DA25328-0099-ST","m":"V-ACC-18: Giá treo dù","k":"","u":"PCS","q":16,"b":129},{"c":"KÍNH","no":"DA25328-0111-GL","m":"V-D-07d: Cửa một cánh mở ","k":"V-FIN-254","u":"SET","q":49,"b":89},{"c":"KÍNH","no":"DA25328-0112-GL","m":"V-D-07e: Cửa một cánh mở ","k":"V-FIN-254","u":"SET","q":98,"b":540},{"c":"KÍNH","no":"DA25328-0113-GL","m":"V-D-07f: Cửa một cánh mở cho nhà vệ sinh","k":"V-FIN-254","u":"SET","q":147,"b":540},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0136-DM","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"","u":"M2","q":144.65,"b":375.21},{"c":"KÍNH","no":"DA25328-0136-GL","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"V-FIN-254","u":"M2","q":144.65,"b":375.21},{"c":"ĐÁ","no":"DA25328-0137-ST","m":"Ốp đá  V-FIN-055","k":"V-FIN-055","u":"M2","q":36.49,"b":94.3},{"c":"GẠCH","no":"DA25328-0141-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a","k":"V-FIN-005a","u":"M2","q":1022.09,"b":""},{"c":"GẠCH","no":"DA25328-0142-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a'","k":"V-FIN-005a","u":"M2","q":0,"b":""},{"c":"GẠCH","no":"DA25328-0143-TL","m":"Ốp tường gạch phòng vệ sinh V-FIN-005b","k":"V-FIN-005b","u":"M2","q":2106.87,"b":3250.66},{"c":"GẠCH","no":"DA25328-0145-TL","m":"Ốp gạch kính VAC-025","k":"","u":"M2","q":43.76,"b":""},{"c":"GẠCH","no":"DA25328-0155-TL","m":"Lát sàn Gạch V-FIN-001","k":"V-FIN-001","u":"M2","q":3953.17,"b":10440.32},{"c":"ĐÁ","no":"DA25328-0156-ST","m":"Lát Đá sàn ngoài nhà (sàn deck bể bơi, sảnh)","k":"","u":"M2","q":0,"b":2869.67},{"c":"GẠCH","no":"DA25328-0157-TL","m":"Lát sàn Gạch V-FIN-004a","k":"V-FIN-004a","u":"M2","q":688.84,"b":1741.96},{"c":"GẠCH","no":"DA25328-0158-TL","m":"Lát sàn Gạch V-FIN-004b","k":"V-FIN-004b","u":"M2","q":448.3,"b":1052.81},{"c":"GẠCH","no":"DA25328-0159-TL","m":"Lát sàn Gạch V-FIN-006","k":"V-FIN-006","u":"M2","q":360.1,"b":""},{"c":"GẠCH","no":"DA25328-0160-TL","m":"Lát sàn Gạch V-FIN-009","k":"V-FIN-009","u":"M2","q":3255.56,"b":""},{"c":"GẠCH","no":"DA25328-0163-TL","m":"Len chân tường Gạch SK-01","k":"","u":"M","q":1547.08,"b":6329.32},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0168-DM","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":1014.4,"b":""},{"c":"KÍNH","no":"DA25328-0168-GL","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":1014.4,"b":""},{"c":"ĐÁ","no":"DA25328-0171-ST","m":"Ốp đá bậc thang bộ","k":"","u":"M2","q":567.82,"b":2869.67},{"c":"ĐÁ","no":"DA25328-0172-ST","m":"V-B-FF01: Quầy","k":"","u":"SYSTEM","q":49,"b":99},{"c":"ĐÁ","no":"DA25328-0175-ST","m":"V-B-FF02: Tủ quầy","k":"","u":"SYSTEM","q":49,"b":63},{"c":"ĐÁ","no":"DA25328-0176-ST","m":"V-A-FF03: kệ bếp","k":"","u":"SYSTEM","q":49,"b":63},{"c":"ĐÁ","no":"DA25328-0180-ST","m":"V-B-FF06: Tủ quần áo \n@ Phòng ngủ Master ","k":"","u":"SYSTEM","q":49,"b":""},{"c":"ĐÁ","no":"DA25328-0187-ST","m":"VAC-01: Bàn Vanity cho phòng tắm master, ","k":"V-FIN-055","u":"SYSTEM","q":49,"b":116},{"c":"ĐÁ","no":"DA25328-0189-ST","m":"VAC-02: Bàn Vanity cho WC02;WC03","k":"V-FIN-055","u":"SYSTEM","q":98,"b":126},{"c":"ĐÁ","no":"DA25328-0191-ST","m":"VAC-03: Bàn Vanity","k":"V-FIN-055","u":"SYSTEM","q":49,"b":49},{"c":"GẠCH","no":"DA25328-0193-TL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":49,"b":""},{"c":"ĐÁ","no":"DA25328-0193-ST","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":49,"b":""},{"c":"KÍNH","no":"DA25328-0193-GL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":49,"b":""},{"c":"ĐÁ","no":"DA25328-0202-ST","m":"V-ACC-18: Giá treo dù","k":"","u":"PCS","q":49,"b":129},{"c":"KÍNH","no":"DA25328-0214-GL","m":"V-D-07a: Cửa 1 cánh mở","k":"V-FIN-254","u":"SET","q":20,"b":540},{"c":"KÍNH","no":"DA25328-0215-GL","m":"\nV-D-07b: Cửa 1 cánh mở","k":"V-FIN-254","u":"SET","q":20,"b":540},{"c":"KÍNH","no":"DA25328-0216-GL","m":"V-D-07c: Cửa 1 cánh mở","k":"V-FIN-254","u":"SET","q":20,"b":89},{"c":"KÍNH","no":"DA25328-0217-GL","m":"V-D-07d: Cửa 1 cánh mở","k":"V-FIN-254","u":"SET","q":20,"b":89},{"c":"KÍNH","no":"DA25328-0218-GL","m":"V-D-07e: Cửa 1 cánh mở","k":"V-FIN-254","u":"SET","q":20,"b":540},{"c":"KÍNH","no":"DA25328-0219-GL","m":"V-D-07f: Cửa 1 cánh mở","k":"V-FIN-254","u":"SET","q":20,"b":540},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0246-DM","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"","u":"M2","q":116.16,"b":375.21},{"c":"KÍNH","no":"DA25328-0246-GL","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"V-FIN-254","u":"M2","q":116.16,"b":375.21},{"c":"ĐÁ","no":"DA25328-0247-ST","m":"Ốp đá  V-FIN-055","k":"V-FIN-055","u":"M2","q":14.9,"b":94.3},{"c":"GẠCH","no":"DA25328-0251-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a","k":"V-FIN-005a","u":"M2","q":553.59,"b":""},{"c":"GẠCH","no":"DA25328-0252-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a'","k":"V-FIN-005a","u":"M2","q":837.75,"b":""},{"c":"GẠCH","no":"DA25328-0253-TL","m":"Ốp tường gạch phòng vệ sinh V-FIN-005b","k":"V-FIN-005b","u":"M2","q":319.51,"b":3250.66},{"c":"GẠCH","no":"DA25328-0255-TL","m":"Ốp gạch kính VAC-025","k":"","u":"M2","q":17.86,"b":""},{"c":"GẠCH","no":"DA25328-0265-TL","m":"Lát sàn Gạch V-FIN-001","k":"V-FIN-001","u":"M2","q":2742.62,"b":10440.32},{"c":"ĐÁ","no":"DA25328-0266-ST","m":"Lát Đá sàn ngoài nhà (sàn deck bể bơi, sảnh)","k":"","u":"M2","q":676.73,"b":2869.67},{"c":"GẠCH","no":"DA25328-0267-TL","m":"Lát sàn Gạch V-FIN-004a","k":"V-FIN-004a","u":"M2","q":477.8,"b":1741.96},{"c":"GẠCH","no":"DA25328-0268-TL","m":"Lát sàn Gạch V-FIN-004b","k":"V-FIN-004b","u":"M2","q":232.84,"b":1052.81},{"c":"GẠCH","no":"DA25328-0269-TL","m":"Lát sàn Gạch V-FIN-006","k":"V-FIN-006","u":"M2","q":482.98,"b":""},{"c":"GẠCH","no":"DA25328-0270-TL","m":"Lát sàn Gạch V-FIN-009","k":"V-FIN-009","u":"M2","q":1328.8,"b":""},{"c":"GẠCH","no":"DA25328-0271-TL","m":"Lát sàn Gạch V-FIN-007","k":"V-FIN-007","u":"M2","q":240.62,"b":436.34},{"c":"GẠCH","no":"DA25328-0272-TL","m":"Lát sàn Gạch V-FIN-057","k":"V-FIN-057","u":"M2","q":1137.72,"b":""},{"c":"GẠCH","no":"DA25328-0275-TL","m":"Len chân tường Gạch SK-01","k":"","u":"M","q":631.46,"b":6329.32},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0280-DM","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":496.45,"b":""},{"c":"KÍNH","no":"DA25328-0280-GL","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":496.45,"b":""},{"c":"ĐÁ","no":"DA25328-0284-ST","m":"Ốp đá bậc thang bộ","k":"","u":"M2","q":304.48,"b":2869.67},{"c":"ĐÁ","no":"DA25328-0285-ST","m":"V-FF01: Quầy","k":"","u":"SYSTEM","q":20,"b":99},{"c":"ĐÁ","no":"DA25328-0287-ST","m":"V-FF02: Tủ quầy","k":"","u":"SYSTEM","q":20,"b":20},{"c":"ĐÁ","no":"DA25328-0289-ST","m":"V-FF03: kệ bếp","k":"","u":"SYSTEM","q":20,"b":20},{"c":"ĐÁ","no":"DA25328-0290-ST","m":"V-FF04: kệ bếp","k":"","u":"SYSTEM","q":20,"b":20},{"c":"ĐÁ","no":"DA25328-0292-ST","m":"V-FF06a: Tủ quần áo kết hợp tủ quầy \n@ Master phòng ngủ","k":"","u":"SYSTEM","q":20,"b":""},{"c":"ĐÁ","no":"DA25328-0302-ST","m":"V-FF15: Kệ bếp","k":"","u":"SYSTEM","q":20,"b":20},{"c":"ĐÁ","no":"DA25328-0306-ST","m":"VAC-01: Bàn Vanity","k":"V-FIN-055","u":"SYSTEM","q":60,"b":60},{"c":"ĐÁ","no":"DA25328-0308-ST","m":"VAC-02: Bàn Vanity","k":"V-FIN-055","u":"SYSTEM","q":20,"b":20},{"c":"ĐÁ","no":"DA25328-0310-ST","m":"VAC-03: Bàn Vanity","k":"V-FIN-055","u":"SYSTEM","q":20,"b":""},{"c":"GẠCH","no":"DA25328-0312-TL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":20,"b":""},{"c":"ĐÁ","no":"DA25328-0312-ST","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":20,"b":""},{"c":"KÍNH","no":"DA25328-0312-GL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":20,"b":""},{"c":"ĐÁ","no":"DA25328-0324-ST","m":"V-ACC-18: Giá đỡ dù","k":"","u":"PCS","q":40,"b":129},{"c":"KÍNH","no":"DA25328-0336-GL","m":"V-D-07a: Cửa một cánh mở","k":"V-FIN-254","u":"SET","q":10,"b":540},{"c":"KÍNH","no":"DA25328-0337-GL","m":"V-D-07b: Cửa một cánh mở ","k":"V-FIN-254","u":"SET","q":5,"b":540},{"c":"KÍNH","no":"DA25328-0338-GL","m":"V-D-07e: Cửa một cánh mở ","k":"V-FIN-254","u":"SET","q":10,"b":540},{"c":"KÍNH","no":"DA25328-0339-GL","m":"V-D-07f: Cửa một cánh mở cho nhà vệ sinh","k":"V-FIN-254","u":"SET","q":10,"b":540},{"c":"KÍNH","no":"DA25328-0345-GL","m":"V-D-12: Cửa lùa - cửa sổ lùa","k":"","u":"SET","q":5,"b":5},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0369-DM","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"","u":"M2","q":37.56,"b":375.21},{"c":"KÍNH","no":"DA25328-0369-GL","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"V-FIN-254","u":"M2","q":37.56,"b":375.21},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0370-DM","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"","u":"M2","q":7.2,"b":375.21},{"c":"KÍNH","no":"DA25328-0370-GL","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"V-FIN-254","u":"M2","q":7.2,"b":375.21},{"c":"ĐÁ","no":"DA25328-0371-ST","m":"Ốp đá  V-FIN-055","k":"V-FIN-055","u":"M2","q":3.72,"b":94.3},{"c":"GẠCH","no":"DA25328-0375-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a","k":"V-FIN-005a","u":"M2","q":99.37,"b":""},{"c":"GẠCH","no":"DA25328-0376-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a'","k":"V-FIN-005a","u":"M2","q":0,"b":""},{"c":"GẠCH","no":"DA25328-0377-TL","m":"Ốp tường gạch phòng vệ sinh V-FIN-005b","k":"V-FIN-005b","u":"M2","q":310.66,"b":3250.66},{"c":"GẠCH","no":"DA25328-0379-TL","m":"Ốp gạch kính VAC-025","k":"","u":"M2","q":4.47,"b":""},{"c":"GẠCH","no":"DA25328-0389-TL","m":"Lát sàn Gạch V-FIN-001","k":"V-FIN-001","u":"M2","q":645.21,"b":10440.32},{"c":"ĐÁ","no":"DA25328-0390-ST","m":"Lát Đá sàn ngoài nhà (sàn deck bể bơi, sảnh)","k":"","u":"M2","q":308.02,"b":2869.67},{"c":"GẠCH","no":"DA25328-0391-TL","m":"Lát sàn Gạch V-FIN-004a","k":"V-FIN-004a","u":"M2","q":103.19,"b":1741.96},{"c":"GẠCH","no":"DA25328-0392-TL","m":"Lát sàn Gạch V-FIN-004b","k":"V-FIN-004b","u":"M2","q":56.7,"b":1052.81},{"c":"GẠCH","no":"DA25328-0393-TL","m":"Lát sàn Gạch V-FIN-006","k":"V-FIN-006","u":"M2","q":63.7,"b":""},{"c":"GẠCH","no":"DA25328-0394-TL","m":"Lát sàn Gạch V-FIN-009","k":"V-FIN-009","u":"M2","q":332.2,"b":""},{"c":"GẠCH","no":"DA25328-0395-TL","m":"Lát sàn Gạch V-FIN-007","k":"V-FIN-007","u":"M2","q":0,"b":436.34},{"c":"GẠCH","no":"DA25328-0396-TL","m":"Lát sàn Gạch V-FIN-057","k":"V-FIN-057","u":"M2","q":187.46,"b":""},{"c":"GẠCH","no":"DA25328-0399-TL","m":"Len chân tường Gạch SK-01","k":"","u":"M","q":157.87,"b":6329.32},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0404-DM","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":68.73,"b":""},{"c":"KÍNH","no":"DA25328-0404-GL","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":68.73,"b":""},{"c":"ĐÁ","no":"DA25328-0408-ST","m":"Ốp đá bậc thang bộ","k":"","u":"M2","q":38.2,"b":2869.67},{"c":"ĐÁ","no":"DA25328-0409-ST","m":"V-D-FF01: Quầy","k":"","u":"SYSTEM","q":5,"b":5},{"c":"ĐÁ","no":"DA25328-0411-ST","m":"V-D-FF02: Tủ quầy","k":"","u":"SYSTEM","q":5,"b":5},{"c":"ĐÁ","no":"DA25328-0413-ST","m":"V-D-FF03: kệ bếp","k":"","u":"SYSTEM","q":5,"b":5},{"c":"ĐÁ","no":"DA25328-0420-ST","m":"V-D-FF09b: Tủ ","k":"","u":"SYSTEM","q":5,"b":""},{"c":"ĐÁ","no":"DA25328-0431-ST","m":"V-D-FF18: Tủ quầy","k":"","u":"SYSTEM","q":5,"b":5},{"c":"ĐÁ","no":"DA25328-0435-ST","m":"VAC-01: Bàn Vanity cho phòng tắm master, ","k":"V-FIN-055","u":"SYSTEM","q":5,"b":5},{"c":"ĐÁ","no":"DA25328-0437-ST","m":"VAC-02: Bàn Vanity cho nhà vệ sinh 2","k":"V-FIN-055","u":"SYSTEM","q":5,"b":116},{"c":"ĐÁ","no":"DA25328-0439-ST","m":"VAC-03: Bàn Vanity","k":"V-FIN-055","u":"SYSTEM","q":10,"b":116},{"c":"ĐÁ","no":"DA25328-0441-ST","m":"VAC-04: Bàn Vanity","k":"V-FIN-055","u":"SYSTEM","q":5,"b":""},{"c":"ĐÁ","no":"DA25328-0443-ST","m":"VAC-05: Bàn Vanity","k":"V-FIN-055","u":"SYSTEM","q":5,"b":""},{"c":"GẠCH","no":"DA25328-0445-TL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":5,"b":""},{"c":"ĐÁ","no":"DA25328-0445-ST","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":5,"b":""},{"c":"KÍNH","no":"DA25328-0445-GL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":5,"b":""},{"c":"ĐÁ","no":"DA25328-0454-ST","m":"V-ACC-18: Giá treo dù","k":"","u":"PCS","q":10,"b":129},{"c":"KÍNH","no":"DA25328-0468-GL","m":"V-D-07d: Cửa một cánh mở ","k":"V-FIN-254","u":"SET","q":14,"b":540},{"c":"KÍNH","no":"DA25328-0469-GL","m":"V-D-07e: Cửa một cánh mở cho nhà vệ sinh","k":"V-FIN-254","u":"SET","q":28,"b":540},{"c":"KÍNH","no":"DA25328-0470-GL","m":"V-D-07f: Cửa một cánh mở cho nhà vệ sinh","k":"V-FIN-254","u":"SET","q":42,"b":540},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0497-DM","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"","u":"M2","q":41.33,"b":375.21},{"c":"KÍNH","no":"DA25328-0497-GL","m":"Cung cấp và lắp đặt vách kính cường lực phòng tắm ","k":"V-FIN-254","u":"M2","q":41.33,"b":375.21},{"c":"ĐÁ","no":"DA25328-0498-ST","m":"Ốp đá  V-FIN-055","k":"V-FIN-055","u":"M2","q":10.43,"b":94.3},{"c":"GẠCH","no":"DA25328-0502-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a","k":"V-FIN-005a","u":"M2","q":292.02,"b":""},{"c":"GẠCH","no":"DA25328-0503-TL","m":"Ốp tường gạch phòng tắm V-FIN-005a'","k":"V-FIN-005a","u":"M2","q":0,"b":""},{"c":"GẠCH","no":"DA25328-0504-TL","m":"Ốp tường gạch phòng vệ sinh V-FIN-005b","k":"V-FIN-005b","u":"M2","q":601.96,"b":3250.66},{"c":"GẠCH","no":"DA25328-0506-TL","m":"Ốp gạch kính VAC-025","k":"","u":"M2","q":12.5,"b":""},{"c":"GẠCH","no":"DA25328-0516-TL","m":"Lát sàn Gạch V-FIN-001","k":"V-FIN-001","u":"M2","q":1119.56,"b":10440.32},{"c":"ĐÁ","no":"DA25328-0517-ST","m":"Lát Đá sàn ngoài nhà (sàn deck bể bơi, sảnh)","k":"","u":"M2","q":0,"b":2869.67},{"c":"GẠCH","no":"DA25328-0518-TL","m":"Lát sàn Gạch V-FIN-004a","k":"V-FIN-004a","u":"M2","q":196.81,"b":1741.96},{"c":"GẠCH","no":"DA25328-0519-TL","m":"Lát sàn Gạch V-FIN-004b","k":"V-FIN-004b","u":"M2","q":128.08,"b":1052.81},{"c":"GẠCH","no":"DA25328-0520-TL","m":"Lát sàn Gạch V-FIN-006","k":"V-FIN-006","u":"M2","q":178.36,"b":""},{"c":"GẠCH","no":"DA25328-0521-TL","m":"Lát sàn Gạch V-FIN-009","k":"V-FIN-009","u":"M2","q":930.16,"b":""},{"c":"GẠCH","no":"DA25328-0522-TL","m":"Lát sàn Gạch V-FIN-007","k":"V-FIN-007","u":"M2","q":130.6,"b":436.34},{"c":"GẠCH","no":"DA25328-0523-TL","m":"Lát sàn Gạch V-FIN-057","k":"V-FIN-057","u":"M2","q":322.33,"b":""},{"c":"GẠCH","no":"DA25328-0526-TL","m":"Len chân tường Gạch SK-01","k":"","u":"M","q":442.02,"b":6329.32},{"c":"KIM LOẠI TRANG TRÍ","no":"DA25328-0531-DM","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":473.7,"b":""},{"c":"KÍNH","no":"DA25328-0531-GL","m":"Cung cấp và lắp đặt lan can kính","k":"","u":"M2","q":473.7,"b":""},{"c":"ĐÁ","no":"DA25328-0535-ST","m":"Ốp đá bậc thang bộ","k":"","u":"M2","q":226.5,"b":2869.67},{"c":"ĐÁ","no":"DA25328-0536-ST","m":"V-E-FF01: Quầy","k":"","u":"SYSTEM","q":14,"b":99},{"c":"ĐÁ","no":"DA25328-0539-ST","m":"V-E-FF02: Tủ quầy","k":"","u":"SYSTEM","q":14,"b":63},{"c":"ĐÁ","no":"DA25328-0540-ST","m":"V-A-FF03: kệ bếp","k":"","u":"SYSTEM","q":14,"b":63},{"c":"ĐÁ","no":"DA25328-0543-ST","m":"V-E-FF06: Tủ quần áo \n@ Phòng ngủ Master ","k":"","u":"SYSTEM","q":14,"b":""},{"c":"ĐÁ","no":"DA25328-0551-ST","m":"V-E-FF15: Quầy","k":"","u":"SYSTEM","q":14,"b":14},{"c":"ĐÁ","no":"DA25328-0553-ST","m":"VAC-01: Bàn Vanity cho phòng tắm","k":"V-FIN-055","u":"SYSTEM","q":14,"b":116},{"c":"ĐÁ","no":"DA25328-0555-ST","m":"VAC-02: Bàn Vanity cho nhà vệ sinh","k":"V-FIN-055","u":"SYSTEM","q":28,"b":126},{"c":"GẠCH","no":"DA25328-0559-TL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":14,"b":""},{"c":"ĐÁ","no":"DA25328-0559-ST","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":14,"b":""},{"c":"KÍNH","no":"DA25328-0559-GL","m":"Hoàn thiện quầy BBQ ngoài nhà","k":"","u":"SYSTEM","q":14,"b":""},{"c":"ĐÁ","no":"DA25328-0568-ST","m":"V-ACC-18: Giá treo dù","k":"","u":"PCS","q":14,"b":129},{"c":"ĐÁ","no":"DA25328-0597-ST","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":16,"b":46},{"c":"VẢI","no":"DA25328-0597-FA","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":16,"b":46},{"c":"ĐÁ","no":"DA25328-0685-ST","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":20,"b":46},{"c":"VẢI","no":"DA25328-0685-FA","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":20,"b":46},{"c":"ĐÁ","no":"DA25328-0726-ST","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":10,"b":46},{"c":"VẢI","no":"DA25328-0726-FA","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":10,"b":46},{"c":"ĐÁ","no":"DA25328-0779-ST","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":14,"b":46},{"c":"VẢI","no":"DA25328-0779-FA","m":"V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250","k":"","u":"PCS","q":14,"b":46}];
+const MAT_MAU=(no)=>{const m=String(no).match(/DA25328-(\d+)/);if(!m)return '';const n=+m[1];if(n<105)return 'A';if(n<210)return 'B';if(n<330)return 'C';if(n<462)return 'D';return 'E';};
+(function(){
+  MAT_DATA.forEach(d=>{d.mau=MAT_MAU(d.no);});
+  const g={};
+  MAT_DATA.forEach(d=>{const k=d.c+'|'+d.m;(g[k]=g[k]||[]).push(d);});
+  Object.values(g).forEach(arr=>{
+    const btot=Math.max(...arr.map(d=>+d.b||0));
+    const sq=arr.reduce((s,d)=>s+(+d.q||0),0);
+    arr.forEach(d=>{ d.bsplit = !btot ? '' : (sq>0 ? btot*(+d.q||0)/sq : btot/arr.length); });
+  });
+})();
+const MAT_CATS=['GẠCH','ĐÁ','KÍNH','KIM LOẠI TRANG TRÍ','VẢI'];
+const MAT_COL={'GẠCH':'#2E75B6','ĐÁ':'#7F6000','KÍNH':'#2E9BD6','KIM LOẠI TRANG TRÍ':'#7030A0','VẢI':'#C55A11'};
+function matNum(n){return (Math.round(n*10)/10).toLocaleString('vi-VN');}
+function matKpiBuild(){
+  const box=document.getElementById('matKpi'); if(!box)return; box.innerHTML='';
+  MAT_CATS.forEach(c=>{
+    const items=MAT_DATA.filter(d=>d.c===c);
+    const sum=items.reduce((s,d)=>s+(+d.q||0),0);
+    const el=document.createElement('div'); el.className='vtu-kpi-card';
+    el.innerHTML=`<div class="vk-v" style="color:${MAT_COL[c]}">${items.length}</div><div class="vk-l">${c}<br><b>${matNum(sum)}</b> KL</div>`;
+    box.appendChild(el);
+  });
+}
+let matC1,matC2;
+function matCharts(){
+  const sums=MAT_CATS.map(c=>Math.round(MAT_DATA.filter(d=>d.c===c).reduce((s,d)=>s+(+d.q||0),0)));
+  const cnts=MAT_CATS.map(c=>MAT_DATA.filter(d=>d.c===c).length);
+  const cols=MAT_CATS.map(c=>MAT_COL[c]);
+  if(window.Chart){
+    if(matC1)matC1.destroy(); if(matC2)matC2.destroy();
+    const e1=document.getElementById('c_matCat'), e2=document.getElementById('c_matCnt');
+    if(e1)matC1=new Chart(e1,{type:'bar',data:{labels:MAT_CATS,datasets:[{data:sums,backgroundColor:cols}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+    if(e2)matC2=new Chart(e2,{type:'bar',data:{labels:MAT_CATS,datasets:[{data:cnts,backgroundColor:cols}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+  }
+}
+function matRender(){
+  const c=document.getElementById('matCat').value, q=(document.getElementById('matQ').value||'').trim().toLowerCase();
+  const mu=(document.getElementById('matMauSel')||{value:''}).value;
+  let rows=MAT_DATA.filter(d=>{
+    if(c&&d.c!==c)return false;
+    if(mu&&d.mau!==mu)return false;
+    if(q&&!((d.no+' '+d.m+' '+d.k).toLowerCase().includes(q)))return false;
+    return true;
+  });
+  const tb=document.getElementById('matBody'); tb.innerHTML='';
+  if(!rows.length) tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:#9aa0bd">Không có dòng nào.</td></tr>';
+  rows.slice(0,600).forEach(d=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td style="padding-left:10px;color:#555">${d.no}</td>
+      <td style="text-align:left;font-weight:600;max-width:320px">${d.m||''}</td>
+      <td style="text-align:center">${d.k||''}</td>
+      <td style="text-align:center"><span style="background:${MAT_COL[d.c]}22;color:${MAT_COL[d.c]};padding:2px 7px;border-radius:10px;font-size:10.5px">${d.c}</span></td>
+      <td style="text-align:center"><span style="background:#efe9fb;color:#6b4bbd;padding:2px 7px;border-radius:10px;font-size:10.5px">${d.mau||''}</span></td>
+      <td style="text-align:center">${d.u||''}</td>
+      <td style="text-align:center;font-weight:700">${d.q?matNum(d.q):''}</td>
+      <td style="text-align:center;color:#C55A11">${d.bsplit!==''&&d.bsplit!=null?matNum(d.bsplit):'—'}</td>`;
+    tb.appendChild(tr);
+  });
+  const sum=rows.reduce((s,d)=>s+(+d.q||0),0);
+  document.getElementById('matStats').textContent=`${rows.length} đầu mục · Σ Tổng KL = ${matNum(sum)}`+(rows.length>600?' (hiển thị 600 dòng đầu)':'');
+}
+function matBoot(){
+  const sel=document.getElementById('matCat'); if(!sel)return;
+  MAT_CATS.forEach(c=>sel.add(new Option(c,c)));
+  document.getElementById('matCat').addEventListener('change',matRender);
+  var _ms=document.getElementById('matMauSel'); if(_ms) _ms.addEventListener('change',matRender);
+  document.getElementById('matQ').addEventListener('input',matRender);
+  matKpiBuild(); matCharts(); matRender();
+}
+matBoot();
+</script>
+
+
+<script>
+// ===== DASHBOARD VẬT TƯ — Phân bổ hàng về =====
+const PB_GSHEET_ID = (typeof GSHEET_ID!=='undefined') ? GSHEET_ID : '';
+const PB_SHEET = '12.Phân bổ hàng về';   // tên tab Google Sheet chứa dữ liệu
+const PB_FALLBACK = [{"nhom": "GẠCH", "kh": "", "mota": "Hoàn thiện quầy BBQ ngoài nhà", "dvt": "hệ", "cA": 16.0, "cB": 49.0, "cC": 20.0, "cD": 5.0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "SK-01", "mota": "Len chân tường Gạch SK-01", "dvt": "md", "cA": 906.208, "cB": 1879.64, "cC": 2316.94, "cD": 399.135, "cE": 827.4, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-001", "mota": "Lát sàn Gạch V-FIN-001", "dvt": "m2", "cA": 1703.04, "cB": 3976.35, "cC": 2751.58, "cD": 834.05, "cE": 1175.3, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-004A", "mota": "Lát sàn Gạch V-FIN-004a", "dvt": "m2", "cA": 266.08, "cB": 701.19, "cC": 477.8, "cD": 103.55, "cE": 193.34, "kh_ve": 0, "g1": 1369.0, "g2": 103.32, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-004B", "mota": "Lát sàn Gạch V-FIN-004b", "dvt": "m2", "cA": 166.72, "cB": 459.62, "cC": 233.84, "cD": 55.15, "cE": 137.48, "kh_ve": 0, "g1": 716.0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-005A", "mota": "Ốp tường gạch phòng tắm V-FIN-005a", "dvt": "m2", "cA": 333.864, "cB": 1010.992, "cC": 558.4, "cD": 105.81, "cE": 273.28, "kh_ve": 0, "g1": 93.6, "g2": 1786.09, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-005A'", "mota": "Ốp tường gạch phòng tắm V-FIN-005a'", "dvt": "m2", "cA": 629.76, "cB": 0.0, "cC": 904.638, "cD": 0.0, "cE": 0.0, "kh_ve": 0, "g1": 93.6, "g2": 1101.72, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-005B", "mota": "Ốp tường gạch phòng vệ sinh V-FIN-005b", "dvt": "m2", "cA": 74.136, "cB": 1947.191, "cC": 330.31, "cD": 347.002, "cE": 552.02, "kh_ve": 0, "g1": 16.88, "g2": 2823.75, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-006", "mota": "Lát sàn Gạch V-FIN-006", "dvt": "m2", "cA": 203.36, "cB": 360.64, "cC": 527.2, "cD": 20.6, "cE": 516.46, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-007", "mota": "Lát sàn Gạch V-FIN-007", "dvt": "m2", "cA": 0, "cB": 0, "cC": 243.2, "cD": 63.5, "cE": 129.64, "kh_ve": 0, "g1": 341.0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-009", "mota": "Lát sàn Gạch V-FIN-009", "dvt": "m2", "cA": 1071.84, "cB": 2947.84, "cC": 1718.4, "cD": 523.75, "cE": 840.42, "kh_ve": 0, "g1": 398.9, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "V-FIN-057", "mota": "Lát sàn Gạch V-FIN-057", "dvt": "m2", "cA": 0, "cB": 0, "cC": 1138.6, "cD": 280.0, "cE": 322.56, "kh_ve": 0, "g1": 1066.32, "g2": 582.48, "g3": 0, "g4": 0}, {"nhom": "GẠCH", "kh": "VAC-025", "mota": "Ốp gạch kính VAC-025", "dvt": "m2", "cA": 0.0, "cB": 0.0, "cC": 0.0, "cD": 0.0, "cE": 0.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-A-FF01", "mota": "V-A-FF01: Quầy", "dvt": "hệ", "cA": 16.0, "cB": 0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "", "mota": "Hoàn thiện quầy BBQ ngoài nhà", "dvt": "hệ", "cA": 16.0, "cB": 49.0, "cC": 20.0, "cD": 5.0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "", "mota": "Lát Đá sàn ngoài nhà (sàn deck bể bơi, sảnh)", "dvt": "m2", "cA": 472.32, "cB": 0.0, "cC": 676.8, "cD": 313.5, "cE": 0.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-A-FF02B", "mota": "V-A-FF02b: Tủ quầy", "dvt": "hệ", "cA": 16.0, "cB": 0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-A-FF03", "mota": "V-A-FF03: kệ bếp", "dvt": "hệ", "cA": 16.0, "cB": 49.0, "cC": 0, "cD": 0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-A-FF04", "mota": "V-A-FF04: kệ bếp", "dvt": "hệ", "cA": 16.0, "cB": 0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-A-FF06", "mota": "V-A-FF06: Tủ quần áo kết hợp tủ quầy \n@ Phòng ngủ Master", "dvt": "hệ", "cA": 16.0, "cB": 0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-ACC-18", "mota": "V-ACC-18: Giá treo dù", "dvt": "cái", "cA": 16.0, "cB": 49.0, "cC": 0, "cD": 10.0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-ACC-18", "mota": "V-ACC-18: Giá đỡ dù", "dvt": "cái", "cA": 0, "cB": 0, "cC": 40.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-B-FF01", "mota": "V-B-FF01: Quầy", "dvt": "hệ", "cA": 0, "cB": 49.0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-B-FF02", "mota": "V-B-FF02: Tủ quầy", "dvt": "hệ", "cA": 0, "cB": 49.0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-B-FF06", "mota": "V-B-FF06: Tủ quần áo \n@ Phòng ngủ Master", "dvt": "hệ", "cA": 0, "cB": 49.0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-D-FF01", "mota": "V-D-FF01: Quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-D-FF02", "mota": "V-D-FF02: Tủ quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-D-FF03", "mota": "V-D-FF03: kệ bếp", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-D-FF09B", "mota": "V-D-FF09b: Tủ", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-D-FF18", "mota": "V-D-FF18: Tủ quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-E-FF01", "mota": "V-E-FF01: Quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-E-FF02", "mota": "V-E-FF02: Tủ quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-E-FF06", "mota": "V-E-FF06: Tủ quần áo \n@ Phòng ngủ Master", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-E-FF15", "mota": "V-E-FF15: Quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FF01", "mota": "V-FF01: Quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FF02", "mota": "V-FF02: Tủ quầy", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FF03", "mota": "V-FF03: kệ bếp", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FF04", "mota": "V-FF04: kệ bếp", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FF06A", "mota": "V-FF06a: Tủ quần áo kết hợp tủ quầy \n@ Master phòng ngủ", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FF15", "mota": "V-FF15: Kệ bếp", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FUR-24", "mota": "V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250", "dvt": "cái", "cA": 16.0, "cB": 0, "cC": 20.0, "cD": 10.0, "cE": 0.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-01", "mota": "VAC-01: Bàn Vanity", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 60.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-01", "mota": "VAC-01: Bàn Vanity cho phòng tắm", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-01", "mota": "VAC-01: Bàn Vanity cho phòng tắm  vệ sinh", "dvt": "hệ", "cA": 48.0, "cB": 0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-01", "mota": "VAC-01: Bàn Vanity cho phòng tắm master,", "dvt": "hệ", "cA": 0, "cB": 49.0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-02", "mota": "VAC-02: Bàn Vanity", "dvt": "hệ", "cA": 16.0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-02", "mota": "VAC-02: Bàn Vanity cho WC02;WC03", "dvt": "hệ", "cA": 0, "cB": 98.0, "cC": 0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-02", "mota": "VAC-02: Bàn Vanity cho nhà vệ sinh", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 0, "cE": 28.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-02", "mota": "VAC-02: Bàn Vanity cho nhà vệ sinh 2", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-03", "mota": "VAC-03: Bàn Vanity", "dvt": "hệ", "cA": 0, "cB": 49.0, "cC": 20.0, "cD": 10.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-04", "mota": "VAC-04: Bàn Vanity", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "VAC-05", "mota": "VAC-05: Bàn Vanity", "dvt": "hệ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "V-FIN-055", "mota": "Ốp đá  V-FIN-055", "dvt": "m2", "cA": 13.622, "cB": 46.085, "cC": 15.604, "cD": 6.537, "cE": 12.46, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "ĐÁ", "kh": "", "mota": "Ốp đá bậc thang bộ", "dvt": "m2", "cA": 0, "cB": 711.627, "cC": 394.515, "cD": 47.925, "cE": 252.98, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07B", "mota": "V-D-07b: Cửa 1 cánh mở", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "", "mota": "Cung cấp và lắp đặt lan can kính", "dvt": "m2", "cA": 171.6, "cB": 1070.454, "cC": 499.172, "cD": 72.75, "cE": 365.68, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "", "mota": "Cung cấp và lắp đặt vách kính cường lực phòng tắm", "dvt": "m2", "cA": 70.656, "cB": 144.648, "cC": 85.92, "cD": 7.8, "cE": 39.62, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "", "mota": "Hoàn thiện quầy BBQ ngoài nhà", "dvt": "hệ", "cA": 16.0, "cB": 49.0, "cC": 20.0, "cD": 5.0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07A", "mota": "V-D-07a: Cửa 1 cánh mở", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07A", "mota": "V-D-07a: Cửa một cánh mở", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 0, "cD": 10.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07B", "mota": "V-D-07b: Cửa một cánh mở", "dvt": "bộ", "cA": 16.0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07C", "mota": "V-D-07c: Cửa 1 cánh mở", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07D", "mota": "V-D-07d: Cửa 1 cánh mở", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07D", "mota": "V-D-07d: Cửa một cánh mở", "dvt": "bộ", "cA": 0, "cB": 49.0, "cC": 0, "cD": 0, "cE": 14.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07E", "mota": "V-D-07e: Cửa 1 cánh mở", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07E", "mota": "V-D-07e: Cửa một cánh mở", "dvt": "bộ", "cA": 0, "cB": 98.0, "cC": 0, "cD": 10.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07E", "mota": "V-D-07e: Cửa một cánh mở cho nhà vệ sinh", "dvt": "bộ", "cA": 48.0, "cB": 0, "cC": 0, "cD": 0, "cE": 28.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07F", "mota": "V-D-07f: Cửa 1 cánh mở", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 20.0, "cD": 0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-07F", "mota": "V-D-07f: Cửa một cánh mở cho nhà vệ sinh", "dvt": "bộ", "cA": 32.0, "cB": 147.0, "cC": 0, "cD": 10.0, "cE": 42.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "NHÔM KÍNH", "kh": "V-D-12", "mota": "V-D-12: Cửa lùa - cửa sổ lùa", "dvt": "bộ", "cA": 0, "cB": 0, "cC": 0, "cD": 5.0, "cE": 0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "KIM LOẠI TRANG TRÍ", "kh": "", "mota": "Cung cấp và lắp đặt lan can kính", "dvt": "m2", "cA": 171.6, "cB": 1070.454, "cC": 499.172, "cD": 72.75, "cE": 365.68, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "KIM LOẠI TRANG TRÍ", "kh": "", "mota": "Cung cấp và lắp đặt vách kính cường lực phòng tắm", "dvt": "m2", "cA": 0, "cB": 144.648, "cC": 85.92, "cD": 7.8, "cE": 39.62, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}, {"nhom": "VẢI", "kh": "V-FUR-24", "mota": "V-FUR-24: Ô che ngoài trời: Janus et Cie, \nTeak round 250", "dvt": "cái", "cA": 16.0, "cB": 0, "cC": 20.0, "cD": 10.0, "cE": 0.0, "kh_ve": 0, "g1": 0, "g2": 0, "g3": 0, "g4": 0}];
+let PB_ROWS = PB_FALLBACK.slice();
+const PB_COLORS={'GẠCH':'#2E75B6','ĐÁ':'#7F6000','NHÔM KÍNH':'#2E9BD6','KÍNH':'#2E9BD6','KIM LOẠI TRANG TRÍ':'#7030A0','VẢI':'#C55A11'};
+function pbNum(v){ if(v==null||v==='')return 0; let s=String(v).trim();
+  if(s.indexOf(',')>=0 && s.indexOf('.')>=0){ s=s.replace(/\./g,'').replace(',','.'); }
+  else if(s.indexOf(',')>=0){ s=s.replace(',','.'); }
+  const n=parseFloat(s); return isNaN(n)?0:n; }
+function pbNorm(s){ return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/\s+/g,' ').trim(); }
+function pbFmt(n){ return (Math.round(n*10)/10).toLocaleString('vi-VN'); }
+function pbDerive(r){ r.tong=(+r.cA||0)+(+r.cB||0)+(+r.cC||0)+(+r.cD||0)+(+r.cE||0);
+  r.tongVe=(+r.g1||0)+(+r.g2||0)+(+r.g3||0)+(+r.g4||0); r.conLai=r.tong-r.tongVe; return r; }
+function pbParseCSV(data){
+  if(!data||!data.length) return [];
+  const hdr=data[0].map(pbNorm);
+  const find=(...names)=>{ for(const n of names){const i=hdr.indexOf(pbNorm(n)); if(i>=0)return i;} return -1; };
+  const iN=find('Nhóm'),iK=find('Kí hiệu','Ki hieu'),iM=find('Mô tả','Mo ta'),iU=find('ĐVT','DVT');
+  const iA=find('KL mẫu A'),iB=find('KL mẫu B'),iC=find('KL mẫu C'),iD=find('KL mẫu D'),iE=find('KL mẫu E');
+  const iKH=find('Kế hoạch vật tư về','Ke hoach vat tu ve');
+  const q1=find('KL giao lần 1'),q2=find('KL giao lần 2'),q3=find('KL giao lần 3'),q4=find('KL giao lần 4');
+  if(iN<0) return [];
+  const out=[];
+  for(let r=1;r<data.length;r++){ const row=data[r]; if(!row) continue;
+    const nhom=(row[iN]||'').trim(); const kh=iK>=0?(row[iK]||''):''; const mota=iM>=0?(row[iM]||''):'';
+    if(!nhom && !kh && !mota) continue;
+    const gv=i=> i>=0?pbNum(row[i]):0;
+    out.push({nhom,kh:String(kh).trim(),mota:String(mota).trim(),dvt:iU>=0?String(row[iU]||'').trim():'',
+      cA:gv(iA),cB:gv(iB),cC:gv(iC),cD:gv(iD),cE:gv(iE),kh_ve:gv(iKH),
+      g1:gv(q1),g2:gv(q2),g3:gv(q3),g4:gv(q4)}); }
+  return out;
+}
+async function pbLoad(){
+  if(PB_GSHEET_ID && typeof Papa!=='undefined'){
+    try{
+      const url=`https://docs.google.com/spreadsheets/d/${PB_GSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(PB_SHEET)}`;
+      const r=await fetch(url,{cache:'no-cache'});
+      if(r.ok){ const txt=await r.text();
+        const data=Papa.parse(txt,{skipEmptyLines:true}).data;
+        const parsed=pbParseCSV(data);
+        if(parsed.length){ PB_ROWS=parsed;
+          const el=document.getElementById('pbSrc'); if(el) el.textContent=`Nguồn: Google Sheet · tab "${PB_SHEET}" · ${parsed.length} dòng (tự cập nhật khi thêm/xoá dòng).`; }
+      }
+    }catch(e){ console.warn('PB fetch lỗi:',e.message); }
+  }
+  PB_ROWS.forEach(pbDerive); pbBuild();
+}
+let pbC1,pbC2;
+function pbBuild(){
+  const groups={};
+  PB_ROWS.forEach(r=>{ const k=r.nhom||'(khác)'; const g=groups[k]||(groups[k]={n:0,tong:0,ve:0,kh:0,con:0});
+    g.n++; g.tong+=r.tong; g.ve+=r.tongVe; g.kh+=r.kh_ve; g.con+=r.conLai; });
+  const order=['GẠCH','ĐÁ','NHÔM KÍNH','KIM LOẠI TRANG TRÍ','VẢI'];
+  const keys=Object.keys(groups).sort((a,b)=>{const ia=order.indexOf(a),ib=order.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib);});
+  const T=keys.reduce((s,k)=>{const g=groups[k];s.tong+=g.tong;s.ve+=g.ve;s.kh+=g.kh;s.con+=g.con;s.n+=g.n;return s;},{tong:0,ve:0,kh:0,con:0,n:0});
+  const pct=(a,b)=>b>0?Math.round(a/b*100):0;
+  const kpi=document.getElementById('pbKpi');
+  if(kpi) kpi.innerHTML=
+    `<div class="vtu-kpi-card"><div class="vk-v">${pbFmt(T.tong)}</div><div class="vk-l">Tổng KL</div></div>`+
+    `<div class="vtu-kpi-card gn"><div class="vk-v">${pct(T.ve,T.tong)}%</div><div class="vk-l">Đã về</div></div>`+
+    `<div class="vtu-kpi-card"><div class="vk-v" style="color:#C55A11">${pct(T.con,T.tong)}%</div><div class="vk-l">Còn lại</div></div>`+
+    `<div class="vtu-kpi-card"><div class="vk-v" style="color:#2E75B6">${pct(T.kh,T.tong)}%</div><div class="vk-l">Kế hoạch về</div></div>`+
+    `<div class="vtu-kpi-card"><div class="vk-v">${T.n}</div><div class="vk-l">Số đầu mục</div></div>`;
+  const body=document.getElementById('pbBody');
+  if(body) body.innerHTML=keys.map(k=>{const g=groups[k];const p=pct(g.ve,g.tong);
+    return `<tr><td class="villa-hd" style="text-align:left;padding-left:10px">${k}</td>
+     <td style="text-align:center">${g.n}</td>
+     <td style="text-align:center"><b>${pbFmt(g.tong)}</b></td>
+     <td style="text-align:center;color:#2E75B6">${pbFmt(g.kh)}</td>
+     <td style="text-align:center;color:#276221;font-weight:700">${pbFmt(g.ve)}</td>
+     <td style="text-align:center;color:#C55A11">${pbFmt(g.con)}</td>
+     <td><div class="vtu-bar nhan"><div class="vtu-bar-fill" style="width:${p}%"></div><span>${p}%</span></div></td></tr>`;}).join('');
+  if(window.Chart){
+    if(pbC1)pbC1.destroy();
+    const e1=document.getElementById('c_pbGroup');
+    if(e1)pbC1=new Chart(e1,{type:'bar',data:{labels:keys,datasets:[
+      {label:'Tổng KL',data:keys.map(()=>100),backgroundColor:'#C9D8EC',borderRadius:4},
+      {label:'Đã về công trình',data:keys.map(k=>pct(groups[k].ve,groups[k].tong)),backgroundColor:'#276221',borderRadius:4}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+'%'}}},
+        scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%',font:{size:10}}},x:{ticks:{font:{size:10}},grid:{display:false}}}}});
+  }
+  pbFillNhom(keys); pbSearch();
+}
+let pbqBound=false;
+function pbFillNhom(keys){ const s=document.getElementById('pbqNhom'); if(!s)return; const cur=s.value;
+  s.innerHTML='<option value="">Tất cả</option>'+keys.map(k=>`<option${k===cur?' selected':''}>${k}</option>`).join('');
+  if(!pbqBound){ pbqBound=true; s.addEventListener('change',pbSearch); const tt=document.getElementById('pbqText'); if(tt)tt.addEventListener('input',pbSearch); } }
+function pbSearch(){
+  const nh=(document.getElementById('pbqNhom')||{value:''}).value;
+  const q=((document.getElementById('pbqText')||{value:''}).value||'').trim().toLowerCase();
+  const rows=PB_ROWS.filter(r=>{ if(nh&&r.nhom!==nh)return false;
+    if(q&&!((String(r.kh||'')+' '+String(r.mota||'')).toLowerCase().includes(q)))return false; return true; });
+  const tb=document.getElementById('pbqBody'); if(!tb)return;
+  if(!rows.length){ tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:20px;color:#9aa0bd">Không có dòng nào khớp.</td></tr>'; }
+  else tb.innerHTML=rows.slice(0,500).map(r=>{ const p=r.tong>0?Math.round(r.tongVe/r.tong*100):0; const c=PB_COLORS[r.nhom]||'#888';
+    return `<tr><td style="text-align:center"><span style="background:${c}22;color:${c};padding:2px 7px;border-radius:10px;font-size:10.5px">${r.nhom||''}</span></td>
+      <td style="text-align:center;color:#555">${r.kh||'—'}</td>
+      <td style="text-align:left;padding-left:10px;max-width:300px">${r.mota||''}</td>
+      <td style="text-align:center">${r.dvt||''}</td>
+      <td style="text-align:center;font-weight:600">${pbFmt(r.tong)}</td>
+      <td style="text-align:center;color:#2E75B6">${pbFmt(r.kh_ve)}</td>
+      <td style="text-align:center;color:#276221;font-weight:600">${pbFmt(r.tongVe)}</td>
+      <td style="text-align:center;color:#C55A11">${pbFmt(r.conLai)}</td>
+      <td><div class="vtu-bar nhan"><div class="vtu-bar-fill" style="width:${p}%"></div><span>${p}%</span></div></td></tr>`;}).join('');
+  const el=document.getElementById('pbqStats'); if(el)el.textContent=`${rows.length} dòng khớp`+(rows.length>500?' (hiển thị 500 đầu)':'');
+}
+function pbReadExcel(file){
+  if(typeof XLSX==='undefined'){ alert('Thiếu thư viện đọc Excel (XLSX).'); return; }
+  const rd=new FileReader();
+  rd.onload=ev=>{
+    try{
+      const wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array'});
+      let sn=wb.SheetNames.find(s=>pbNorm(s).indexOf('PHAN BO HANG VE')>=0) || wb.SheetNames[0];
+      const ws=wb.Sheets[sn];
+      const data=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''});
+      const parsed=pbParseCSV(data);
+      if(parsed.length){ PB_ROWS=parsed; PB_ROWS.forEach(pbDerive); pbBuild();
+        const el=document.getElementById('pbSrc'); if(el) el.textContent=`Nguồn: file Excel "${file.name}" · sheet "${sn}" · ${parsed.length} dòng (đọc theo header — tự nhận thêm/xoá dòng).`;
+      } else { alert('Không tìm thấy dữ liệu/cột trong sheet "'+sn+'". Kiểm tra tên cột: Nhóm, KL mẫu A..E, KL giao lần 1..4, Kế hoạch vật tư về.'); }
+    }catch(err){ alert('Lỗi đọc Excel: '+err.message); }
+  };
+  rd.readAsArrayBuffer(file);
+}
+document.addEventListener('DOMContentLoaded',()=>{ const fi=document.getElementById('pbFile'); if(fi) fi.addEventListener('change',e=>{ if(e.target.files&&e.target.files[0]) pbReadExcel(e.target.files[0]); }); });
+window.addEventListener('DOMContentLoaded',pbLoad);
+</script>
+
 </body>
 </html>
