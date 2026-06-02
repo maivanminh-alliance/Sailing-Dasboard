@@ -135,6 +135,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
   .kpi-row .kpi{flex:1 1 100%}
   .vtu-kpi{grid-template-columns:1fr}
 }
+.scht thead th{position:sticky;top:0;z-index:5}
 </style>
 </head>
 <body>
@@ -206,7 +207,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
 <!-- S7: KIỂM SOÁT VẬT TƯ NHÀ MÁY -->
 <div class="sec" id="s7">
   <div class="stitle" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-    <span>🏭 3. VẬT TƯ FIT OUT</span>
+    <span>🏭 3. VẬT TƯ NHÀ MÁY</span>
   </div>
 
   <!-- VTU KPI Cards -->
@@ -400,7 +401,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fa;color:#1a1a2e;fo
   </div>
   <div class="cb">
     <h4 style="margin-bottom:10px">CHI TIẾT KẾ HOẠCH 5 TUẦN</h4>
-    <div style="overflow-x:auto"><table class="scht" id="schedTbl"></table></div>
+    <div style="overflow:auto;max-height:480px;border:1px solid #e0e8f4;border-radius:8px"><table class="scht" id="schedTbl"></table></div>
   </div>
 </div>
 
@@ -1736,8 +1737,9 @@ function buildVatTu(){
     data:{
       labels:vs.map(v=>v.name),
       datasets:[
-        {label:'% Đã đặt hàng',   data:vs.map(v=>v.total?Math.round(v.dat/v.total*100):0),  backgroundColor:'#2E75B6', borderRadius:4},
-        {label:'% Về công trình', data:vs.map(v=>v.total?Math.round(v.nhan/v.total*100):0), backgroundColor:'#276221', borderRadius:4},
+        {label:'% Đặt hàng', data:vs.map(v=>v.total?Math.round(v.dat/v.total*100):0),  backgroundColor:'#2E75B6', borderRadius:4},
+        {label:'% Xuất kho',  data:vs.map(v=>v.total?Math.round(v.xuat/v.total*100):0), backgroundColor:'#1F4E79', borderRadius:4},
+        {label:'% Nhận khui', data:vs.map(v=>v.total?Math.round(v.nhan/v.total*100):0), backgroundColor:'#276221', borderRadius:4},
       ]
     },
     options:{responsive:true,maintainAspectRatio:false,
