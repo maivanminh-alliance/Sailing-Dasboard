@@ -768,6 +768,18 @@ async function loadFromGoogleSheets(){
       syncEl.className='sync-badge ok';
       syncEl.textContent=`✅ GG Sheets — ${now}`;
       document.getElementById('today').textContent=new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+function fixNavSticky(){
+  const hdr=document.querySelector('.hdr');
+  const nav=document.querySelector('.nav-row');
+  if(!hdr||!nav)return;
+  if(window.innerWidth<=760){
+    nav.style.top=hdr.offsetHeight+'px';
+  } else {
+    nav.style.top='';
+  }
+}
+window.addEventListener('load',fixNavSticky);
+window.addEventListener('resize',fixNavSticky);
     }else{
       syncEl.className='sync-badge err';
       syncEl.textContent='⚠️ Không đọc được dữ liệu';
@@ -781,6 +793,18 @@ async function loadFromGoogleSheets(){
 
 // ── DATE & COUNTDOWN ──────────────────────────────────
 document.getElementById('today').textContent=new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+function fixNavSticky(){
+  const hdr=document.querySelector('.hdr');
+  const nav=document.querySelector('.nav-row');
+  if(!hdr||!nav)return;
+  if(window.innerWidth<=760){
+    nav.style.top=hdr.offsetHeight+'px';
+  } else {
+    nav.style.top='';
+  }
+}
+window.addEventListener('load',fixNavSticky);
+window.addEventListener('resize',fixNavSticky);
 let DEADLINE_ISO = localStorage.getItem('sailing_deadline') || '2026-09-30';
 function updateCountdown(){
   const dl=new Date(DEADLINE_ISO), dn=new Date();
@@ -1335,6 +1359,18 @@ function loadExcel(input){
       if(n>0){
         st.className='upst ok'; st.textContent=`✅ Cập nhật ${n} căn`;
         document.getElementById('today').textContent=new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+function fixNavSticky(){
+  const hdr=document.querySelector('.hdr');
+  const nav=document.querySelector('.nav-row');
+  if(!hdr||!nav)return;
+  if(window.innerWidth<=760){
+    nav.style.top=hdr.offsetHeight+'px';
+  } else {
+    nav.style.top='';
+  }
+}
+window.addEventListener('load',fixNavSticky);
+window.addEventListener('resize',fixNavSticky);
         refreshAll();
       } else {
         st.className='upst err'; st.textContent='⚠️ Không đọc được dữ liệu';
