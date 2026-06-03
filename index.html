@@ -1046,7 +1046,7 @@ function lkHasSched(d){ const B=d.b||[]; return B.some(x=>x&&(x[0]||x[1]||x[2]))
 function lkInitFilters(){
   const mau=[...new Set(VTU_DETAIL.map(d=>d.mau).filter(Boolean))].sort();
   const hm=[...new Set(VTU_DETAIL.map(d=>d.hangmuc).filter(Boolean))].sort();
-  const ttFixed=[['CHƯA ĐẶT','CHƯA ĐẶT'],['CHƯA XUẤT HÀNG','CHƯA XUẤT HÀNG'],['THIẾU','THIẾU'],['ĐỦ','ĐỦ'],['THỪA','THỪA'],['CHỜ NHẬN KHUI','CHỜ NHẬN KHUI']];
+  const ttFixed=[['CHƯA XUẤT HÀNG','CHƯA XUẤT HÀNG'],['THIẾU','THIẾU'],['CÒN LẠI','CÒN LẠI'],['ĐỦ','ĐỦ'],['THỪA','THỪA'],['CHỜ NHẬN KHUI','CHỜ NHẬN KHUI']];
   const sm=document.getElementById('lkMau'), sh=document.getElementById('lkHM'), ss=document.getElementById('lkStatus');
   sm.innerHTML='<option value="">Tất cả</option>'; mau.forEach(m=>sm.add(new Option(m,m)));
   sh.innerHTML='<option value="">Tất cả</option>'; hm.forEach(h=>sh.add(new Option(h,h)));
@@ -1066,8 +1066,8 @@ function lkStatusMatch(d,st){
   if(!st)return true;
   const raw=(d.tt||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
   const key=st.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
-  if(key==='CHUA DAT') return raw.includes('CHUA DAT') && !raw.includes('CHUA XUAT');
   if(key==='CHUA XUAT HANG') return raw.includes('CHUA XUAT');
+  if(key==='CON LAI') return raw.includes('CON LAI');
   if(key==='THIEU') return raw.includes('THIEU');
   if(key==='DU') return raw.includes('DU')&&!raw.includes('CHUA');
   if(key==='THUA') return raw.includes('THUA');
