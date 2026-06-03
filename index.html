@@ -1046,11 +1046,11 @@ function lkHasSched(d){ const B=d.b||[]; return B.some(x=>x&&(x[0]||x[1]||x[2]))
 function lkInitFilters(){
   const mau=[...new Set(VTU_DETAIL.map(d=>d.mau).filter(Boolean))].sort();
   const hm=[...new Set(VTU_DETAIL.map(d=>d.hangmuc).filter(Boolean))].sort();
-  const ttSet=[...new Set(VTU_DETAIL.map(d=>d.tt).filter(Boolean))].sort();
+  const ttFixed=[['CHƯA ĐẶT','CHƯA ĐẶT'],['CHƯA XUẤT HÀNG','CHƯA XUẤT HÀNG'],['THIẾU','THIẾU'],['ĐỦ','ĐỦ'],['THỪA','THỪA'],['CHỜ NHẬN KHUI','CHỜ NHẬN KHUI']];
   const sm=document.getElementById('lkMau'), sh=document.getElementById('lkHM'), ss=document.getElementById('lkStatus');
   sm.innerHTML='<option value="">Tất cả</option>'; mau.forEach(m=>sm.add(new Option(m,m)));
   sh.innerHTML='<option value="">Tất cả</option>'; hm.forEach(h=>sh.add(new Option(h,h)));
-  if(ss){ ss.innerHTML='<option value="">Tất cả</option>'; ttSet.forEach(t=>ss.add(new Option(t,t))); }
+  if(ss){ ss.innerHTML='<option value="">Tất cả</option>'; ttFixed.forEach(t=>ss.add(new Option(t[0],t[1]))); }
 }
 function lkKyHieu(ten){ const m=String(ten||'').match(/(V-FIN-\d+\w*|V-FAB-\d+|V-FUR-\d+|V-ACC-\d+|VAC-\d+\w*|V-[A-Z]+-\d+\w*|V-[A-Z]-\d+\w*|SK-\d+)/i); return m?m[1].toUpperCase():''; }
 function lkGroupOf(ma){ const s=String(ma||'').toUpperCase();
@@ -1062,7 +1062,18 @@ function lkLatest(d){ const B=d.b||[]; for(let i=B.length-1;i>=0;i--){ if(B[i]&&
 function lkHasXuat(d){ const B=d.b||[]; return B.some(x=>x&&x[1]); }
 function lkStatusOf(d){ const boq=lkNumF(d.slkh), dat=lkNumF(d.tongdat);
   if(dat<=0) return 'CHƯA ĐẶT'; if(Math.abs(dat-boq)<0.05) return 'ĐỦ'; if(dat<boq) return 'THIẾU'; return 'THỪA'; }
-function lkStatusMatch(d,st){ if(!st)return true; const s=d.tt||lkStatusOf(d); return s===st; }
+function lkStatusMatch(d,st){
+  if(!st)return true;
+  const raw=(d.tt||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+  const key=st.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+  if(key==='CHUA DAT') return raw.includes('CHUA DAT') && !raw.includes('CHUA XUAT');
+  if(key==='CHUA XUAT HANG') return raw.includes('CHUA XUAT');
+  if(key==='THIEU') return raw.includes('THIEU');
+  if(key==='DU') return raw.includes('DU')&&!raw.includes('CHUA');
+  if(key==='THUA') return raw.includes('THUA');
+  if(key==='CHO NHAN KHUI') return raw.includes('CHO NHAN');
+  return false;
+}
 function lkRender(){
   const m=document.getElementById('lkMau').value, h=document.getElementById('lkHM').value;
   const st=document.getElementById('lkStatus')?document.getElementById('lkStatus').value:'';
